@@ -5,14 +5,43 @@
     <div class = "margins">
         <h1 class = "title"> Our Mission </h1>
         <p> Mission Tutoring is a website where students get paired with personalized tutors. Our goal is to create an environment where students struggling in certain areas can get the best assistance available. We have bridged the gap between students looking for help and tutors looking to assist. </p>
+        <table class = "table">
+          <tr>
+            <td>
+              <img src = "./ankith_pic.png" />
+              <h3 class = "people"> Ankith Bachhu </h3>
+              <p>Hello! I am currently 16 years old and a junior at Mission San Jose High. I joined MSJ tutoring because I wanted to give people an opportunity to get help if they needed it. I wanted to spread my
+              knowledge with the community. In my spare time I love to code and run.</p>
+             </td>
+             <td>
+               <img src = "./RithPic.jpg" />
+               <h3 class = "people"> Rithwik Vaidun </h3>
+               <p>Hey! I am currenlt 16 years old and a junior at Mission San Jose High. I joined MSJ tutoring because I love to spread my knowledge with other people. I didn't want there to be a barrier
+               for people like me to not to be able to help and teach people. In my spare time I love to run and play sports, especially table tennis. </p>
+              </td>
+          </tr>
 
-       <h3 class = "people"> Rithwik Vaidun </h3>
-       Hey! I am currenlt 16 years old and a junior at Mission San Jose High. I joined MSJ tutoring because I love to spread my knowledge with other people. I didn't want there to be a barrier
-       for people like me to not to be able to help and teach people. In my spare time I love to run and play sports, especially table tennis.
+          <!-- David and Eric edit ur stuff for the personal information-->
+          <tr>
+            <td>
+              <img src = "./ankith_pic.png" />
+              <h3 class = "people"> David Guo </h3>
+              <p>Hello! I am currently 16 years old and a junior at Mission San Jose High. I joined MSJ tutoring because I wanted to give people an opportunity to get help if they needed it. I wanted to spread my
+              knowledge with the community. In my spare time I love to code and run.</p>
+             </td>
+             <td>
+               <img src = "./RithPic.jpg" />
+               <h3 class = "people"> Eric Guo </h3>
+               <p>Hey! I am currenlt 16 years old and a junior at Mission San Jose High. I joined MSJ tutoring because I love to spread my knowledge with other people. I didn't want there to be a barrier
+               for people like me to not to be able to help and teach people. In my spare time I love to run and play sports, especially table tennis. </p>
+              </td>
+          </tr>
+
+        </table>
     </div>
   </div>
 
-  <img src = "./RithPic.jpg" />
+
 </body>
 </template>
 
@@ -21,7 +50,6 @@
 
 body{
 
-  text-align: center;
   border: 30px solid #2EC486;
   margin: 5px;
 
@@ -29,6 +57,7 @@ body{
 
 
 .margins{
+  text-align: center;
   padding: 10px;
 }
 
@@ -46,12 +75,22 @@ padding: 5px;
 
 }
 
+.table {
+  margin: auto;
+}
+
 img {
   border-radius: 50%;
-  height: 100px;
-  width: 100px;
-
-  
+  height: 150px;
+  width: 150px;
 }
+
+td{
+  height: 400px;
+  width: 400px;
+  border: 7px solid white;
+  padding: 15px;
+}
+
 
 </style>
