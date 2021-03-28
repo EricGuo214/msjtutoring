@@ -11,6 +11,8 @@
        for people like me to not to be able to help and teach people. In my spare time I love to run and play sports, especially table tennis.
     </div>
   </div>
+
+  <img src = "./RithPic.jpg" />
 </body>
 </template>
 
@@ -42,6 +44,14 @@ body{
 text-align: center;
 padding: 5px;
 
+}
+
+img {
+  border-radius: 50%;
+  height: 100px;
+  width: 100px;
+
+  
 }
 
 </style>
