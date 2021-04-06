@@ -3,9 +3,11 @@
 <body>
   <div>
     <div class = "margins">
-        <h1> Our Mission </h1>
-        <h3 class = "title"> Wosjd </h3>
-        <p> Mission Tutoring is a website where students get paired with personalized tutors. Our goal is to create an environment where students struggling in certain areas can get the best assistance available. We have bridged the gap between students looking for help and tutors looking to assist. </p>
+        <h1> Mission Tutoring </h1>
+        <p></p>
+        <p></p>
+        <h2> Our Mission </h2>
+        <p class = "testing"> Mission Tutoring is a website where students get paired with personalized tutors. Our goal is to create an environment where students struggling in certain areas can get the best assistance available. We have bridged the gap between students looking for help and tutors looking to assist. </p>
         <table class = "table">
           <tr>
             <td>
@@ -74,6 +76,11 @@ body{
 text-align: center;
 padding: 5px;
 
+}
+
+.testing{
+  padding-left: 250px;
+  padding-right: 250px;
 }
 
 .table {
