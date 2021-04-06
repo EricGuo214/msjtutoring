@@ -3,20 +3,34 @@
 <body>
   <div>
     <div class = "margins">
-        <h1> Mission Tutoring </h1>
+        <h1> Mission Tutoring</h1>
         <img src="./mission_pic.jpg">
         <p class = "create"></p>
         <h2> Our Mission </h2>
         <p class = "testing"> Mission Tutoring is a website where students get paired with personalized tutors. Our goal is to create an environment where students struggling in certain areas can get the best assistance available. We have bridged the gap between students looking for help and tutors looking to assist. </p>
+        <p class = "create"></p>
+
+        <h2> How We Work</h2>
         <table class = "table">
           <tr>
             <td>
+              <p> 1) Register as a tutor or tutee </p>
+              <p> As a tutor you will see all the tutee requests</p>
+              <p> As a tutee you will be able to make requests for a tutor</p>
+
+            </td>
+          </tr>
+        </table>
+
+        <table class = "table">
+          <tr>
+            <td class = "td1">
               <img src = "./ankith_pic.png" />
               <h3 class = "people"> Ankith Bachhu </h3>
               <p>Hello! I am currently 16 years old and a junior at Mission San Jose High. I joined MSJ tutoring because I wanted to give people an opportunity to get help if they needed it. I wanted to spread my
               knowledge with the community. In my spare time I love to code and run.</p>
              </td>
-             <td>
+             <td class = "td1">
                <img src = "./RithPic.jpg" />
                <h3 class = "people"> Rithwik Vaidun </h3>
                <p>Hey! I am currently 16 years old and a junior at Mission San Jose High. I joined MSJ tutoring because I love to spread my knowledge with other people. I didn't want there to be a barrier
@@ -26,13 +40,13 @@
 
           <!-- David and Eric edit ur stuff for the personal information-->
           <tr>
-            <td>
+            <td class = "td1">
               <img src = "./ankith_pic.png" />
               <h3 class = "people"> David Guo </h3>
               <p>Hello! I am currently 16 years old and a junior at Mission San Jose High. I joined MSJ tutoring because I wanted to give people an opportunity to get help if they needed it. I wanted to spread my
               knowledge with the community. In my spare time I love to code and run.</p>
              </td>
-             <td>
+             <td class = "td1">
                <img src = "./RithPic.jpg" />
                <h3 class = "people"> Eric Guo </h3>
                <p>Hey! I am currenlt 16 years old and a junior at Mission San Jose High. I joined MSJ tutoring because I love to spread my knowledge with other people. I didn't want there to be a barrier
@@ -58,6 +72,7 @@ body{
 
 }
 
+.create{
   padding-top: 20px;
 }
 
@@ -89,13 +104,21 @@ padding: 5px;
   margin: auto;
 }
 
+h1{
+  color: green;
+}
+
+h2{
+  color: green;
+}
+
 img {
   border-radius: 50%;
   height: 150px;
   width: 150px;
 }
 
-td{
+.td1{
   height: 400px;
   width: 400px;
   border: 7px solid white;
