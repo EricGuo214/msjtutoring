@@ -3,7 +3,8 @@
 <body>
   <div>
     <div class = "margins">
-        <h1 class = "title"> Our Mission </h1>
+        <h1> Our Mission </h1>
+        <h3 class = "title"> Wosjd </h3>
         <p> Mission Tutoring is a website where students get paired with personalized tutors. Our goal is to create an environment where students struggling in certain areas can get the best assistance available. We have bridged the gap between students looking for help and tutors looking to assist. </p>
         <table class = "table">
           <tr>
@@ -16,7 +17,7 @@
              <td>
                <img src = "./RithPic.jpg" />
                <h3 class = "people"> Rithwik Vaidun </h3>
-               <p>Hey! I am currenlt 16 years old and a junior at Mission San Jose High. I joined MSJ tutoring because I love to spread my knowledge with other people. I didn't want there to be a barrier
+               <p>Hey! I am currently 16 years old and a junior at Mission San Jose High. I joined MSJ tutoring because I love to spread my knowledge with other people. I didn't want there to be a barrier
                for people like me to not to be able to help and teach people. In my spare time I love to run and play sports, especially table tennis. </p>
               </td>
           </tr>
@@ -50,8 +51,8 @@
 
 body{
 
-  border: 30px solid #2EC486;
-  margin: 5px;
+  border: 20px solid #2EC486;
+  margin: 0px;
 
 }
 
