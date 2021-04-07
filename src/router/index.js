@@ -20,6 +20,16 @@ const routes = [
             guest: true
         }
     },
+    {
+      path: '/tutor',
+      name: 'tutor',
+      component: () => import('../components/Tutor.vue')
+    },
+    {
+      path: '/tutee',
+      name: 'tutee',
+      component: () => import('../components/Tutee.vue')
+    }
 ]
 
 const router = new VueRouter({

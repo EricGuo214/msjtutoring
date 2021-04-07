@@ -7,7 +7,7 @@
       <v-spacer></v-spacer>
       <v-menu offset-y v-if="user">
         <template v-slot:activator="{ on }">
-          <v-btn color="primar" dark v-on="on">{{ user.email }}</v-btn>
+          <v-btn color="primary" dark v-on="on">{{ user.email }}</v-btn>
         </template>
         <v-list>
           <v-list-item to="/profile?">
@@ -32,6 +32,18 @@
               <v-icon>mdi-home</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Home</v-list-item-title>
+          </v-list-item>
+          <v-list-item to="/tutor">
+            <v-list-item-icon>
+              <v-icon>mdi-message-text</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Apply to be a tutor</v-list-item-title>
+          </v-list-item>
+          <v-list-item to="/tutee">
+            <v-list-item-icon>
+              <v-icon>mdi-message-text</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Apply for a tutor</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
       </v-list>
