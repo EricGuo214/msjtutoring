@@ -74,7 +74,6 @@ export default {
       onSubmitForm() {
           firebase
           .firestore()
-
       }
   }
 };

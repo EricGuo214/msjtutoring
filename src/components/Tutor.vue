@@ -69,7 +69,7 @@
 import firebase from "firebase";
 export default {
   data: () => ({
-    firstName: "first name",
+    firstName: null,
     lastName: null,
     grade: null,
     grades: ["9", "10", "11", "12"],
@@ -79,41 +79,40 @@ export default {
     formHasErrors: false,
   }),
   computed: {
-    titlePrompt: function () {
+    titlePrompt: function() {
       if (this.purpose == "tutor") {
         return "be a tutor!";
       } else {
         return "get a tutor!";
       }
     },
-    classPrompt: function () {
+    classPrompt: function() {
       if (this.purpose == "tutor") {
         return "to tutor for:";
       } else {
         return "a tutor for:";
       }
-    }
+    },
   },
   methods: {
     onSubmit() {
       console.log("submit", this.firstName, this.classes);
-      let collectionName = "tutees"
-      if(this.purpose == "tutor"){
-        collectionName = "tutors"
+      let collectionName = "tutees";
+      if (this.purpose == "tutor") {
+        collectionName = "tutors";
       }
       firebase
         .firestore()
         .collection(collectionName)
         .doc(this.firstName)
-        .set({ classes: this.classes })
-        // .then((docRef) => {
-        //   console.log("Document written with ID: ", docRef.id);
-        // })
-        // .catch((error) => {
-        //   console.error("Error adding document: ", error);
-        // });
+        .set({ classes: this.classes });
+      // .then((docRef) => {
+      //   console.log("Document written with ID: ", docRef.id);
+      // })
+      // .catch((error) => {
+      //   console.error("Error adding document: ", error);
+      // });
     },
   },
 };
 </script>
-

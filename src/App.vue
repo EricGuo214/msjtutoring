@@ -33,18 +33,28 @@
             </v-list-item-icon>
             <v-list-item-title>Home</v-list-item-title>
           </v-list-item>
+
           <v-list-item to="/tutor">
             <v-list-item-icon>
-              <v-icon>mdi-message-text</v-icon>
+              <v-icon>mdi-school</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Apply to be a tutor</v-list-item-title>
+            <v-list-item-title>Tutor</v-list-item-title>
           </v-list-item>
+
           <v-list-item to="/tutee">
             <v-list-item-icon>
-              <v-icon>mdi-message-text</v-icon>
+              <v-icon>mdi-book-open-variant</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Apply for a tutor</v-list-item-title>
+            <v-list-item-title>Tutee</v-list-item-title>
           </v-list-item>
+
+          <v-list-item to="/question">
+            <v-list-item-icon>
+              <v-icon>mdi-message-question</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Question Forum</v-list-item-title>
+          </v-list-item>
+
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
