@@ -25,20 +25,6 @@
         <table class = "table">
           <tr>
             <td class = "td1">
-              <img src = "./david.jpg" >
-              <h3 class = "people"> David Guo </h3>
-              <p>Nice to meet you! I created and led MSJ tutoring because I wanted to create a tool that would help struggling students and encourage kindness. With MSJ Tutoring, exceptional students are given
-                 the oppurtunity to gain experience in teaching and struggling students can learn from their successful peers. My hobbies are dancing, running, and playing the piano!</p>
-             </td>
-             <td class = "td1">
-               <img src = "./RithPic.jpg" >
-               <h3 class = "people"> Eric Guo </h3>
-               <p>Hey! I am currenlt 16 years old and a junior at Mission San Jose High. I joined MSJ tutoring because I love to spread my knowledge with other people. I didn't want there to be a barrier
-               for people like me to not to be able to help and teach people. In my spare time I love to run and play sports, especially table tennis. </p>
-              </td>
-          </tr>
-          <tr>
-            <td class = "td1">
               <img src = "./ankith_pic.png" >
               <h3 class = "people"> Ankith Bachhu </h3>
               <p>Hello! I am currently 16 years old and a junior at Mission San Jose High. I joined MSJ tutoring because I wanted to give people an opportunity to get help if they needed it. I wanted to spread my
@@ -50,7 +36,24 @@
                <p>Hey! I am currently 16 years old and a junior at Mission San Jose High. I joined MSJ tutoring because I love to spread my knowledge with other people. I didn't want there to be a barrier
                for people like me to not to be able to help and teach people. In my spare time I love to run and play sports, especially table tennis. </p>
               </td>
-          </tr>          
+              <td class = "td1">
+                <img src = "./david.jpg" >
+                <h3 class = "people"> David Guo </h3>
+                <p>Nice to meet you! I created and led MSJ tutoring because I wanted to create a tool that would help struggling students and encourage kindness. With MSJ Tutoring, exceptional students are given
+                   the oppurtunity to gain experience in teaching and struggling students can learn from their successful peers. My hobbies are dancing, running, and playing the piano!</p>
+               </td>
+               <td class = "td1">
+                 <img src = "./RithPic.jpg" >
+                 <h3 class = "people"> Eric Guo </h3>
+                 <p>Hey! I am currenlt 16 years old and a junior at Mission San Jose High. I joined MSJ tutoring because I love to spread my knowledge with other people. I didn't want there to be a barrier
+                 for people like me to not to be able to help and teach people. In my spare time I love to run and play sports, especially table tennis. </p>
+                </td>
+          </tr>
+
+          <tr>
+
+          </tr>
+
         </table>
     </div>
   </div>
