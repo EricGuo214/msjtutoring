@@ -31,10 +31,10 @@
                  the oppurtunity to gain experience in teaching and struggling students can learn from their successful peers. My hobbies are dancing, running, and playing the piano!</p>
              </td>
              <td class = "td1">
-               <img src = "./RithPic.jpg" >
+               <img src = "./ericPic.jpeg" >
                <h3 class = "people"> Eric Guo </h3>
-               <p>Hey! I am currenlt 16 years old and a junior at Mission San Jose High. I joined MSJ tutoring because I love to spread my knowledge with other people. I didn't want there to be a barrier
-               for people like me to not to be able to help and teach people. In my spare time I love to run and play sports, especially table tennis. </p>
+               <p>I joined MSJ tutoring to improve Mission San Jose High School's student experiences in challenging courses. My goal is to develop a website that benefits all participants with meaningful experiences and a sense of community. 
+                 I hope that everybody who uses this website achieves their desired results! I enjoy dancing, reading, and exercise. </p>
               </td>
           </tr>
           <tr>
