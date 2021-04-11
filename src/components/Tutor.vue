@@ -106,12 +106,6 @@ export default {
         .collection(collectionName)
         .doc(this.firstName)
         .set({ classes: this.classes });
-      // .then((docRef) => {
-      //   console.log("Document written with ID: ", docRef.id);
-      // })
-      // .catch((error) => {
-      //   console.error("Error adding document: ", error);
-      // });
     },
   },
 };
