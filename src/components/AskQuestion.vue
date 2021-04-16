@@ -29,6 +29,7 @@
       </v-container>
 
       <v-btn color="primary" @click="onSubmit"> post </v-btn>
+      <v-btn color="primary" to="/questions"> Back </v-btn>
     </div>
   </body>
 </template>
@@ -47,8 +48,16 @@ export default {
       firebase
         .firestore()
         .collection(collectionName)
-        .doc(this.title)
-        .set({ question: this.question });
+        .doc()
+        .set({ title: this.title, question: this.question });
+    },
+    async getData() {
+      const snapshot = await firebase
+        .firestore()
+        .collection("question")
+        .get();
+      const test = snapshot.docs.map((doc) => doc.data());
+      console.log(test);
     },
   },
 };
