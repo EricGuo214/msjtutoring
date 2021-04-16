@@ -38,7 +38,7 @@
         shaped
         required
       ></v-autocomplete>
-      <h2>Choose which class(es) you would like to tutor for</h2>
+      <h2>Choose which class(es) you would like a tutor for</h2>
       // create list of classes or fill in the blank classes which leads to all forms related to this class
       <v-row>
         <h3 class="my-4"></h3>
@@ -65,7 +65,7 @@ export default {
         firstName: this.firstName,
         lastName: this.lastName,
         grade: this.grade,
-        purpose: this.prupose,
+        purpose: this.purpose,
         classes: this.classes
       };
     },

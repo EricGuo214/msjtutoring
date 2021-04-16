@@ -24,6 +24,7 @@
           filled
           label="Ask a question"
           placeholder="Ask a question"
+          :rules="[() => !!question || 'This field is required']"
           auto-grow
         ></v-textarea>
       </v-container>
