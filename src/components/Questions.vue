@@ -1,13 +1,21 @@
 <template>
   <body>
     <div>
+
+      <h1>
+        Questions
+      </h1>
+
       <v-card
         class="mx-auto"
-        max-width="344"
+        max-width="800"
         outlined
         v-for="q in questions"
         :key="q.questions"
+        @click="active = true"
+        to = "/replies"
       >
+
         <v-list-item three-line>
           <v-list-item-content>
             <!-- <div class="overline mb-4">
@@ -19,12 +27,6 @@
             <v-list-item-subtitle>{{ q.question }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
-
-        <v-card-actions>
-          <v-btn outlined rounded text>
-            Button
-          </v-btn>
-        </v-card-actions>
       </v-card>
 
       <v-btn color="primary" to="/askquestion" @click="onSubmit">
@@ -68,6 +70,9 @@ export default {
 
 <style scoped>
 body {
+  text-align: center;
+}
+.centered{
   text-align: center;
 }
 </style>

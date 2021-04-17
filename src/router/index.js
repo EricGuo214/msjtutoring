@@ -40,6 +40,16 @@ const routes = [
     name: "askquestion",
     component: () => import("../components/AskQuestion.vue"),
   },
+  {
+    path: "/answers",
+    name: "answers",
+    component: () => import("../components/Answers.vue"),
+  },
+  {
+    path: "/replies",
+    name: "replies",
+    component: () => import("../components/replies.vue"),
+  },
 ];
 
 const router = new VueRouter({
