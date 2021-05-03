@@ -21,14 +21,14 @@ const routes = [
         }
     },
     {
-      path: '/tutor',
-      name: 'tutor',
-      component: () => import('../components/Tutor.vue')
+      path: '/ApplyToBeTutor',
+      name: 'ApplyToBeTutor',
+      component: () => import('../components/ApplyToBeTutor.vue')
     },
     {
-      path: '/tutee',
-      name: 'tutee',
-      component: () => import('../components/Tutee.vue')
+      path: '/OurTutors',
+      name: 'OurTutors',
+      component: () => import('../components/OurTutors.vue')
     },
     {
       path: '/question',

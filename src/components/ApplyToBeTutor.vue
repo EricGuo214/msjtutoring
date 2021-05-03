@@ -1,12 +1,14 @@
 <template>
   <div id="create-form">
-    <h1>I am applying to be a :</h1>
-    <v-radio-group v-model="purpose">
+    <h1>Apply to be a tutor!</h1>
+    <h2>
+      Being a tutor at MSJ Tutor offers you hands on experience to leadership
+      and teaching. Sign up today!
+    </h2>
+    <!-- <v-radio-group v-model="purpose">
       <v-radio label="tutor" value="tutor"></v-radio>
       <v-radio label="tutee" value="tutee"></v-radio>
-    </v-radio-group>
-
-    <h1>Sign up to {{ titlePrompt }}</h1>
+    </v-radio-group> -->
     <form>
       <h2>First Name</h2>
       <v-text-field
@@ -44,9 +46,7 @@
         shaped
         required
       ></v-autocomplete>
-      <h2>Choose which class(es) you would like {{ classPrompt }}</h2>
-      // create list of classes or fill in the blank classes which leads to all
-      forms related to this class
+      <h2>Choose which class(es) you would like to be a mentor in:</h2>
       <v-select
         v-model="currentClasses"
         :items="classes"
@@ -73,39 +73,28 @@ export default {
     lastName: null,
     grade: null,
     grades: ["9", "10", "11", "12"],
-    purpose: "tutor",
     currentClasses: [],
-    classes: ["class1", "class2"],
+    classes: [
+      "AP Biology",
+      "AP Chemistry",
+      "AP Computer Science A",
+      "AP Physics",
+      "AP Spanish",
+      "AP Chinese",
+      "AP Statistics",
+      "AP Calculus AB",
+      "AP Calculus BC",
+    ],
     formHasErrors: false,
   }),
-  computed: {
-    titlePrompt: function() {
-      if (this.purpose == "tutor") {
-        return "be a tutor!";
-      } else {
-        return "get a tutor!";
-      }
-    },
-    classPrompt: function() {
-      if (this.purpose == "tutor") {
-        return "to tutor for:";
-      } else {
-        return "a tutor for:";
-      }
-    },
-  },
   methods: {
     onSubmit() {
-      console.log("submit", this.firstName, this.classes);
-      let collectionName = "tutees";
-      if (this.purpose == "tutor") {
-        collectionName = "tutors";
-      }
+      console.log("submit", this.firstName + " " + this.lastName, this.currentClasses);
       firebase
         .firestore()
-        .collection(collectionName)
-        .doc(this.firstName)
-        .set({ classes: this.classes });
+        .collection("Our Tutors")
+        .doc(this.firstName + " " + this.lastName)
+        .set({ classes: this.currentClasses });
     },
   },
 };
