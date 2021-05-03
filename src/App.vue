@@ -48,13 +48,12 @@
             <v-list-item-title>Our Tutors</v-list-item-title>
           </v-list-item>
 
-          <v-list-item to="/question">
+          <v-list-item to="/questions">
             <v-list-item-icon>
               <v-icon>mdi-message-question</v-icon>
             </v-list-item-icon>
             <v-list-item-title>Question Forum</v-list-item-title>
           </v-list-item>
-
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
@@ -78,7 +77,7 @@ export default {
       user: null,
     };
   },
-    created() {
+  created() {
     firebase.auth().onAuthStateChanged((user) => {
       this.user = user;
     });
