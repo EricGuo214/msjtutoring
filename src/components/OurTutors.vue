@@ -22,7 +22,8 @@
         :key="i"
       >
         <template v-slot:activator>
-          <v-list-item-title v-text="tutor.id"></v-list-item-title>
+          <v-list-item-title v-text="tutor.name"></v-list-item-title>
+          <v-list-item-subtitle v-text="tutor.id"></v-list-item-subtitle>
         </template>
         <v-list-item v-for="(cls, i) in tutor.classes" :key="i">
           <v-list-item-title v-text="cls"></v-list-item-title>

@@ -71,6 +71,7 @@ export default {
   data: () => ({
     firstName: null,
     lastName: null,
+    email: firebase.auth().currentUser.email,
     grade: null,
     grades: ["9", "10", "11", "12"],
     currentClasses: [],
@@ -89,12 +90,19 @@ export default {
   }),
   methods: {
     onSubmit() {
-      console.log("submit", this.firstName + " " + this.lastName, this.currentClasses);
+      console.log(
+        "submit",
+        this.firstName + " " + this.lastName,
+        this.currentClasses
+      );
       firebase
         .firestore()
         .collection("Our Tutors")
-        .doc(this.firstName + " " + this.lastName)
-        .set({ classes: this.currentClasses });
+        .doc(firebase.auth().currentUser.email)
+        .set({
+          classes: this.currentClasses,
+          name: this.firstName + " " + this.lastName,
+        });
     },
   },
 };

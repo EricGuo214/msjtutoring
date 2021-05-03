@@ -3,6 +3,7 @@ import VueRouter from "vue-router";
 import Home from "@/components/Home.vue";
 import SignIn from "@/components/SignIn";
 import firebase from "firebase";
+import ApplyToBeTutor from "@/components/ApplyToBeTutor";
 
 Vue.use(VueRouter);
 
@@ -23,7 +24,10 @@ const routes = [
   {
     path: '/ApplyToBeTutor',
     name: 'ApplyToBeTutor',
-    component: () => import('../components/ApplyToBeTutor.vue')
+    component: ApplyToBeTutor,
+    meta: {
+      auth: true
+    }
   },
   {
     path: '/OurTutors',
