@@ -31,9 +31,9 @@ const routes = [
     component: () => import('../components/OurTutors.vue')
   },
   {
-    path: '/question',
-    name: 'question',
-    component: () => import('../components/Question.vue')
+    path: '/questions',
+    name: 'questions',
+    component: () => import('../components/Questions.vue')
   },
   {
     path: "/askquestion",

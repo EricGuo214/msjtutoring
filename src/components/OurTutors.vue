@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1>Meet our tutors</h1>
-    {{ tutors }}
+    <!-- {{ tutors }}
 
     <ul id="v-for-object" class="demo">
       <li v-for="(tutor, i) in tutors" :key="i">
@@ -12,7 +12,7 @@
           </li>
         </ul>
       </li>
-    </ul>
+    </ul> -->
 
     <v-list expand>
       <v-list-group
