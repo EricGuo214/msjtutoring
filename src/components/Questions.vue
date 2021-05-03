@@ -1,9 +1,13 @@
 <template>
   <body>
     <div>
+      <h1>
+        Questions
+      </h1>
+
       <v-card
         class="mx-auto"
-        max-width="344"
+        max-width="800"
         outlined
         @click="active = true"
         v-for="q in questions"
@@ -107,6 +111,9 @@ export default {
 
 <style scoped>
 body {
+  text-align: center;
+}
+.centered {
   text-align: center;
 }
 </style>
