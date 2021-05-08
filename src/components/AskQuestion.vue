@@ -29,7 +29,10 @@
         ></v-textarea>
       </v-container>
 
-      <v-btn color="primary" @click="onSubmit"> post </v-btn>
+      <v-btn color="primary" @click="post">
+        POST
+      </v-btn>
+
       <v-btn color="primary" to="/questions"> Back </v-btn>
     </div>
   </body>
@@ -37,28 +40,28 @@
 
 <script>
 import firebase from "firebase";
+var user = firebase.auth().currentUser;
+
 export default {
   data: () => ({
     question: "",
     title: "",
+    User: { id: user.uid, name: user.displayName },
   }),
   computed: {},
   methods: {
-    onSubmit() {
-      let collectionName = "question";
-      firebase
-        .firestore()
-        .collection(collectionName)
-        .doc()
-        .set({ title: this.title, question: this.question });
-    },
-    async getData() {
-      const snapshot = await firebase
-        .firestore()
-        .collection("question")
-        .get();
-      const test = snapshot.docs.map((doc) => doc.data());
-      console.log(test);
+    post() {
+      if (user) {
+        firebase
+          .firestore()
+          .collection("questions")
+          .doc()
+          .set({
+            title: this.title,
+            question: this.question,
+            user: this.User,
+          });
+      }
     },
   },
 };

@@ -22,39 +22,35 @@ const routes = [
     },
   },
   {
-    path: '/ApplyToBeTutor',
-    name: 'ApplyToBeTutor',
+    path: "/ApplyToBeTutor",
+    name: "ApplyToBeTutor",
     component: ApplyToBeTutor,
     meta: {
-      auth: true
-    }
+      auth: true,
+    },
   },
   {
-    path: '/OurTutors',
-    name: 'OurTutors',
-    component: () => import('../components/OurTutors.vue')
+    path: "/OurTutors",
+    name: "OurTutors",
+    component: () => import("../components/OurTutors.vue"),
   },
   {
-    path: '/questions',
-    name: 'questions',
-    component: () => import('../components/Questions.vue')
+    path: "/questions",
+    name: "questions",
+    component: () => import("../components/Questions.vue"),
   },
   {
     path: "/askquestion",
     name: "askquestion",
     component: () => import("../components/AskQuestion.vue"),
   },
-  {
-    path: "/answers",
-    name: "answers",
-    component: () => import("../components/Answers.vue"),
-  },
+
   {
     path: "/replies",
     name: "replies",
     component: () => import("../components/replies.vue"),
   },
-]
+];
 
 const router = new VueRouter({
   mode: "history",
