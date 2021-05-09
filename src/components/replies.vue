@@ -1,66 +1,57 @@
 <template>
-  <body>
-    <div>
-      <h1>Answers</h1>
+  <v-container>
+    <v-row justify="space-around">
+      <v-card width="400">
+        <v-card-text>
+          <div class="font-weight-bold ml-8 mb-2">
+            Today
+          </div>
 
-      <v-container fill-height fluid style="width: 50%">
-        <v-text-field
-          style="width: 50%"
-          ref="title"
-          v-model="title"
-          dense
-          :rules="[() => !!title || 'This field is required']"
-          label="Title"
-          outlined
-          shaped
-          required
-        ></v-text-field>
-      </v-container>
-
-      <v-container fill-height fluid style="width: 50%">
-        <v-textarea
-          v-model="answer"
-          name="input-7-1"
-          filled
-          label="Answer"
-          placeholder="Answer"
-          :rules="[() => !!answer || 'This field is required']"
-          auto-grow
-        ></v-textarea>
-      </v-container>
-
-      <v-btn color="primary" @click="onSubmit"> Post </v-btn>
-      <v-btn color="primary" to="/questions"> Back </v-btn>
-    </div>
-  </body>
+          <v-timeline align-top dense>
+            <v-timeline-item
+              v-for="message in messages"
+              :key="message.time"
+              :color="message.color"
+              small
+            >
+              <div>
+                <div class="font-weight-normal">
+                  <strong>{{ message.from }}</strong> @{{ message.time }}
+                </div>
+                <div>{{ message.message }}</div>
+              </div>
+            </v-timeline-item>
+          </v-timeline>
+        </v-card-text>
+      </v-card>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
-import firebase from "firebase";
 export default {
   data: () => ({
-    answer: "",
-    title: "",
+    messages: [
+      {
+        from: "You",
+        message: `Sure, I'll see you later.`,
+        time: "10:42am",
+        color: "deep-purple lighten-1",
+      },
+      {
+        from: "John Doe",
+        message: "Yeah, sure. Does 1:00pm work?",
+        time: "10:37am",
+        color: "green",
+      },
+      {
+        from: "You",
+        message: "Did you still want to grab lunch today?",
+        time: "9:47am",
+        color: "deep-purple lighten-1",
+      },
+    ],
   }),
-  computed: {},
-  methods: {
-    onSubmit() {
-      let collectionName = "answer";
-      firebase
-        .firestore()
-        .collection(collectionName)
-        .doc()
-        .set({ title: this.title, answer: this.answer });
-    },
-    async getData() {
-      const snapshot = await firebase
-        .firestore()
-        .collection("answer")
-        .get();
-      const test = snapshot.docs.map((doc) => doc.data());
-      console.log(test);
-    },
-  },
 };
 </script>
 
