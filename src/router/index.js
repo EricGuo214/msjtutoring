@@ -51,7 +51,7 @@ const routes = [
   {
     path: "/replies/:id",
     name: "Replies",
-    component: () => import("../components/Replies.vue"),
+    component: () => import("../components/replies.vue"),
   },
   {
     path: "/test",
