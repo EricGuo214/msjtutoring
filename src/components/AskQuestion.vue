@@ -32,8 +32,6 @@
       <v-btn color="primary" @click="post">
         POST
       </v-btn>
-
-      <v-btn color="primary" to="/questions"> Back </v-btn>
     </div>
   </body>
 </template>
@@ -61,6 +59,7 @@ export default {
             question: this.question,
             user: this.User,
           });
+        this.$router.push("/questions");
       }
     },
   },

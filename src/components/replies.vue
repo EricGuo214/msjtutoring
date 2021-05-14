@@ -1,62 +1,120 @@
 <template>
-  <v-container>
-    <v-row justify="space-around">
-      <v-card width="400">
-        <v-card-text>
-          <div class="font-weight-bold ml-8 mb-2">
-            Today
+  <div>
+    <v-card class="mx-auto" max-width="344" outlined>
+      <v-list-item three-line>
+        <v-list-item-content>
+          <div class="overline mb-4">
+            {{ this.question.user.name }}
           </div>
+          <v-list-item-title class="headline mb-1">
+            {{ question.title }}
+          </v-list-item-title>
+          <v-list-item-subtitle>{{ question.question }}</v-list-item-subtitle>
+        </v-list-item-content>
+      </v-list-item> </v-card
+    >>
 
-          <v-timeline align-top dense>
-            <v-timeline-item
-              v-for="message in messages"
-              :key="message.time"
-              :color="message.color"
-              small
-            >
-              <div>
-                <div class="font-weight-normal">
-                  <strong>{{ message.from }}</strong> @{{ message.time }}
-                </div>
-                <div>{{ message.message }}</div>
-              </div>
-            </v-timeline-item>
-          </v-timeline>
-        </v-card-text>
-      </v-card>
-    </v-row>
-  </v-container>
+    <v-container fill-height fluid style="width: 50%">
+      <v-textarea
+        v-model="reply"
+        name="input-7-1"
+        filled
+        label="Answer this question"
+        placeholder="Answer this question"
+        :rules="[() => !!question || 'This field is required']"
+        auto-grow
+      ></v-textarea>
+    </v-container>
+    <div class="centered">
+      <v-btn color="primary" @click="post">
+        POST
+      </v-btn>
+      <v-btn color="primary" to="/questions">
+        Back
+      </v-btn>
+    </div>
+  </div>
 </template>
 
 <script>
+import firebase from "firebase";
+
 export default {
-  data: () => ({
-    messages: [
-      {
-        from: "You",
-        message: `Sure, I'll see you later.`,
-        time: "10:42am",
-        color: "deep-purple lighten-1",
-      },
-      {
-        from: "John Doe",
-        message: "Yeah, sure. Does 1:00pm work?",
-        time: "10:37am",
-        color: "green",
-      },
-      {
-        from: "You",
-        message: "Did you still want to grab lunch today?",
-        time: "9:47am",
-        color: "deep-purple lighten-1",
-      },
-    ],
-  }),
+  data() {
+    return {
+      qID: this.$route.params.id,
+      question: {},
+      reply: "",
+    };
+  },
+
+  created() {
+    var docRef = firebase
+      .firestore()
+      .collection("questions")
+      .doc(this.qID);
+
+    docRef
+      .get()
+      .then((doc) => {
+        if (doc.exists) {
+          console.log("Document data:", doc.data());
+          this.question = doc.data();
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+        }
+      })
+      .catch((error) => {
+        console.log("Error getting document:", error);
+      });
+  },
+  computed: {},
+  methods: {
+    post() {
+      console.log("posting...");
+      firebase
+        .firestore()
+        .collection("questions")
+        .doc(this.qID)
+        .collection("replies")
+        .doc()
+        .set({ reply: this.reply });
+    },
+    remove(x) {
+      firebase
+        .firestore()
+        .collection("questions")
+        .doc(x)
+        .delete();
+      console.log("remove");
+    },
+    wasAuthor(q) {
+      return q.user.id == firebase.auth().currentUser.uid;
+    },
+    save(id, newTitle, newQ) {
+      firebase
+        .firestore()
+        .collection("questions")
+        .doc(id)
+        .update({
+          title: newTitle,
+          question: newQ,
+        });
+    },
+
+    debug() {
+      console.log(this.questions);
+    },
+  },
 };
 </script>
 
 <style scoped>
 body {
+  text-align: center;
+}
+.centered {
   text-align: center;
 }
 </style>

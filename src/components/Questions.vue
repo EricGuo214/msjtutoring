@@ -4,24 +4,46 @@
       <h1>
         Questions
       </h1>
-
       <v-card
         class="mx-auto"
         max-width="800"
         outlined
-        @click="debug()"
         v-for="q in questions"
         :key="q.id"
+        :to="{ name: 'Replies', params: { id: q.id } }"
       >
         <v-list-item three-line>
           <v-list-item-content>
             <div class="overline mb-4">
               {{ q.user.name }}
             </div>
-            <v-list-item-title class="headline mb-1">
+            <v-text-field
+              v-if="wasAuthor(q) && isEditing"
+              type="text"
+              outlined
+              v-model="q.title"
+              :disabled="!isEditing"
+              :class="{ view: !isEditing }"
+              class="headline mb-1"
+            >
+            </v-text-field>
+
+            <v-list-item-title v-else class="headline mb-1">
               {{ q.title }}
             </v-list-item-title>
-            <v-list-item-subtitle>{{ q.question }}</v-list-item-subtitle>
+
+            <v-text-field
+              v-if="wasAuthor(q) && isEditing"
+              type="text"
+              outlined
+              v-model="q.question"
+              :disabled="!isEditing"
+              :class="{ view: !isEditing }"
+              class="headline mb-1"
+            >
+            </v-text-field>
+
+            <v-list-item-subtitle v-else>{{ q.question }}</v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
 
@@ -29,30 +51,37 @@
           <v-tooltip bottom>
             <template v-slot:activator="{ on, attrs }">
               <v-btn
+                v-if="wasAuthor(q)"
                 v-bind="attrs"
                 v-on="on"
-                v-if="q.user.id == getCurID()"
                 class="ma-2"
                 text
                 icon
                 color="red lighten-2"
-                @click.stop="remove(q.id)"
+                @click.prevent="remove(q.id)"
               >
                 <v-icon>mdi-close-thick</v-icon>
               </v-btn>
             </template>
-            Delete Question
+            <span>Delete</span>
           </v-tooltip>
-        </v-card-actions>
-      </v-card>
 
-      <v-card class="mt-4">
-        <v-card-text>
-          <editable v-model="content"></editable>
-          <editable v-model="content1" :max-length="35"></editable>
-          <editable v-model="content2"></editable>
-          <editable v-model="content3"></editable>
-        </v-card-text>
+          <v-btn
+            v-if="wasAuthor(q)"
+            text
+            icon
+            @click.prevent="isEditing = !isEditing"
+          >
+            <v-btn
+              v-if="isEditing"
+              text
+              icon
+              @click="save(q.id, q.title, q.question)"
+              >Save</v-btn
+            >
+            <v-icon v-else>mdi-pencil</v-icon>
+          </v-btn>
+        </v-card-actions>
       </v-card>
 
       <v-btn color="primary" to="/askquestion">
@@ -67,6 +96,7 @@ import firebase from "firebase";
 
 export default {
   data: () => ({
+    isEditing: false,
     questions: {},
   }),
 
@@ -92,15 +122,24 @@ export default {
         .collection("questions")
         .doc(x)
         .delete();
-      console.log("remove");
     },
 
-    getCurID() {
-      return firebase.auth().currentUser.uid;
+    wasAuthor(q) {
+      return q.user.id == firebase.auth().currentUser.uid;
+    },
+    save(id, newTitle, newQ) {
+      firebase
+        .firestore()
+        .collection("questions")
+        .doc(id)
+        .update({
+          title: newTitle,
+          question: newQ,
+        });
     },
 
     debug() {
-      console.log("card clicked");
+      console.log(this.questions);
     },
   },
 };
