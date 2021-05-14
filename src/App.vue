@@ -18,7 +18,7 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-btn v-else to="/SignIn">Sign in</v-btn>
+      <v-btn v-else to="/SignIn">Get Started</v-btn>
     </v-app-bar>
 
     <v-navigation-drawer v-model="drawer" absolute temporary>

@@ -1,10 +1,18 @@
 <template>
-  <section>
-    <!-- <navigation></navigation> -->
-    <!-- <h5 class="center-align">Login</h5> -->
-    <!-- test -->
-    <section id="firebaseui-auth-container"></section>
-  </section>
+  <div>
+    <h1 class="text-center display-2 primary--text text-accent-3">
+      Welcome to MSJ Tutoring!
+    </h1>
+    <h3 class="text-center display-2 primary-text text-accent-3">
+      You must be signed in to use some functions.
+    </h3>
+    <section>
+      <!-- <navigation></navigation> -->
+      <!-- <h5 class="center-align">Login</h5> -->
+      <!-- test -->
+      <section id="firebaseui-auth-container"></section>
+    </section>
+  </div>
 </template>
 
 <script>
@@ -28,6 +36,7 @@ export default {
       signInFlow: "popup",
       signInOptions: [
         firebase.auth.GoogleAuthProvider.PROVIDER_ID,
+        firebase.auth.FacebookAuthProvider.PROVIDER_ID,
         firebase.auth.EmailAuthProvider.PROVIDER_ID,
       ],
     };

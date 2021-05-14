@@ -12,6 +12,9 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
+    meta: {
+      auth: true
+    }
   },
   {
     path: "/SignIn",
