@@ -15,24 +15,54 @@
     </ul> -->
 
     <v-list expand>
-      <v-list-group
+      <v-card-group
         :value="true"
         prepend-icon="mdi-account-circle"
         v-for="(tutor, i) in tutors"
         :key="i"
+        class="pl-10"
       >
-        <template v-slot:activator>
+        <v-container outlined dense md3>
+          <v-row justify="space-around">
+            <v-card width="400">
+              <v-img height="200px" :src="tutor.photoURL">
+                <v-app-bar flat color="rgba(255, 255, 255, 255)">
+                  <v-toolbar-title
+                    v-text="tutor.id"
+                    class="title primary--text pl-0"
+                  ></v-toolbar-title>
+                  <v-spacer></v-spacer>
+                </v-app-bar>
+                <v-card-title class="white--text mt-8">
+                  <p v-text="tutor.name" class="white--text ml-3"></p>
+                </v-card-title>
+              </v-img>
+              <v-card-text>
+                <div class="font-weight-bold primary--text ml-8 mb-2">
+                  Classes
+                </div>
+                <v-list-item v-for="(cls, i) in tutor.classes" :key="i">
+                  <v-list-item-title v-text="cls"></v-list-item-title>
+                </v-list-item>
+              </v-card-text>
+            </v-card>
+          </v-row>
+        </v-container>
+      </v-card-group>
+    </v-list>
+  </div>
+</template>
+
+ <!-- <template v-slot:activator>
           <v-list-item-title v-text="tutor.name"></v-list-item-title>
           <v-list-item-subtitle v-text="tutor.id"></v-list-item-subtitle>
           <v-list-item-subtitle v-text="tutor.grade"></v-list-item-subtitle>
         </template>
         <v-list-item v-for="(cls, i) in tutor.classes" :key="i">
           <v-list-item-title v-text="cls"></v-list-item-title>
-        </v-list-item>
-      </v-list-group>
-    </v-list>
-  </div>
-</template>
+        </v-list-item> -->
+
+
 
 <script>
 import firebase from "firebase";

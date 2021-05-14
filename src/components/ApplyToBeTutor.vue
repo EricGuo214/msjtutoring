@@ -90,6 +90,7 @@ export default {
       "AP Calculus BC",
     ],
     errors: [],
+    photoURL: null,
   }),
   methods: {
     onSubmit() {
@@ -110,6 +111,7 @@ export default {
             classes: this.currentClasses,
             name: this.firstName + " " + this.lastName,
             grade: this.grade,
+            photoURL: firebase.auth().currentUser.photoURL,
           });
           this.$router.push("/OurTutors");
       }
