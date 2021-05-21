@@ -63,6 +63,9 @@ export default {
 
   created() {
     console.log(user);
+    firebase.auth().onAuthStateChanged((user) => {
+      this.user = user;
+    })
     const db = firebase.firestore();
     var docRef = db.collection("questions").doc(this.qID);
     docRef
