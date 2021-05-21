@@ -48,7 +48,6 @@
 
 <script>
 import firebase from "firebase";
-var user = firebase.auth().currentUser;
 
 export default {
   data() {
@@ -57,15 +56,14 @@ export default {
       question: {},
       reply: "",
       replies: {},
-      User: { id: user.uid, name: user.displayName },
+      User: {},
     };
   },
 
   created() {
-    console.log(user);
     firebase.auth().onAuthStateChanged((user) => {
-      this.user = user;
-    })
+      this.User = { id: user.uid, name: user.displayName };
+    });
     const db = firebase.firestore();
     var docRef = db.collection("questions").doc(this.qID);
     docRef
@@ -96,15 +94,13 @@ export default {
   computed: {},
   methods: {
     post() {
-      if (user) {
-        firebase
-          .firestore()
-          .collection("questions")
-          .doc(this.qID)
-          .collection("replies")
-          .doc()
-          .set({ reply: this.reply, user: this.User });
-      }
+      firebase
+        .firestore()
+        .collection("questions")
+        .doc(this.qID)
+        .collection("replies")
+        .doc()
+        .set({ reply: this.reply, user: this.User });
     },
     remove(x) {
       firebase
