@@ -13,8 +13,8 @@ const routes = [
     name: "Home",
     component: Home,
     meta: {
-      auth: true
-    }
+      auth: true,
+    },
   },
   {
     path: "/SignIn",
@@ -51,7 +51,7 @@ const routes = [
   {
     path: "/replies/:id",
     name: "Replies",
-    component: () => import("../components/replies.vue"),
+    component: () => import("../components/Replies.vue"),
   },
   {
     path: "/test",

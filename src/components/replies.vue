@@ -25,6 +25,16 @@
         auto-grow
       ></v-textarea>
     </v-container>
+
+    <v-card v-for="q in replies" :key="q.id">
+      <v-list-item-title>
+        {{ q.user.name }}
+      </v-list-item-title>
+      <v-list-item-title class="headline mb-1">
+        {{ q.reply }}
+      </v-list-item-title>
+    </v-card>
+
     <div class="centered">
       <v-btn color="primary" @click="post">
         POST
@@ -38,6 +48,7 @@
 
 <script>
 import firebase from "firebase";
+var user = firebase.auth().currentUser;
 
 export default {
   data() {
@@ -45,20 +56,19 @@ export default {
       qID: this.$route.params.id,
       question: {},
       reply: "",
+      replies: {},
+      User: { id: user.uid, name: user.displayName },
     };
   },
 
   created() {
-    var docRef = firebase
-      .firestore()
-      .collection("questions")
-      .doc(this.qID);
-
+    console.log(user);
+    const db = firebase.firestore();
+    var docRef = db.collection("questions").doc(this.qID);
     docRef
       .get()
       .then((doc) => {
         if (doc.exists) {
-          console.log("Document data:", doc.data());
           this.question = doc.data();
         } else {
           // doc.data() will be undefined in this case
@@ -68,18 +78,30 @@ export default {
       .catch((error) => {
         console.log("Error getting document:", error);
       });
+
+    const ref = docRef.collection("replies");
+    ref.onSnapshot((querySnapshot) => {
+      var fArray = [];
+      querySnapshot.forEach((doc) => {
+        let f = doc.data();
+        f.id = doc.id;
+        fArray.push(f);
+      });
+      this.replies = fArray;
+    });
   },
   computed: {},
   methods: {
     post() {
-      console.log("posting...");
-      firebase
-        .firestore()
-        .collection("questions")
-        .doc(this.qID)
-        .collection("replies")
-        .doc()
-        .set({ reply: this.reply });
+      if (user) {
+        firebase
+          .firestore()
+          .collection("questions")
+          .doc(this.qID)
+          .collection("replies")
+          .doc()
+          .set({ reply: this.reply, user: this.User });
+      }
     },
     remove(x) {
       firebase
@@ -89,6 +111,7 @@ export default {
         .delete();
       console.log("remove");
     },
+
     wasAuthor(q) {
       return q.user.id == firebase.auth().currentUser.uid;
     },

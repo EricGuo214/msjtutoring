@@ -117,11 +117,20 @@ export default {
   computed: {},
   methods: {
     remove(x) {
-      firebase
-        .firestore()
-        .collection("questions")
+      const db = firebase.firestore();
+      db.collection("questions")
         .doc(x)
         .delete();
+
+      db.collection("questions")
+        .doc(x)
+        .collection("replies")
+        .get()
+        .then((res) => {
+          res.forEach((element) => {
+            element.ref.delete();
+          });
+        });
     },
 
     wasAuthor(q) {
