@@ -114,6 +114,8 @@ export default {
     email: firebase.auth().currentUser.email,
     grade: null,
     grades: ["9", "10", "11", "12"],
+    maxNumOfTutees: null,
+    possibleNumOfTutees: ["1", "2", "3", "4", "5"],
     currentClasses: [],
     maxTut: null,
     desc: null,

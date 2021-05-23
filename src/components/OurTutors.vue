@@ -123,9 +123,11 @@ export default {
           tutor.id = doc.id;
           tutor.show = false;
           this.tutors.push(tutor);
+          // this.shows.push(true);
         });
       });
   },
+  methods: {},
 };
 </script>
 
