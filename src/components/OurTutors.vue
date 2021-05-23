@@ -14,6 +14,7 @@
       </li>
     </ul> -->
 
+<!-- find suitable formatting for v-card-group  -->
     <v-list expand>
       <v-card-group
         :value="true"
@@ -24,7 +25,7 @@
       >
         <v-container outlined dense md3>
           <v-row justify="space-around">
-            <v-card width="400">
+            <v-card class="mx-auto" width="400">
               <v-img height="200px" :src="tutor.photoURL">
                 <v-app-bar flat color="rgba(255, 255, 255, 255)">
                   <v-toolbar-title
@@ -41,10 +42,23 @@
                 <div class="font-weight-bold primary--text ml-8 mb-2">
                   Classes
                 </div>
-                <v-list-item v-for="(cls, i) in tutor.classes" :key="i">
+                <v-list-item v-for="(cls, j) in tutor.classes" :key="j">
                   <v-list-item-title v-text="cls"></v-list-item-title>
                 </v-list-item>
               </v-card-text>
+              <v-card-actions>
+                <v-btn icon color="primary" @click="tutor.show = !tutor.show">
+                  <v-icon>{{
+                    tutor.show ? "mdi-chevron-up" : "mdi-chevron-down"
+                  }}</v-icon>
+                </v-btn>
+              </v-card-actions>
+              <v-expand-transition>
+                <div v-show="tutor.show">
+                  <v-divider></v-divider>
+                  <v-card-text>Display more information here</v-card-text>
+                </div>
+              </v-expand-transition>
             </v-card>
           </v-row>
         </v-container>
@@ -70,6 +84,7 @@ export default {
   data() {
     return {
       tutors: [],
+      shows: [],
     };
   },
   created() {
@@ -81,9 +96,13 @@ export default {
         querySnapshot.forEach((doc) => {
           var tutor = doc.data();
           tutor.id = doc.id;
+          tutor.show = false;
           this.tutors.push(tutor);
+          // this.shows.push(true);
         });
       });
+  },
+  methods: {
   },
 };
 </script>

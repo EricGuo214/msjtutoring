@@ -57,6 +57,18 @@
         hint="Must have received a grade of 90% or higher both semeseters"
         persistent-hint
       ></v-select>
+      <h2>How many students are you capable of tutoring?</h2>
+      <v-autocomplete
+        ref="maxNumOfTutees"
+       v-model="maxNumOfTutees"
+       dense
+        :rules="[() => !!maxNumOfTutees || 'This field is required']"
+       :items="possibleNumOfTutees"
+       label="Enter or select the number of students you would like to tutor (Max is 5)"
+       outlined
+       shaped
+       required
+      ></v-autocomplete>
       <v-btn color="primary" @click="onSubmit"> Submit </v-btn>
     <!-- </form> -->
   <p v-if="errors.length">
@@ -77,6 +89,8 @@ export default {
     email: firebase.auth().currentUser.email,
     grade: null,
     grades: ["9", "10", "11", "12"],
+    maxNumOfTutees: null,
+    possibleNumOfTutees: ["1", "2", "3", "4", "5"],
     currentClasses: [],
     classes: [
       "AP Biology",
@@ -113,7 +127,7 @@ export default {
             grade: this.grade,
             photoURL: firebase.auth().currentUser.photoURL,
           });
-          this.$router.push("/OurTutors");
+        this.$router.push("/OurTutors");
       }
     },
     // eslint-disable-next-line no-unused-vars
