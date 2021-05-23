@@ -1,21 +1,28 @@
 <template>
-  <div class="notifications" v-if="show">
-    <v-layout>
-      <v-flex xs12 sm6 offset-sm3>
-        <v-card flat color="green">
-          <v-card-title primary-title>
-            <div>
-              <h3 class="headline">Neu Benutzer angelegt</h3>
-              <div>{{ card_text }}</div>
-            </div>
-          </v-card-title>
+  <div class="text-center">
+    <v-card class="mx-auto" max-width="344" outlined>
+      <v-list-item three-line>
+        <v-list-item-content>
+          <div class="overline mb-4">
+            OVERLINE
+          </div>
+          <v-list-item-title class="headline mb-1">
+            Headline 5
+          </v-list-item-title>
+          <v-list-item-subtitle
+            >Greyhound divisely hello coldly fonwderfully</v-list-item-subtitle
+          >
+        </v-list-item-content>
 
-          <v-card-actions>
-            <div class="close"><v-btn @click="removeMessage(2)">Ok</v-btn></div>
-          </v-card-actions>
-        </v-card>
-      </v-flex>
-    </v-layout>
+        <v-list-item-avatar tile size="80" color="grey"></v-list-item-avatar>
+      </v-list-item>
+
+      <v-card-actions>
+        <v-btn outlined rounded text>
+          Button
+        </v-btn>
+      </v-card-actions>
+    </v-card>
   </div>
 </template>
 
@@ -23,8 +30,12 @@
 export default {
   data() {
     return {
-      card_text: "Success!",
-      show: true,
+      items: [
+        { title: "Click Me1" },
+        { title: "Click Me2" },
+        { title: "Click Me3" },
+        { title: "Click Me4" },
+      ],
     };
   },
   methods: {

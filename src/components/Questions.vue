@@ -18,12 +18,15 @@
               {{ q.user.name }}
             </div>
             <v-text-field
-              v-if="wasAuthor(q) && isEditing"
+              @click.prevent
+              v-if="wasAuthor(q) && q.isEditing"
+              placeholder="Edit title"
+              label="Edit title"
               type="text"
               outlined
               v-model="q.title"
-              :disabled="!isEditing"
-              :class="{ view: !isEditing }"
+              :disabled="!q.isEditing"
+              :class="{ view: !q.isEditing }"
               class="headline mb-1"
             >
             </v-text-field>
@@ -33,12 +36,15 @@
             </v-list-item-title>
 
             <v-text-field
-              v-if="wasAuthor(q) && isEditing"
+              @click.prevent
+              v-if="wasAuthor(q) && q.isEditing"
+              placeholder="Edit question"
+              label="Edit question"
               type="text"
               outlined
               v-model="q.question"
-              :disabled="!isEditing"
-              :class="{ view: !isEditing }"
+              :disabled="!q.isEditing"
+              :class="{ view: !q.isEditing }"
               class="headline mb-1"
             >
             </v-text-field>
@@ -70,10 +76,10 @@
             v-if="wasAuthor(q)"
             text
             icon
-            @click.prevent="isEditing = !isEditing"
+            @click.prevent="q.isEditing = !q.isEditing"
           >
             <v-btn
-              v-if="isEditing"
+              v-if="q.isEditing"
               text
               icon
               @click="save(q.id, q.title, q.question)"
@@ -96,7 +102,6 @@ import firebase from "firebase";
 
 export default {
   data: () => ({
-    isEditing: false,
     questions: {},
   }),
 
@@ -109,6 +114,7 @@ export default {
       querySnapshot.forEach((doc) => {
         let f = doc.data();
         f.id = doc.id;
+        f.isEditing = false;
         fArray.push(f);
       });
       this.questions = fArray;

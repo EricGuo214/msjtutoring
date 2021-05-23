@@ -1,70 +1,107 @@
 <template>
-  <div id="create-form">
+  <div>
     <h1 class="text-center display-2 primary--text text-accent-3">
       Apply to be a tutor!
     </h1>
-    <h2 class="text-center">
-      Being a tutor at MSJ Tutor offers you hands on experience to leadership
-      and teaching. Sign up today!
-    </h2>
-    <!-- <v-radio-group v-model="purpose">
-      <v-radio label="tutor" value="tutor"></v-radio>
-      <v-radio label="tutee" value="tutee"></v-radio>
-    </v-radio-group> -->
-    <!-- <form> -->
-      <h2>First Name</h2>
-      <v-text-field
-        ref="firstName"
-        v-model="firstName"
-        dense
-        :rules="[() => !!firstName || 'This field is required']"
-        label="Enter your first name"
-        outlined
-        shaped
-        required
-      ></v-text-field>
-      <h2>Last Name</h2>
-      <v-text-field
-        ref="lastName"
-        v-model="lastName"
-        dense
-        :rules="[() => !!lastName || 'This field is required']"
-        label="Enter your last name"
-        outlined
-        shaped
-        required
-      ></v-text-field>
-      <h2>Grade</h2>
-      <v-autocomplete
-        ref="grade"
-        v-model="grade"
-        dense
-        :rules="[() => !!grade || 'This field is required']"
-        :items="grades"
-        label="Enter or select your grade (9, 10, 11, 12)"
-        outlined
-        shaped
-        required
-      ></v-autocomplete>
-      <h2>Choose which class(es) you would like to be a mentor in:</h2>
-      <v-select
-        v-model="currentClasses"
-        :items="classes"
-        :menu-props="{ maxHeight: '400' }"
-        label="Choose your classes"
-        multiple
-        chips
-        hint="Must have received a grade of 90% or higher both semeseters"
-        persistent-hint
-      ></v-select>
-      <v-btn color="primary" @click="onSubmit"> Submit </v-btn>
-    <!-- </form> -->
-  <p v-if="errors.length">
-    <strong>Please correct the following error(s):</strong>
+    <v-form>
+      <v-container style="width: 50%">
+        <v-row align="center" justify="center">
+          <v-col cols="12" md="4" class="mx-auto">
+            <v-text-field
+              ref="firstName"
+              v-model="firstName"
+              dense
+              :rules="[() => !!firstName || 'This field is required']"
+              label="First Name"
+              outlined
+              placeholder="asd"
+            ></v-text-field>
+          </v-col>
+          <v-col>
+            <v-text-field
+              ref="lastName"
+              v-model="lastName"
+              dense
+              :rules="[() => !!lastName || 'This field is required']"
+              label="Last Name"
+              outlined
+              required
+            ></v-text-field
+          ></v-col>
+        </v-row>
+        <v-row align="center" justify="center">
+          <v-col cols="12" md="4">
+            <v-autocomplete
+              ref="grade"
+              v-model="grade"
+              dense
+              :rules="[() => !!grade || 'This field is required']"
+              :items="grades"
+              label="Select Grade"
+              outlined
+            ></v-autocomplete>
+          </v-col>
+          <v-col>
+            <v-select
+              dense
+              v-model="currentClasses"
+              :items="classes"
+              :menu-props="{ maxHeight: '400' }"
+              label="Choose your classes"
+              multiple
+              chips
+              hint="Must have received a grade of 90% or higher both semeseters"
+              persistent-hint
+              placeholder="asd"
+            ></v-select>
+          </v-col>
+        </v-row>
+        <v-row align="center" justify="center">
+          <v-col cols="12" md="4">
+            <v-text-field
+              ref="maxTut"
+              v-model.number="maxTut"
+              :step="1"
+              dense
+              :rules="[() => !!maxTut || 'This field is required']"
+              label="Maxiumum students"
+              outlined
+              required
+            ></v-text-field>
+          </v-col>
+          <v-col>
+            <v-select
+              dense
+              v-model="selectedDays"
+              :items="days"
+              :menu-props="{ maxHeight: '400' }"
+              label="Available times"
+              multiple
+              chips
+            ></v-select>
+          </v-col>
+        </v-row>
+
+        <v-row align="center" justify="center">
+          <v-text-field
+            v-model="desc"
+            label="Enter a short description for tutees to see"
+          >
+          </v-text-field>
+        </v-row>
+        <v-row align="center" justify="center">
+          <v-btn color="primary" @click="onSubmit"> Submit </v-btn>
+        </v-row>
+      </v-container>
+    </v-form>
+
+    <p v-if="errors.length">
+      <strong>Please correct the following error(s):</strong>
+    </p>
+
     <ul>
       <li v-for="error in errors" :key="error.id">{{ error }}</li>
     </ul>
-  </p>
   </div>
 </template>
 
@@ -78,6 +115,8 @@ export default {
     grade: null,
     grades: ["9", "10", "11", "12"],
     currentClasses: [],
+    maxTut: null,
+    desc: null,
     classes: [
       "AP Biology",
       "AP Chemistry",
@@ -89,6 +128,16 @@ export default {
       "AP Calculus AB",
       "AP Calculus BC",
     ],
+    days: [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday",
+    ],
+    selectedDays: [],
     errors: [],
     photoURL: null,
   }),
@@ -106,14 +155,17 @@ export default {
         firebase
           .firestore()
           .collection("Our Tutors")
-          .doc(firebase.auth().currentUser.email)
+          .doc(firebase.auth().currentUser.uid)
           .set({
             classes: this.currentClasses,
             name: this.firstName + " " + this.lastName,
             grade: this.grade,
+            maxTut: this.maxTut,
+            days: this.selectedDays,
+            desc: this.desc,
             photoURL: firebase.auth().currentUser.photoURL,
           });
-          this.$router.push("/OurTutors");
+        this.$router.push("/OurTutors");
       }
     },
     // eslint-disable-next-line no-unused-vars

@@ -38,29 +38,32 @@
 
 <script>
 import firebase from "firebase";
-var user = firebase.auth().currentUser;
 
 export default {
   data: () => ({
     question: "",
     title: "",
-    User: { id: user.uid, name: user.displayName },
+    User: {},
   }),
-  computed: {},
+  created() {
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        this.User = { id: user.uid, name: user.displayName };
+      }
+    });
+  },
   methods: {
     post() {
-      if (user) {
-        firebase
-          .firestore()
-          .collection("questions")
-          .doc()
-          .set({
-            title: this.title,
-            question: this.question,
-            user: this.User,
-          });
-        this.$router.push("/questions");
-      }
+      firebase
+        .firestore()
+        .collection("questions")
+        .doc()
+        .set({
+          title: this.title,
+          question: this.question,
+          user: this.User,
+        });
+      this.$router.push("/questions");
     },
   },
 };
