@@ -168,7 +168,7 @@ export default {
       firebase.firestore().collection("Our Tutors").doc(x).delete();
     },
     wasAuthor(t) {
-      return t.id == firebase.auth().currentUser.uid;
+      return t.id == firebase.auth().currentUser.email;
     },
     sendNotice(toThisTutor) {
       this.checkForm();
@@ -179,7 +179,7 @@ export default {
         .collection("Our Tutors")
         .doc(toThisTutor)
         .collection("Interested Tutees")
-        .doc(firebase.auth().currentUser.uid)
+        .doc(firebase.auth().currentUser.email)
         .set({ userEmail: firebase.auth().currentUser.email, firstName: this.firstName, lastName: this.lastName });
       }
     },

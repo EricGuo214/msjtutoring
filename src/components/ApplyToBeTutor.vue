@@ -154,7 +154,7 @@ export default {
         firebase
           .firestore()
           .collection("Our Tutors")
-          .doc(firebase.auth().currentUser.uid)
+          .doc(firebase.auth().currentUser.email)
           .set({
             classes: this.currentClasses,
             name: this.firstName + " " + this.lastName,

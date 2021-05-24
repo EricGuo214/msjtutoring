@@ -9,7 +9,7 @@
         <v-col v-for="t in interested" :key="t.id" cols="12" sm="4">
           <v-card class="mx-auto" max-width="344">
             <v-card-title class="title primary--text pl-0">
-              {{ t.firstName + t.lastName }}
+              {{ t.firstName + " " + t.lastName }}
             </v-card-title>
             <v-card-text>
               Contact information:
@@ -34,7 +34,7 @@ export default {
     firebase
       .firestore()
       .collection("Our Tutors")
-      .doc(firebase.auth().currentUser.uid)
+      .doc(firebase.auth().currentUser.email)
       .collection("Interested Tutees")
       .onSnapshot((querySnapshot) => {
         this.interested = [];
