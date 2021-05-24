@@ -54,6 +54,14 @@
             </v-list-item-icon>
             <v-list-item-title>Question Forum</v-list-item-title>
           </v-list-item>
+
+          <v-list-item to="/TutorInbox">
+            <v-list-item-icon>
+              <v-icon>mdi-email</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Inbox</v-list-item-title>
+          </v-list-item>
+
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
