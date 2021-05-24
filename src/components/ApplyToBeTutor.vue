@@ -14,7 +14,6 @@
               :rules="[() => !!firstName || 'This field is required']"
               label="First Name"
               outlined
-              placeholder="asd"
             ></v-text-field>
           </v-col>
           <v-col>
@@ -114,8 +113,6 @@ export default {
     email: firebase.auth().currentUser.email,
     grade: null,
     grades: ["9", "10", "11", "12"],
-    maxNumOfTutees: null,
-    possibleNumOfTutees: ["1", "2", "3", "4", "5"],
     currentClasses: [],
     maxTut: null,
     desc: null,
@@ -157,7 +154,7 @@ export default {
         firebase
           .firestore()
           .collection("Our Tutors")
-          .doc(firebase.auth().currentUser.uid)
+          .doc(firebase.auth().currentUser.email)
           .set({
             classes: this.currentClasses,
             name: this.firstName + " " + this.lastName,

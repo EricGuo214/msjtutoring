@@ -4,6 +4,7 @@ import Home from "@/components/Home.vue";
 import SignIn from "@/components/SignIn";
 import firebase from "firebase";
 import ApplyToBeTutor from "@/components/ApplyToBeTutor";
+import TutorInbox from "@/components/TutorInbox";
 
 Vue.use(VueRouter);
 
@@ -12,9 +13,6 @@ const routes = [
     path: "/",
     name: "Home",
     component: Home,
-    meta: {
-      auth: true,
-    },
   },
   {
     path: "/SignIn",
@@ -57,6 +55,14 @@ const routes = [
     path: "/test",
     name: "test",
     component: () => import("../components/test.vue"),
+  },
+  {
+    path: "/TutorInbox",
+    name: "TutorInbox",
+    component: TutorInbox,
+    meta: {
+      auth: true,
+    },
   },
 ];
 
