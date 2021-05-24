@@ -158,6 +158,8 @@ export default {
           .set({
             classes: this.currentClasses,
             name: this.firstName + " " + this.lastName,
+            fName: this.firstName,
+            lName: this.lastName,
             grade: this.grade,
             maxTut: this.maxTut,
             days: this.selectedDays,

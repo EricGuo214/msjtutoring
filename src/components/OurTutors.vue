@@ -7,7 +7,7 @@
         <v-col v-for="t in tutors" :key="t.id" cols="12" sm="4">
           <v-card class="mx-auto" max-width="344">
             <v-card-title class="title primary--text pl-0">
-              {{ t.name }}
+              {{ t.fName + " " + t.lName }}
             </v-card-title>
             <v-img height="200px" :src="t.photoURL"> </v-img>
             <v-card-text>
@@ -81,7 +81,9 @@
                       <strong>Please correct the following error(s):</strong>
                     </p>
                     <ul>
-                      <li v-for="error in errors" :key="error.id">{{ error }}</li>
+                      <li v-for="error in errors" :key="error.id">
+                        {{ error }}
+                      </li>
                     </ul>
                   </v-card-actions>
                 </v-card>
@@ -126,6 +128,15 @@
                   </v-card-actions>
                 </v-card>
               </v-dialog>
+
+              <v-btn
+                v-if="wasAuthor(t)"
+                text
+                icon
+                :to="{ name: 'EditTutor', params: { id: t.id } }"
+              >
+                <v-icon>mdi-pencil</v-icon>
+              </v-btn>
             </v-card-actions>
 
             <v-expand-transition>
@@ -155,32 +166,44 @@ import firebase from "firebase";
 export default {
   data() {
     return {
-      tutors: [],
+      tutors: {},
       firstName: null,
       lastName: null,
       show: false,
+      dialog: false,
       nameOfCurrentUser: null,
       errors: [],
     };
   },
   methods: {
     remove(x) {
-      firebase.firestore().collection("Our Tutors").doc(x).delete();
+      firebase
+        .firestore()
+        .collection("Our Tutors")
+        .doc(x)
+        .delete();
     },
     wasAuthor(t) {
       return t.id == firebase.auth().currentUser.email;
     },
+    getID() {
+      return firebase.auth().currentUser.email;
+    },
     sendNotice(toThisTutor) {
       this.checkForm();
       console.log("sendNotice", toThisTutor);
-      if(this.errors.length == 0){
-      firebase
-        .firestore()
-        .collection("Our Tutors")
-        .doc(toThisTutor)
-        .collection("Interested Tutees")
-        .doc(firebase.auth().currentUser.email)
-        .set({ userEmail: firebase.auth().currentUser.email, firstName: this.firstName, lastName: this.lastName });
+      if (this.errors.length == 0) {
+        firebase
+          .firestore()
+          .collection("Our Tutors")
+          .doc(toThisTutor)
+          .collection("Interested Tutees")
+          .doc(firebase.auth().currentUser.email)
+          .set({
+            userEmail: firebase.auth().currentUser.email,
+            firstName: this.firstName,
+            lastName: this.lastName,
+          });
       }
     },
     checkForm() {

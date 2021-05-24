@@ -159,6 +159,7 @@ export default {
         .collection("replies")
         .doc()
         .set({ reply: this.reply, user: this.User });
+      this.reply = "";
     },
     remove(x) {
       firebase

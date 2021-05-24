@@ -57,6 +57,11 @@ const routes = [
     component: () => import("../components/test.vue"),
   },
   {
+    path: "/EditTutor/:id",
+    name: "EditTutor",
+    component: () => import("../components/EditTutor.vue"),
+  },
+  {
     path: "/TutorInbox",
     name: "TutorInbox",
     component: TutorInbox,
