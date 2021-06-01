@@ -3,38 +3,40 @@
     <h1 class="text-center display-2 primary--text text-accent-3">
       Apply to be a tutor!
     </h1>
-    <v-form>
+    <v-form ref="form" v-model="valid" lazy-validation>
       <v-container style="width: 50%">
         <v-row align="center" justify="center">
           <v-col cols="12" md="4" class="mx-auto">
             <v-text-field
-              ref="firstName"
               v-model="firstName"
               dense
-              :rules="[() => !!firstName || 'This field is required']"
+              :rules="[
+                (v) => !!v || 'This field is required',
+                (v) => v.indexOf(' ') == -1 || 'No spaces',
+              ]"
               label="First Name"
               outlined
             ></v-text-field>
           </v-col>
           <v-col>
             <v-text-field
-              ref="lastName"
               v-model="lastName"
               dense
-              :rules="[() => !!lastName || 'This field is required']"
+              :rules="[
+                (v) => !!v || 'This field is required',
+                (v) => v.indexOf(' ') == -1 || 'No spaces',
+              ]"
               label="Last Name"
               outlined
-              required
             ></v-text-field
           ></v-col>
         </v-row>
         <v-row align="center" justify="center">
           <v-col cols="12" md="4">
             <v-autocomplete
-              ref="grade"
               v-model="grade"
               dense
-              :rules="[() => !!grade || 'This field is required']"
+              :rules="[(v) => !!v || 'This field is required']"
               :items="grades"
               label="Select Grade"
               outlined
@@ -42,8 +44,9 @@
           </v-col>
           <v-col>
             <v-select
+              v-model="selectedClasses"
               dense
-              v-model="currentClasses"
+              :rules="[(v) => !!v || 'This field is required']"
               :items="classes"
               :menu-props="{ maxHeight: '400' }"
               label="Choose your classes"
@@ -51,18 +54,21 @@
               chips
               hint="Must have received a grade of 90% or higher both semeseters"
               persistent-hint
-              placeholder="asd"
+              required
             ></v-select>
           </v-col>
         </v-row>
         <v-row align="center" justify="center">
           <v-col cols="12" md="4">
             <v-text-field
-              ref="maxTut"
               v-model.number="maxTut"
-              :step="1"
+              type="number"
               dense
-              :rules="[() => !!maxTut || 'This field is required']"
+              :step="1"
+              :rules="[
+                (v) => !!v || 'This field is required',
+                (v) => v < 10 || 'Must be less than 10',
+              ]"
               label="Maxiumum students"
               outlined
               required
@@ -74,6 +80,7 @@
               v-model="selectedDays"
               :items="days"
               :menu-props="{ maxHeight: '400' }"
+              :rules="[(v) => !!v || 'This field is required']"
               label="Available times"
               multiple
               chips
@@ -85,22 +92,18 @@
           <v-text-field
             v-model="desc"
             label="Enter a short description for tutees to see"
+            :rules="[(v) => !!v || 'This field is required']"
           >
           </v-text-field>
         </v-row>
+
         <v-row align="center" justify="center">
-          <v-btn color="primary" @click="onSubmit"> Submit </v-btn>
+          <v-btn color="primary" @click="submit" :disabled="!valid">
+            Submit
+          </v-btn>
         </v-row>
       </v-container>
     </v-form>
-
-    <p v-if="errors.length">
-      <strong>Please correct the following error(s):</strong>
-    </p>
-
-    <ul>
-      <li v-for="error in errors" :key="error.id">{{ error }}</li>
-    </ul>
   </div>
 </template>
 
@@ -108,12 +111,14 @@
 import firebase from "firebase";
 export default {
   data: () => ({
+    items: ["Item 1", "Item 2", "Item 3", "Item 4"],
+    valid: true,
     firstName: null,
     lastName: null,
     email: firebase.auth().currentUser.email,
     grade: null,
     grades: ["9", "10", "11", "12"],
-    currentClasses: [],
+    selectedClasses: null,
     maxTut: null,
     desc: null,
     classes: [
@@ -136,27 +141,18 @@ export default {
       "Saturday",
       "Sunday",
     ],
-    selectedDays: [],
-    errors: [],
+    selectedDays: null,
     photoURL: null,
   }),
   methods: {
-    onSubmit() {
-      this.checkForm();
-      console.log(
-        "submit",
-        this.firstName + " " + this.lastName,
-        this.currentClasses,
-        this.errors
-      );
-      console.log("submit2", this.errors);
-      if (this.errors.length == 0) {
+    submit() {
+      if (this.$refs.form.validate()) {
         firebase
           .firestore()
           .collection("Our Tutors")
           .doc(firebase.auth().currentUser.email)
           .set({
-            classes: this.currentClasses,
+            classes: this.selectedClasses,
             name: this.firstName + " " + this.lastName,
             fName: this.firstName,
             lName: this.lastName,
