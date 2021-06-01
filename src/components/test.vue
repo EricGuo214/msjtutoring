@@ -1,103 +1,82 @@
 <template>
-  <div class="text-center">
-    <v-dialog v-model="dialog" persistent max-width="600px">
-      <template v-slot:activator="{ on, attrs }">
-        <v-btn color="primary" dark v-bind="attrs" v-on="on">
-          Open Dialog
-        </v-btn>
-      </template>
-      <v-card>
-        <v-card-title>
-          <span class="headline">User Profile</span>
-        </v-card-title>
-        <v-card-text>
-          <v-container>
-            <v-row>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field label="Legal first name*" required></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  label="Legal middle name"
-                  hint="example of helper text only on focus"
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6" md="4">
-                <v-text-field
-                  label="Legal last name*"
-                  hint="example of persistent helper text"
-                  persistent-hint
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field label="Email*" required></v-text-field>
-              </v-col>
-              <v-col cols="12">
-                <v-text-field
-                  label="Password*"
-                  type="password"
-                  required
-                ></v-text-field>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-select
-                  :items="['0-17', '18-29', '30-54', '54+']"
-                  label="Age*"
-                  required
-                ></v-select>
-              </v-col>
-              <v-col cols="12" sm="6">
-                <v-autocomplete
-                  :items="[
-                    'Skiing',
-                    'Ice hockey',
-                    'Soccer',
-                    'Basketball',
-                    'Hockey',
-                    'Reading',
-                    'Writing',
-                    'Coding',
-                    'Basejump',
-                  ]"
-                  label="Interests"
-                  multiple
-                ></v-autocomplete>
-              </v-col>
-            </v-row>
-          </v-container>
-          <small>*indicates required field</small>
-        </v-card-text>
-        <v-card-actions>
-          <v-spacer></v-spacer>
-          <v-btn color="blue darken-1" text @click="dialog = false">
-            Close
-          </v-btn>
-          <v-btn color="blue darken-1" text @click="dialog = false">
-            Save
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
-  </div>
+  <v-form>
+    <v-container>
+      <v-row>
+        <v-col cols="12">
+          <v-text-field
+            v-model="message"
+            outlined
+            clearable
+            label="Message"
+            type="text"
+          >
+            <template v-slot:prepend>
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on }">
+                  <v-icon v-on="on">
+                    mdi-help-circle-outline
+                  </v-icon>
+                </template>
+                I'm a tooltip
+              </v-tooltip>
+            </template>
+            <template v-slot:append>
+              <v-fade-transition leave-absolute>
+                <v-progress-circular
+                  v-if="loading"
+                  size="24"
+                  color="info"
+                  indeterminate
+                ></v-progress-circular>
+                <img
+                  v-else
+                  width="24"
+                  height="24"
+                  src="https://cdn.vuetifyjs.com/images/logos/v-alt.svg"
+                  alt=""
+                />
+              </v-fade-transition>
+            </template>
+            <template v-slot:append-outer>
+              <v-menu style="top: -12px" offset-y>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn v-bind="attrs" v-on="on">
+                    <v-icon left>
+                      mdi-menu
+                    </v-icon>
+                    Menu
+                  </v-btn>
+                </template>
+                <v-card>
+                  <v-card-text class="pa-6">
+                    <v-btn large text color="primary" @click="clickMe">
+                      <v-icon left> mdi-target </v-icon>Click me
+                    </v-btn>
+                  </v-card-text>
+                </v-card>
+              </v-menu>
+            </template>
+          </v-text-field>
+        </v-col>
+      </v-row>
+    </v-container>
+  </v-form>
 </template>
-
 <script>
 export default {
-  data() {
-    return {
-      dialog: false,
-      items: [
-        { title: "Click Me1" },
-        { title: "Click Me2" },
-        { title: "Click Me3" },
-        { title: "Click Me4" },
-      ],
-    };
-  },
+  data: () => ({
+    message: "Hey!",
+    loading: false,
+  }),
+
   methods: {
-    removeMessage(seconds) {
-      setTimeout(() => (this.show = false), seconds * 1000);
+    clickMe() {
+      this.loading = true;
+      this.message = "Wait for it...";
+      setTimeout(() => {
+        this.loading = false;
+        this.message = `You've clicked me!`;
+      }, 2000);
     },
   },
 };

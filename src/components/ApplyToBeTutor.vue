@@ -6,13 +6,13 @@
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-container style="width: 50%">
         <v-row align="center" justify="center">
-          <v-col cols="12" md="4" class="mx-auto">
+          <v-col cols="12" md="5" class="mx-auto">
             <v-text-field
               v-model="firstName"
               dense
               :rules="[
                 (v) => !!v || 'This field is required',
-                (v) => v.indexOf(' ') == -1 || 'No spaces',
+                (v) => (v && v.indexOf(' ') == -1) || 'No spaces',
               ]"
               label="First Name"
               outlined
@@ -24,7 +24,7 @@
               dense
               :rules="[
                 (v) => !!v || 'This field is required',
-                (v) => v.indexOf(' ') == -1 || 'No spaces',
+                (v) => (v && v.indexOf(' ') == -1) || 'No spaces',
               ]"
               label="Last Name"
               outlined
@@ -32,7 +32,7 @@
           ></v-col>
         </v-row>
         <v-row align="center" justify="center">
-          <v-col cols="12" md="4">
+          <v-col md="5">
             <v-autocomplete
               v-model="grade"
               dense
@@ -59,7 +59,7 @@
           </v-col>
         </v-row>
         <v-row align="center" justify="center">
-          <v-col cols="12" md="4">
+          <v-col cols="12" md="5">
             <v-text-field
               v-model.number="maxTut"
               type="number"
@@ -96,6 +96,27 @@
           >
           </v-text-field>
         </v-row>
+        <h2>Contact Information</h2>
+        <v-list>
+          <v-list-item
+            v-for="tile in tiles"
+            :key="tile.title"
+            @click="sheet = false"
+          >
+            <v-list-item-avatar>
+              <v-avatar size="50px" tile>
+                <img :src="`${tile.img}`" :alt="tile.title" />
+              </v-avatar>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-text-field
+                :label="tile.label"
+                dense
+                v-model="tile.value"
+              ></v-text-field>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
 
         <v-row align="center" justify="center">
           <v-btn color="primary" @click="submit" :disabled="!valid">
@@ -143,6 +164,26 @@ export default {
     ],
     selectedDays: null,
     photoURL: null,
+    sheet: false,
+    tiles: [
+      {
+        img: "https://img-authors.flaticon.com/google.jpg",
+        label: "cooldude@gmail.com",
+        value: firebase.auth().currentUser.email,
+      },
+      {
+        img:
+          "https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg",
+        label: "@cooldude224 (optional)",
+        value: "",
+      },
+      {
+        img:
+          "https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png",
+        label: "Cool Dude (optional)",
+        value: "",
+      },
+    ],
   }),
   methods: {
     submit() {
@@ -161,24 +202,9 @@ export default {
             days: this.selectedDays,
             desc: this.desc,
             photoURL: firebase.auth().currentUser.photoURL,
+            contactInfo: this.tiles.map((t) => t.value),
           });
         this.$router.push("/OurTutors");
-      }
-    },
-    // eslint-disable-next-line no-unused-vars
-    checkForm() {
-      this.errors = [];
-      if (!this.firstName) {
-        this.errors.push("First name required.");
-      }
-      if (!this.lastName) {
-        this.errors.push("Last name required.");
-      }
-      if (!this.grade) {
-        this.errors.push("Grade level required.");
-      }
-      if (this.currentClasses.length == 0) {
-        this.errors.push("Please select at least one class.");
       }
     },
   },

@@ -17,7 +17,11 @@
               </v-list-item>
               Number of available spaces left:
               <div class="primary--text mb-2" bold>{{ t.maxTut }}</div>
+              <v-list-item v-for="cls in t.classes" :key="cls">
+                <v-list-item-title v-text="cls"></v-list-item-title>
+              </v-list-item>
             </v-card-text>
+
             <v-card-actions>
               <v-btn icon @click="t.show = !t.show">
                 <v-icon>{{
@@ -151,6 +155,19 @@
                       <v-list-item-title>{{ d }}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
+                  <v-list>
+                    <v-list-item-title>Contact Info</v-list-item-title>
+                    <v-list-item v-for="(c, i) in t.contactInfo" :key="c">
+                      <v-list-item-avatar>
+                        <v-avatar size="50px" tile>
+                          <img :src="tiles[i].img" />
+                        </v-avatar>
+                      </v-list-item-avatar>
+                      <v-list-item-content>
+                        {{ c }}
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
                 </v-card>
               </div>
             </v-expand-transition>
@@ -173,6 +190,19 @@ export default {
       dialog: false,
       nameOfCurrentUser: null,
       errors: [],
+      tiles: [
+        {
+          img: "https://img-authors.flaticon.com/google.jpg",
+        },
+        {
+          img:
+            "https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg",
+        },
+        {
+          img:
+            "https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png",
+        },
+      ],
     };
   },
   methods: {
