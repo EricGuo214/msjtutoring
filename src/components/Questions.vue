@@ -1,14 +1,24 @@
 <template>
   <body>
     <div>
-      <h1>
+      <h1 class="centered">
         Questions
       </h1>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details
+        style="width: 50%"
+        class="mx-auto"
+      ></v-text-field>
+      <br />
       <v-card
         class="mx-auto"
-        max-width="800"
+        max-width="600"
         outlined
-        v-for="q in questions"
+        v-for="q in filtQ"
         :key="q.id"
         :to="{ name: 'Replies', params: { id: q.id } }"
       >
@@ -31,7 +41,7 @@
             >
             </v-text-field>
 
-            <v-list-item-title v-else class="headline mb-1">
+            <v-list-item-title v-else class="headline mb-1 centered">
               {{ q.title }}
             </v-list-item-title>
 
@@ -89,10 +99,12 @@
           </v-btn>
         </v-card-actions>
       </v-card>
-
-      <v-btn color="primary" to="/askquestion">
-        Ask a question
-      </v-btn>
+      <br />
+      <div class="centered">
+        <v-btn color="primary" to="/askquestion">
+          Ask a question
+        </v-btn>
+      </div>
     </div>
   </body>
 </template>
@@ -102,7 +114,8 @@ import firebase from "firebase";
 
 export default {
   data: () => ({
-    questions: {},
+    questions: [],
+    search: "",
   }),
 
   created() {
@@ -120,7 +133,16 @@ export default {
       this.questions = fArray;
     });
   },
-  computed: {},
+  computed: {
+    filtQ: function() {
+      return this.questions.filter((q) => {
+        return (
+          q.title.toLowerCase().match(this.search.toLowerCase()) ||
+          q.question.toLowerCase().match(this.search.toLowerCase())
+        );
+      });
+    },
+  },
   methods: {
     remove(x) {
       const db = firebase.firestore();
@@ -161,9 +183,10 @@ export default {
 </script>
 
 <style scoped>
-body {
+/* body {
   text-align: center;
-}
+} */
+
 .centered {
   text-align: center;
 }
