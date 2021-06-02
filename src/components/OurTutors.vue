@@ -17,9 +17,6 @@
               </v-list-item>
               Number of available spaces left:
               <div class="primary--text mb-2" bold>{{ t.maxTut }}</div>
-              <v-list-item v-for="cls in t.classes" :key="cls">
-                <v-list-item-title v-text="cls"></v-list-item-title>
-              </v-list-item>
             </v-card-text>
 
             <v-card-actions>
