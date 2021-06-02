@@ -15,17 +15,6 @@
         </p>
         <p class="create"></p>
 
-        <h2>How We Work</h2>
-        <table class="table">
-          <tr>
-            <td>
-              <p>1) Register as a tutor or tutee</p>
-              <p>As a tutor you will see all the tutee requests</p>
-              <p>As a tutee you will be able to make requests for a tutor</p>
-            </td>
-          </tr>
-        </table>
-
         <table class="table">
           <tr>
             <td class="td1">
