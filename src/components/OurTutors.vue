@@ -1,95 +1,56 @@
 <template>
   <div>
     <h1>Meet our tutors</h1>
-
     <v-container>
       <v-row>
         <v-col v-for="t in tutors" :key="t.id" cols="12" sm="4">
           <v-card class="mx-auto" max-width="344">
             <v-card-title class="title primary--text pl-0">
-              {{ t.fName + " " + t.lName }}
+              {{ t.name }}
             </v-card-title>
             <v-img height="200px" :src="t.photoURL"> </v-img>
             <v-card-text>
               Qualified classes:
               <v-list-item v-for="cls in t.classes" :key="cls">
                 <v-list-item-title v-text="cls"></v-list-item-title>
+                <v-btn
+                  v-if="!wasAuthor(t)"
+                  class="ma-2"
+                  color="primary"
+                  @click="dialog = true"
+                >
+                  Sign up
+                  <v-icon dark right>mdi-checkbox-marked-circle </v-icon>
+                </v-btn>
+                <v-dialog v-model="dialog">
+                  <v-card>
+                    <v-card-title> Sign up </v-card-title>
+                    <v-card-text>
+                      Are you sure you want to sign up with this tutor for this
+                      class?</v-card-text
+                    >
+                    <v-btn
+                      color="primary"
+                      text
+                      @click="
+                        dialog = false;
+                        sendNotice(t.id, cls);
+                      "
+                    >
+                      Confirm
+                    </v-btn>
+                  </v-card>
+                </v-dialog>
               </v-list-item>
               Number of available spaces left:
               <div class="primary--text mb-2" bold>{{ t.maxTut }}</div>
             </v-card-text>
-
             <v-card-actions>
               <v-btn icon @click="t.show = !t.show">
                 <v-icon>{{
                   t.show ? "mdi-chevron-up" : "mdi-chevron-down"
                 }}</v-icon>
               </v-btn>
-
-              <v-dialog>
-                <template #activator="{ on: dialog }">
-                  <v-tooltip bottom>
-                    <template #activator="{ on: tooltip }">
-                      <v-btn
-                        v-if="!wasAuthor(t)"
-                        v-on="{ ...tooltip, ...dialog }"
-                        class="ma-2"
-                        color="primary"
-                      >
-                        Sign up
-                        <v-icon dark right>mdi-checkbox-marked-circle </v-icon>
-                      </v-btn>
-                    </template>
-                    <span>Sign up</span>
-                  </v-tooltip>
-                </template>
-                <v-card>
-                  <v-card-title> Sign up </v-card-title>
-                  <v-card-text>
-                    Do you want to sign up with this tutor? You may not change
-                    your mind after when you are accepted.
-                  </v-card-text>
-                  <v-text-field
-                    ref="firstName"
-                    v-model="firstName"
-                    dense
-                    :rules="[() => !!firstName || 'This field is required']"
-                    label="First Name"
-                    outlined
-                  ></v-text-field>
-                  <v-text-field
-                    ref="lastName"
-                    v-model="lastName"
-                    dense
-                    :rules="[() => !!lastName || 'This field is required']"
-                    label="Last Name"
-                    outlined
-                    required
-                  ></v-text-field>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                      color="primary"
-                      text
-                      @click="
-                        dialog = false;
-                        sendNotice(t.id);
-                      "
-                    >
-                      Confirm
-                    </v-btn>
-                    <p v-if="errors.length">
-                      <strong>Please correct the following error(s):</strong>
-                    </p>
-                    <ul>
-                      <li v-for="error in errors" :key="error.id">
-                        {{ error }}
-                      </li>
-                    </ul>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-
               <v-dialog>
                 <template #activator="{ on: dialog }">
                   <v-tooltip bottom>
@@ -129,15 +90,6 @@
                   </v-card-actions>
                 </v-card>
               </v-dialog>
-
-              <v-btn
-                v-if="wasAuthor(t)"
-                text
-                icon
-                :to="{ name: 'EditTutor', params: { id: t.id } }"
-              >
-                <v-icon>mdi-pencil</v-icon>
-              </v-btn>
             </v-card-actions>
 
             <v-expand-transition>
@@ -152,19 +104,6 @@
                       <v-list-item-title>{{ d }}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
-                  <v-list>
-                    <v-list-item-title>Contact Info</v-list-item-title>
-                    <v-list-item v-for="(c, i) in t.contactInfo" :key="c">
-                      <v-list-item-avatar>
-                        <v-avatar size="50px" tile>
-                          <img :src="tiles[i].img" />
-                        </v-avatar>
-                      </v-list-item-avatar>
-                      <v-list-item-content>
-                        {{ c }}
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-list>
                 </v-card>
               </div>
             </v-expand-transition>
@@ -180,58 +119,36 @@ import firebase from "firebase";
 export default {
   data() {
     return {
-      tutors: {},
-      firstName: null,
-      lastName: null,
+      tutors: [],
+      name: null,
+      clsd: null,
       show: false,
       dialog: false,
       nameOfCurrentUser: null,
       errors: [],
-      tiles: [
-        {
-          img: "https://img-authors.flaticon.com/google.jpg",
-        },
-        {
-          img:
-            "https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg",
-        },
-        {
-          img:
-            "https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png",
-        },
-      ],
     };
   },
   methods: {
     remove(x) {
-      firebase
-        .firestore()
-        .collection("Our Tutors")
-        .doc(x)
-        .delete();
+      firebase.firestore().collection("Our Tutors").doc(x).delete();
     },
     wasAuthor(t) {
       return t.id == firebase.auth().currentUser.email;
     },
-    getID() {
-      return firebase.auth().currentUser.email;
-    },
-    sendNotice(toThisTutor) {
-      this.checkForm();
-      console.log("sendNotice", toThisTutor);
-      if (this.errors.length == 0) {
-        firebase
-          .firestore()
-          .collection("Our Tutors")
-          .doc(toThisTutor)
-          .collection("Interested Tutees")
-          .doc(firebase.auth().currentUser.email)
-          .set({
-            userEmail: firebase.auth().currentUser.email,
-            firstName: this.firstName,
-            lastName: this.lastName,
-          });
-      }
+    sendNotice(toThisTutor, cls) {
+      console.log("sendNotice", toThisTutor, cls);
+      console.log("currentUser", firebase.auth().currentUser);
+      firebase
+        .firestore()
+        .collection("Our Tutors")
+        .doc(toThisTutor)
+        .collection("Interested Tutees")
+        .doc(firebase.auth().currentUser.email)
+        .set({
+          userEmail: firebase.auth().currentUser.email,
+          name: firebase.auth().currentUser.displayName,
+          class: cls,
+        });
     },
     checkForm() {
       this.errors = [];

@@ -4,7 +4,7 @@ import Home from "@/components/Home.vue";
 import SignIn from "@/components/SignIn";
 import firebase from "firebase";
 import ApplyToBeTutor from "@/components/ApplyToBeTutor";
-import TutorInbox from "@/components/TutorInbox";
+import Inbox from "@/components/Inbox";
 
 Vue.use(VueRouter);
 
@@ -62,9 +62,9 @@ const routes = [
     component: () => import("../components/EditTutor.vue"),
   },
   {
-    path: "/TutorInbox",
-    name: "TutorInbox",
-    component: TutorInbox,
+    path: "/Inbox",
+    name: "Inbox",
+    component: Inbox,
     meta: {
       auth: true,
     },
