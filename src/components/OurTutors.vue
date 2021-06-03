@@ -168,7 +168,7 @@ export default {
       db.collection("Our Tutors")
         .doc(x)
         .delete();
-      db.collection("questions")
+      db.collection("Our Tutors")
         .doc(x)
         .collection("Interested Tutees")
         .get()
