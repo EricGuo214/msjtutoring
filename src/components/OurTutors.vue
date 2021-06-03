@@ -164,11 +164,19 @@ export default {
   },
   methods: {
     remove(x) {
-      firebase
-        .firestore()
-        .collection("Our Tutors")
+      const db = firebase.firestore();
+      db.collection("Our Tutors")
         .doc(x)
         .delete();
+      db.collection("questions")
+        .doc(x)
+        .collection("Interested Tutees")
+        .get()
+        .then((res) => {
+          res.forEach((element) => {
+            element.ref.delete();
+          });
+        });
     },
     wasAuthor(t) {
       return t.id == firebase.auth().currentUser.email;
@@ -188,15 +196,6 @@ export default {
           class: cls,
         });
     },
-    checkForm() {
-      this.errors = [];
-      if (!this.firstName) {
-        this.errors.push("First name required.");
-      }
-      if (!this.lastName) {
-        this.errors.push("Last name required.");
-      }
-    },
   },
 
   created() {
@@ -210,7 +209,6 @@ export default {
           tutor.id = doc.id;
           tutor.show = false;
           this.tutors.push(tutor);
-          // this.shows.push(true);
         });
       });
   },
@@ -222,4 +220,3 @@ body {
   text-align: center;
 }
 </style>
-// @click.prevent="remove(t.id)"
