@@ -17,30 +17,19 @@
                   v-if="!wasAuthor(t)"
                   class="ma-2"
                   color="primary"
-                  @click="dialog = true"
+                  @click="
+                    snackbar = true;
+                    sendNotice(t.id, cls);
+                  "
                 >
+                  <v-snackbar v-model="snackbar" :timeout="timeout" rounded="pill" top>
+                    You have successfully sent a request! Frequently check your
+                    inbox for confirmation.
+                    <template> Close </template>
+                  </v-snackbar>
                   Sign up
                   <v-icon dark right>mdi-checkbox-marked-circle </v-icon>
                 </v-btn>
-                <v-dialog v-model="dialog">
-                  <v-card>
-                    <v-card-title> Sign up </v-card-title>
-                    <v-card-text>
-                      Are you sure you want to sign up with this tutor for this
-                      class?</v-card-text
-                    >
-                    <v-btn
-                      color="primary"
-                      text
-                      @click="
-                        dialog = false;
-                        sendNotice(t.id, cls);
-                      "
-                    >
-                      Confirm
-                    </v-btn>
-                  </v-card>
-                </v-dialog>
               </v-list-item>
               Number of available spaces left:
               <div class="primary--text mb-2" bold>{{ t.maxTut }}</div>
@@ -146,6 +135,8 @@ export default {
       show: false,
       dialog: false,
       nameOfCurrentUser: null,
+      snackbar: false,
+      timeout: 10000,
       errors: [],
       tiles: [
         {
@@ -165,9 +156,7 @@ export default {
   methods: {
     remove(x) {
       const db = firebase.firestore();
-      db.collection("Our Tutors")
-        .doc(x)
-        .delete();
+      db.collection("Our Tutors").doc(x).delete();
       db.collection("Our Tutors")
         .doc(x)
         .collection("Interested Tutees")
