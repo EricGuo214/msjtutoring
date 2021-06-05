@@ -7,7 +7,7 @@
       <v-text-field
         v-model="search"
         append-icon="mdi-magnify"
-        label="Search"
+        label="Search keywords"
         single-line
         hide-details
         style="width: 50%"

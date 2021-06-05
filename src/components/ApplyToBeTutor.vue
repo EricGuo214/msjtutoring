@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="text-center display-2 primary--text text-accent-3">
-      Apply to be a tutor!
+      Apply To Be A Tutor!
     </h1>
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-container style="width: 50%">
@@ -152,6 +152,17 @@ export default {
       "AP Statistics",
       "AP Calculus AB",
       "AP Calculus BC",
+      "Calculus",
+      "Precalculus",
+      "Algebra 2/Trig",
+      "Algebra 2",
+      "Trig",
+      "Geometry",
+      "Physics",
+      "Physics in the Universe",
+      "Biology",
+      "Chemistry",
+      "Living Earth"
     ],
     days: [
       "Monday",

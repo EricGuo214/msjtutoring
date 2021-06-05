@@ -3,7 +3,9 @@
     <div>
       <div class="margins">
         <h1>Mission Tutoring</h1>
-        <img src="./Pictures/mission_pic.jpg" />
+
+        <img src="./Pictures/mission_pic.jpg" width = "300" height = "300">
+
         <p class="create"></p>
         <h2>Our Mission</h2>
         <p class="testing">
@@ -101,10 +103,10 @@ body {
 }
 
 .testing {
-  padding-left: 250px;
-  padding-right: 250px;
-  font-family: monospace;
-  font-size: 20px;
+  padding-left: 270px;
+  padding-right: 270px;
+  font-family: calibri;
+  font-size: 22px;
 }
 
 .table {
@@ -131,5 +133,9 @@ img {
   border: 7px solid white;
   padding: 15px;
   font-family: cursive;
+}
+.enlarge{
+  height: 700px;
+  width: 700px;
 }
 </style>
