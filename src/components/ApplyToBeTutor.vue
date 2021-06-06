@@ -96,6 +96,19 @@
           >
           </v-text-field>
         </v-row>
+
+        <v-row align="center" justify="center">
+          <v-text-field
+            v-model="addclass"
+            label="Enter class to add"
+            :rules="[(v) => !!v || 'This field is required']"
+          >
+          </v-text-field>
+          <v-btn color="primary" @click="addFind" :disabled="!valid">
+            Add
+          </v-btn>
+        </v-row>
+
         <h2>Contact Information</h2>
         <v-list>
           <v-list-item
@@ -139,9 +152,10 @@ export default {
     email: firebase.auth().currentUser.email,
     grade: null,
     grades: ["9", "10", "11", "12"],
-    selectedClasses: null,
+    selectedClasses: [],
     maxTut: null,
     desc: null,
+    addclass: "",
     classes: [
       "AP Biology",
       "AP Chemistry",
@@ -197,6 +211,12 @@ export default {
     ],
   }),
   methods: {
+    addFind: function () {
+      this.selectedClasses.push(this.addclass);
+      console.log(JSON.stringify(this.selectedClasses))
+      alert(this.addclass + " has been added to your classes")
+    },
+
     submit() {
       if (this.$refs.form.validate()) {
         firebase
