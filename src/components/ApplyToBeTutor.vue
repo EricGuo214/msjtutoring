@@ -43,19 +43,38 @@
             ></v-autocomplete>
           </v-col>
           <v-col>
-            <v-select
+            <!-- <v-select
               v-model="selectedClasses"
               dense
               :rules="[(v) => !!v || 'This field is required']"
               :items="classes"
               :menu-props="{ maxHeight: '400' }"
-              label="Choose your classes"
+              label="Choose your classes or create your own"
               multiple
               chips
               hint="Must have received a grade of 90% or higher both semeseters"
               persistent-hint
               required
-            ></v-select>
+            ></v-select> -->
+            <v-combobox
+              v-model="selectedClasses"
+              dense
+              :rules="[(v) => !!v || 'This field is required']"
+              :items="classes"
+              :menu-props="{ maxHeight: '400' }"
+              label="Choose your classes or create your own"
+              multiple
+              chips
+              hint="Must have received a grade of 90% or higher both semeseters"
+              persistent-hint
+              required
+            >
+              <template v-slot:item="data">
+                <template>
+                  <v-list-item-content v-text="data.item"></v-list-item-content>
+                </template>
+              </template>
+            </v-combobox>
           </v-col>
         </v-row>
         <v-row align="center" justify="center">
@@ -95,18 +114,6 @@
             :rules="[(v) => !!v || 'This field is required']"
           >
           </v-text-field>
-        </v-row>
-
-        <v-row align="center" justify="center">
-          <v-text-field
-            v-model="addclass"
-            label="Enter class to add"
-            :rules="[(v) => !!v || 'This field is required']"
-          >
-          </v-text-field>
-          <v-btn color="primary" @click="addFind" :disabled="!valid">
-            Add
-          </v-btn>
         </v-row>
 
         <h2>Contact Information</h2>
@@ -157,12 +164,24 @@ export default {
     desc: null,
     addclass: "",
     classes: [
+      { header: "Sciences" },
       "AP Biology",
       "AP Chemistry",
       "AP Computer Science A",
       "AP Physics",
+      "Physics",
+      "Physics in the Universe",
+      "Biology",
+      "Chemistry",
+      "Living Earth",
+      { divider: true },
+
+      { header: "Languages" },
       "AP Spanish",
       "AP Chinese",
+      { divider: true },
+
+      { header: "Maths" },
       "AP Statistics",
       "AP Calculus AB",
       "AP Calculus BC",
@@ -172,12 +191,8 @@ export default {
       "Algebra 2",
       "Trig",
       "Geometry",
-      "Physics",
-      "Physics in the Universe",
-      "Biology",
-      "Chemistry",
-      "Living Earth"
     ],
+
     days: [
       "Monday",
       "Tuesday",
@@ -211,12 +226,6 @@ export default {
     ],
   }),
   methods: {
-    addFind: function () {
-      this.selectedClasses.push(this.addclass);
-      console.log(JSON.stringify(this.selectedClasses))
-      alert(this.addclass + " has been added to your classes")
-    },
-
     submit() {
       if (this.$refs.form.validate()) {
         firebase
