@@ -43,19 +43,6 @@
             ></v-autocomplete>
           </v-col>
           <v-col>
-            <!-- <v-select
-              v-model="selectedClasses"
-              dense
-              :rules="[(v) => !!v || 'This field is required']"
-              :items="classes"
-              :menu-props="{ maxHeight: '400' }"
-              label="Choose your classes or create your own"
-              multiple
-              chips
-              hint="Must have received a grade of 90% or higher both semeseters"
-              persistent-hint
-              required
-            ></v-select> -->
             <v-combobox
               v-model="selectedClasses"
               dense
@@ -152,7 +139,6 @@
 import firebase from "firebase";
 export default {
   data: () => ({
-    items: ["Item 1", "Item 2", "Item 3", "Item 4"],
     valid: true,
     firstName: null,
     lastName: null,

@@ -4,7 +4,7 @@
       <div class="margins">
         <h1>Mission Tutoring</h1>
 
-        <img src="./Pictures/mission_pic.jpg" width = "300" height = "300">
+        <img src="./Pictures/mission_pic.jpg" width="300" height="300" />
 
         <p class="create"></p>
         <h2>Our Mission</h2>
@@ -134,7 +134,7 @@ img {
   padding: 15px;
   font-family: cursive;
 }
-.enlarge{
+.enlarge {
   height: 700px;
   width: 700px;
 }
