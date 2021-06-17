@@ -208,9 +208,6 @@ export default {
         .then((res) => {
           console.log(res.data.message);
         })
-        .then((res) => {
-          
-        })
         .catch((error) => {
           console.log(error);
         });
