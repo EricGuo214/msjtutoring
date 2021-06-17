@@ -1,114 +1,253 @@
 <template>
-  <v-card color="blue-grey darken-1" dark :loading="isUpdating">
-    <template v-slot:progress>
-      <v-progress-linear
-        absolute
-        color="green lighten-3"
-        height="4"
-        indeterminate
-      ></v-progress-linear>
-    </template>
-
-    <v-form>
-      <v-container>
-        <v-row>
-          <v-col cols="12">
-            <v-autocomplete
-              v-model="friends"
-              :disabled="isUpdating"
-              :items="people"
-              filled
-              chips
-              color="blue-grey lighten-2"
-              label="Select"
-              item-text="name"
-              item-value="name"
-              multiple
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col" style="width:20%">
+          <p></p>
+        </th>
+        <th scope="col" style="width:27%">
+          <p><strong>8:00 a.m. Local Time</strong></p>
+        </th>
+        <th scope="col" style="width:27%">
+          <p><strong>12:00 p.m. Local Time</strong></p>
+        </th>
+        <th scope="col" style="width:27%">
+          <p><strong>2:00 p.m. Local Time</strong></p>
+        </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>
+          <p>
+            <strong
+              >Monday,<br />
+              May 3, 2021</strong
             >
-              <template v-slot:selection="data">
-                <v-chip
-                  v-bind="data.attrs"
-                  :input-value="data.selected"
-                  close
-                  @click="data.select"
-                  @click:close="remove(data.item)"
-                >
-                  <v-avatar left>
-                    <v-img :src="data.item.avatar"></v-img>
-                  </v-avatar>
-                  {{ data.item.name }}
-                </v-chip>
-              </template>
-              <template v-slot:item="data">
-                <template v-if="typeof data.item !== 'object'">
-                  <v-list-item-content v-text="data.item"></v-list-item-content>
-                </template>
-                <template v-else>
-                  <v-list-item-avatar>
-                    <img :src="data.item.avatar" />
-                  </v-list-item-avatar>
-                  <v-list-item-content>
-                    <v-list-item-title
-                      v-html="data.item.name"
-                    ></v-list-item-title>
-                    <v-list-item-subtitle
-                      v-html="data.item.group"
-                    ></v-list-item-subtitle>
-                  </v-list-item-content>
-                </template>
-              </template>
-            </v-autocomplete>
-          </v-col>
-        </v-row>
-      </v-container>
-    </v-form>
-  </v-card>
+          </p>
+        </td>
+        <td>
+          <p>United States Government and Politics</p>
+        </td>
+        <td>
+          <p>Physics C: Mechanics</p>
+        </td>
+        <td>
+          <p>Physics C: Electricity and Magnetism</p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>
+            <strong
+              >Tuesday,<br />
+              May 4, 2021</strong
+            >
+          </p>
+        </td>
+        <td>
+          <p>
+            Calculus AB<br /><br />
+            Calculus BC
+          </p>
+        </td>
+        <td>
+          <p>
+            German Language and Culture<br /><br />
+            Human Geography
+          </p>
+        </td>
+        <td>
+          <p></p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>
+            <strong
+              >Wednesday,<br />
+              May 5, 2021</strong
+            >
+          </p>
+        </td>
+        <td>
+          <p>English Literature and Composition</p>
+        </td>
+        <td>
+          <p>
+            Japanese Language and Culture (computer based)<br /><br />
+            Physics 1: Algebra-Based
+          </p>
+        </td>
+        <td>
+          <p></p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>
+            <strong
+              >Thursday,<br />
+              May 6, 2021</strong
+            >
+          </p>
+        </td>
+        <td>
+          <p>United States History</p>
+        </td>
+        <td>
+          <p>
+            Art History<br /><br />
+            Computer Science A
+          </p>
+        </td>
+        <td>
+          <p></p>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <p>
+            <strong
+              >Friday,<br />
+              May 7, 2021</strong
+            >
+          </p>
+        </td>
+        <td>
+          <p>
+            Chemistry<br /><br />
+            Spanish Literature and Culture
+          </p>
+        </td>
+        <td>
+          <p>
+            European History<br /><br />
+            Physics 2: Algebra-Based
+          </p>
+        </td>
+        <td>
+          <p></p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
 </template>
 <script>
 export default {
-  data() {
-    const srcs = {
-      1: "https://cdn.vuetifyjs.com/images/lists/1.jpg",
-      2: "https://cdn.vuetifyjs.com/images/lists/2.jpg",
-      3: "https://cdn.vuetifyjs.com/images/lists/3.jpg",
-      4: "https://cdn.vuetifyjs.com/images/lists/4.jpg",
-      5: "https://cdn.vuetifyjs.com/images/lists/5.jpg",
-    };
+  data: () => ({
+    dialog: false,
 
-    return {
-      autoUpdate: true,
-      friends: ["Sandra Adams", "Britta Holt"],
-      isUpdating: false,
-      name: "Midnight Crew",
-      people: [
-        { header: "Group 1" },
-        { name: "Sandra Adams", group: "Group 1", avatar: srcs[1] },
-        { name: "Ali Connors", group: "Group 1", avatar: srcs[2] },
-        { name: "Trevor Hansen", group: "Group 1", avatar: srcs[3] },
-        { name: "Tucker Smith", group: "Group 1", avatar: srcs[2] },
-        { divider: true },
-        { header: "Group 2" },
-        { name: "Britta Holt", group: "Group 2", avatar: srcs[4] },
-        { name: "Jane Smith ", group: "Group 2", avatar: srcs[5] },
-        { name: "John Smith", group: "Group 2", avatar: srcs[1] },
-        { name: "Sandra Williams", group: "Group 2", avatar: srcs[3] },
-      ],
-      title: "The summer breeze",
-    };
-  },
+    headers: [
+      {
+        text: "Dessert (100g serving)",
+        align: "start",
+        sortable: false,
+        value: "name",
+      },
+      { text: "Calories", value: "calories" },
+      { text: "Fat (g)", value: "fat" },
+      { text: "Carbs (g)", value: "carbs" },
+      { text: "Protein (g)", value: "protein" },
+      { text: "Actions", value: "actions", sortable: false },
+    ],
+    desserts: [],
+    editedIndex: -1,
+    editedItem: {
+      name: "",
+      calories: 0,
+      fat: 0,
+      carbs: 0,
+      protein: 0,
+    },
+    defaultItem: {
+      name: "",
+      calories: 0,
+      fat: 0,
+      carbs: 0,
+      protein: 0,
+    },
+  }),
 
-  watch: {
-    isUpdating(val) {
-      if (val) {
-        setTimeout(() => (this.isUpdating = false), 3000);
-      }
+  computed: {
+    formTitle() {
+      return this.editedIndex === -1 ? "New Item" : "Edit Item";
     },
   },
 
+  watch: {
+    dialog(val) {
+      val || this.close();
+    },
+    dialogDelete(val) {
+      val || this.closeDelete();
+    },
+  },
+
+  created() {
+    this.initialize();
+  },
+
   methods: {
-    remove(item) {
-      const index = this.friends.indexOf(item.name);
-      if (index >= 0) this.friends.splice(index, 1);
+    initialize() {
+      this.desserts = [
+        {
+          name: "Frozen Yogurt",
+          calories: 159,
+          fat: 6.0,
+          carbs: 24,
+          protein: 4.0,
+        },
+        {
+          name: "Ice cream sandwich",
+          calories: 237,
+          fat: 9.0,
+          carbs: 37,
+          protein: 4.3,
+        },
+      ];
+    },
+
+    editItem(item) {
+      this.editedIndex = this.desserts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialog = true;
+    },
+
+    deleteItem(item) {
+      this.editedIndex = this.desserts.indexOf(item);
+      this.editedItem = Object.assign({}, item);
+      this.dialogDelete = true;
+    },
+
+    deleteItemConfirm() {
+      this.desserts.splice(this.editedIndex, 1);
+      this.closeDelete();
+    },
+
+    close() {
+      this.dialog = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+
+    closeDelete() {
+      this.dialogDelete = false;
+      this.$nextTick(() => {
+        this.editedItem = Object.assign({}, this.defaultItem);
+        this.editedIndex = -1;
+      });
+    },
+
+    save() {
+      if (this.editedIndex > -1) {
+        Object.assign(this.desserts[this.editedIndex], this.editedItem);
+      } else {
+        this.desserts.push(this.editedItem);
+      }
+      this.close();
     },
   },
 };

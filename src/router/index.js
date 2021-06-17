@@ -52,6 +52,11 @@ const routes = [
     component: () => import("../components/Replies.vue"),
   },
   {
+    path: "/FindATutor",
+    name: "FindATutor",
+    component: () => import("../components/FindATutor.vue"),
+  },
+  {
     path: "/test",
     name: "test",
     component: () => import("../components/test.vue"),
