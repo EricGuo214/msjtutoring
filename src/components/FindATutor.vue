@@ -82,13 +82,12 @@ import firebase from "firebase";
 
 export default {
   data: () => ({
-    valid: false,
+    valid: true,
     dialog: false,
     name: "",
     selectedClasses: [],
     notes: "",
-    isValid: false,
-
+    
     classes: [
       { header: "Sciences" },
       "AP Biology",
@@ -123,7 +122,7 @@ export default {
   methods: {
     post() {
       if (this.$refs.form.validate()) {
-        this.isValid = true;
+        
         firebase
           .firestore()
           .collection("Tutees")

@@ -57,6 +57,11 @@ const routes = [
     component: () => import("../components/FindATutor.vue"),
   },
   {
+    path: "/Admin",
+    name: "Admin",
+    component: () => import("../components/Admin.vue"),
+  },
+  {
     path: "/test",
     name: "test",
     component: () => import("../components/test.vue"),

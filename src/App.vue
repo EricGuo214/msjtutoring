@@ -68,6 +68,12 @@
             <v-list-item-title>Inbox</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
+        <v-list-item to="/Admin">
+          <v-list-item-icon>
+            <v-icon>mdi-head-cog</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>Admin</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
