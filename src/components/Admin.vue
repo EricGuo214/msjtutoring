@@ -46,13 +46,26 @@
       ></v-data-table>
     </v-card>
     <div class="half">
-      <h2 class="half">{{ tutor }} x {{ tutee }}</h2>
-      <v-btn :disabled="!valid" color="primary" @click="pair(tutor, tutee)">
+      <h2 class="half">{{ tutor.name }} x {{ tutee.name }}</h2>
+      <v-btn color="primary" @click="pair(tutor, tutee)">
         Match!
       </v-btn>
     </div>
     <h2>Pairs</h2>
-    <h4>{{ pairs }}</h4>
+
+    <div>
+      <v-expansion-panels multiple>
+        <v-expansion-panel v-for="(pair, i) in pairs" :key="i">
+          <v-expansion-panel-header>
+            {{ pair.tutor.name }} {{ pair.tutor.classes }}
+          </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            <v-btn>test</v-btn>
+            {{ pair.tutee.name }}
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </div>
   </div>
 </template>
 
@@ -62,8 +75,8 @@ export default {
   data() {
     return {
       search: "",
-      tutor: "Tutor",
-      tutee: "Tutee",
+      tutor: {},
+      tutee: {},
 
       headers1: [
         {
@@ -89,13 +102,13 @@ export default {
       ],
       tutors: [],
       tutees: [],
-      pairs: [{ tutor: "", tutee: "" }],
+      pairs: [],
     };
   },
   methods: {
     rowClickTutor: function(item, row) {
       row.select(true);
-      this.tutor = item.name;
+      this.tutor = item;
       if (row.isSelected) {
         row.select(false);
         this.tutor = "Tutor";
@@ -103,16 +116,21 @@ export default {
     },
     rowClickTutee: function(item, row) {
       row.select(true);
-      this.tutee = item.name;
+      this.tutee = item;
       if (row.isSelected) {
         row.select(false);
         this.tutee = "Tutee";
       }
     },
     pair(tutor, tutee) {
-      this.pairs.push({ tutor, tutee });
-      this.tutor = "Tutor";
-      this.tutee = "Tutee";
+      firebase
+        .firestore()
+        .collection("Pairs")
+        .doc()
+        .set({
+          tutor: tutor,
+          tutee: tutee,
+        });
     },
   },
   created() {
@@ -120,26 +138,42 @@ export default {
       .firestore()
       .collection("Our Tutors")
       .onSnapshot((querySnapshot) => {
+        var fArray = [];
         querySnapshot.forEach((doc) => {
-          var tutor = doc.data();
+          let tutor = doc.data();
           tutor.id = doc.id;
-          this.tutors.push(tutor);
+          fArray.push(tutor);
         });
+        this.tutors = fArray;
       });
     firebase
       .firestore()
       .collection("Tutees")
       .onSnapshot((querySnapshot) => {
+        var fArray = [];
         querySnapshot.forEach((doc) => {
-          var tutee = doc.data();
+          let tutee = doc.data();
           tutee.id = doc.id;
-          this.tutees.push(tutee);
+          fArray.push(tutee);
         });
+        this.tutees = fArray;
+      });
+    firebase
+      .firestore()
+      .collection("Pairs")
+      .onSnapshot((querySnapshot) => {
+        var fArray = [];
+        querySnapshot.forEach((doc) => {
+          let pair = doc.data();
+          pair.id = doc.id;
+          fArray.push(pair);
+        });
+        this.pairs = fArray;
       });
   },
   computed: {
     valid() {
-      return this.tutor != "Tutor" && this.tutee != "Tutee";
+      return this.tutor != null && this.tutee.length != null;
     },
   },
 };

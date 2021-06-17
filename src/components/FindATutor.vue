@@ -122,7 +122,6 @@ export default {
   methods: {
     post() {
       if (this.$refs.form.validate()) {
-        
         firebase
           .firestore()
           .collection("Tutees")

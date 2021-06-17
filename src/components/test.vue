@@ -1,30 +1,66 @@
 <template>
-  <div id="app">
-    <v-app id="inspire">
-      <div>{{ selectedId }}</div>
-      <v-data-table
-        @click:row="rowClick"
-        item-key="name"
-        single-select
-        :headers="headers"
-        :items="desserts"
-        :items-per-page="5"
-        class="elevation-1"
-      ></v-data-table>
-    </v-app>
-  </div>
+  <v-app id="inspire">
+    <v-data-table
+      :headers="dessertHeaders"
+      :items="desserts"
+      :single-expand="singleExpand"
+      :expanded.sync="expanded"
+      item-key="name"
+      show-expand
+      class="elevation-1"
+    >
+      <template v-slot:top>
+        <v-toolbar flat>
+          <v-toolbar-title>Expandable Table</v-toolbar-title>
+          <v-spacer></v-spacer>
+          <v-switch
+            v-model="singleExpand"
+            label="Single expand"
+            class="mt-2"
+          ></v-switch>
+        </v-toolbar>
+      </template>
+      <template v-slot:item="{ item, expand, isExpanded }">
+        <tr>
+          <td
+            class="d-block d-sm-table-cell"
+            v-for="field in Object.keys(item)"
+            :key="field"
+          >
+            {{ item[field] }}
+          </td>
+          <td>
+            <v-btn icon @click="expand(!isExpanded)">
+              <v-icon>{{
+                isExpanded ? "mdi-chevron-up" : "mdi-chevron-down"
+              }}</v-icon>
+            </v-btn>
+          </td>
+        </tr>
+      </template>
+      <template v-slot:expanded-item="{ headers }">
+        <tr
+          v-for="(item, index) in desserts"
+          :key="index"
+          :colspan="headers.length"
+        >
+          <td v-for="i in Object.values(item)" :key="i">{{ i }}</td>
+        </tr>
+      </template>
+    </v-data-table>
+  </v-app>
 </template>
 
 <script>
 export default {
   data() {
     return {
-      search: "",
-      selectedId: -1,
-      headers: [
+      expanded: [],
+      singleExpand: false,
+      dessertHeaders: [
         {
           text: "Dessert (100g serving)",
-          align: "left",
+          align: "start",
           sortable: false,
           value: "name",
         },
@@ -33,6 +69,7 @@ export default {
         { text: "Carbs (g)", value: "carbs" },
         { text: "Protein (g)", value: "protein" },
         { text: "Iron (%)", value: "iron" },
+        { text: "", value: "data-table-expand" },
       ],
       desserts: [
         {
@@ -116,7 +153,6 @@ export default {
           iron: "6%",
         },
       ],
-      tutors: [],
     };
   },
   methods: {

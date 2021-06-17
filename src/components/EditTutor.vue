@@ -106,7 +106,7 @@
         <h2>Contact Information</h2>
         <v-list>
           <v-list-item
-            v-for="(tile,i) in tiles"
+            v-for="(tile) in tiles"
             :key="tile.title"
             @click="sheet = false"
           >
@@ -119,7 +119,7 @@
               <v-text-field
                 :label="tile.label"
                 dense
-                v-model="info.contactInfo[i]"
+               
               ></v-text-field>
             </v-list-item-content>
           </v-list-item>
@@ -208,11 +208,13 @@ export default {
   },
   methods: {
     onSubmit() {
+      this.info.name = this.info.fName + " " + this.info.lName;
       firebase
         .firestore()
         .collection("Our Tutors")
         .doc(firebase.auth().currentUser.email)
         .update(this.info);
+        
      
     },
   },
