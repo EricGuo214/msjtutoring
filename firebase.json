@@ -8,6 +8,10 @@
     ],
     "rewrites": [
       {
+        "source": "/functions/*",
+        "function" : "addAdminRole"
+      },
+      {
         "source": "**",
         "destination": "/index.html"
       }
