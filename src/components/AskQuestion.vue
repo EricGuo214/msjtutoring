@@ -1,33 +1,27 @@
 <template>
   <body>
-    <div>
+    <div class="half">
       <h1>Ask a question</h1>
       <v-form ref="form" v-model="valid" lazy-validation>
-        <v-container fill-height fluid style="width: 50%">
-          <v-text-field
-            style="width: 50%"
-            ref="title"
-            v-model="title"
-            dense
-            :rules="[(v) => !!v || 'This field is required']"
-            label="Title"
-            outlined
-            shaped
-            required
-          ></v-text-field>
-        </v-container>
+        <v-text-field
+          ref="title"
+          v-model="title"
+          dense
+          :rules="[(v) => !!v || 'This field is required']"
+          label="Title"
+          outlined
+          required
+        ></v-text-field>
 
-        <v-container fill-height fluid style="width: 50%">
-          <v-textarea
-            v-model="question"
-            name="input-7-1"
-            filled
-            label="Ask a question"
-            placeholder="Ask a question"
-            :rules="[(v) => !!v || 'This field is required']"
-            auto-grow
-          ></v-textarea>
-        </v-container>
+        <v-textarea
+          v-model="question"
+          name="input-7-1"
+          filled
+          label="Ask a question"
+          placeholder="Ask a question"
+          :rules="[(v) => !!v || 'This field is required']"
+          auto-grow
+        ></v-textarea>
       </v-form>
 
       <v-btn color="primary" @click="post" :disabled="!valid">
@@ -74,7 +68,9 @@ export default {
 </script>
 
 <style scoped>
-body {
+.half {
   text-align: center;
+  margin: auto;
+  width: 50%;
 }
 </style>

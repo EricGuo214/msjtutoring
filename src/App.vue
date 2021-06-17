@@ -40,6 +40,12 @@
             </v-list-item-icon>
             <v-list-item-title>Apply To be a Tutor</v-list-item-title>
           </v-list-item>
+          <v-list-item to="/FindATutor">
+            <v-list-item-icon>
+              <v-icon>mdi-account-search</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Find A Tutor</v-list-item-title>
+          </v-list-item>
 
           <v-list-item to="/OurTutors">
             <v-list-item-icon>
@@ -62,6 +68,12 @@
             <v-list-item-title>Inbox</v-list-item-title>
           </v-list-item>
         </v-list-item-group>
+        <v-list-item to="/Admin">
+          <v-list-item-icon>
+            <v-icon>mdi-head-cog</v-icon>
+          </v-list-item-icon>
+          <v-list-item-title>Admin</v-list-item-title>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 

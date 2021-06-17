@@ -10,7 +10,7 @@
         <v-col v-for="t in tutors" :key="t.id" cols="12" sm="4">
           <v-card class="mx-auto" max-width="344">
             <v-card-title class="title primary--text pl-0">
-              {{ t.name }}
+              {{ t.fName }} {{ t.lName }}
             </v-card-title>
             <v-img height="200px" :src="t.photoURL"> </v-img>
             <v-card-text>
@@ -167,7 +167,9 @@ export default {
   methods: {
     remove(x) {
       const db = firebase.firestore();
-      db.collection("Our Tutors").doc(x).delete();
+      db.collection("Our Tutors")
+        .doc(x)
+        .delete();
       db.collection("Our Tutors")
         .doc(x)
         .collection("Interested Tutees")
@@ -220,13 +222,14 @@ export default {
       .firestore()
       .collection("Our Tutors")
       .onSnapshot((querySnapshot) => {
-        this.tutors = [];
+        var fArray = [];
         querySnapshot.forEach((doc) => {
           var tutor = doc.data();
           tutor.id = doc.id;
           tutor.show = false;
-          this.tutors.push(tutor);
+          fArray.push(tutor);
         });
+        this.tutors = fArray;
       });
   },
 };
