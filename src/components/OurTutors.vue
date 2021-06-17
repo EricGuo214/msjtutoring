@@ -1,5 +1,9 @@
 <template>
   <div>
+    <v-card>
+      <v-text-field v-model="emailOfNewAdmin"></v-text-field>
+      <v-btn @click="makeAdmin">test </v-btn>
+    </v-card>
     <h1>Meet our tutors</h1>
     <v-container>
       <v-row>
@@ -11,7 +15,7 @@
             <v-img height="200px" :src="t.photoURL"> </v-img>
             <v-card-text>
               Qualified classes:
-              <v-list-item v-for="cls in t.classes" :key="cls">
+              <v-list-item v-for="(cls, i) in t.classes" :key="i">
                 <v-list-item-title v-text="cls"></v-list-item-title>
                 <v-btn
                   v-if="!wasAuthor(t)"
@@ -22,7 +26,12 @@
                     sendNotice(t.id, cls);
                   "
                 >
-                  <v-snackbar v-model="snackbar" :timeout="timeout" rounded="pill" top>
+                  <v-snackbar
+                    v-model="snackbar"
+                    :timeout="timeout"
+                    rounded="pill"
+                    top
+                  >
                     You have successfully sent a request! Frequently check your
                     inbox for confirmation.
                     <template> Close </template>
@@ -103,7 +112,7 @@
                   </v-list-item>
                   <v-list>
                     <v-list-item-title>Contact Info</v-list-item-title>
-                    <v-list-item v-for="(c, i) in t.contactInfo" :key="c">
+                    <v-list-item v-for="(c, i) in t.contactInfo" :key="i">
                       <v-list-item-avatar>
                         <v-avatar size="50px" tile>
                           <img :src="tiles[i].img" />
@@ -126,9 +135,11 @@
 
 <script>
 import firebase from "firebase";
+import axios from "axios";
 export default {
   data() {
     return {
+      emailOfNewAdmin: null,
       tutors: [],
       name: null,
       clsd: null,
@@ -183,6 +194,23 @@ export default {
           userEmail: firebase.auth().currentUser.email,
           name: firebase.auth().currentUser.displayName,
           class: cls,
+        });
+    },
+    makeAdmin() {
+      // var addMessage = firebase.functions().httpsCallable("addAdminRole");
+      // addMessage({ email: "david.dw.guo@gmail.com" }).then((result) => {
+      //   console.log(result.data.message);
+      // });
+      axios
+        .post("functions/addAdminRole", { email: this.emailOfNewAdmin })
+        .then((res) => {
+          console.log(res.data.message);
+        })
+        .then((res) => {
+          
+        })
+        .catch((error) => {
+          console.log(error);
         });
     },
   },
