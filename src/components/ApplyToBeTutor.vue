@@ -46,8 +46,8 @@
             <v-combobox
               v-model="selectedClasses"
               dense
-              :items="classes"
               :rules="[(v) => !!v || 'This field is required']"
+              :items="classes"
               :menu-props="{ maxHeight: '400' }"
               label="Choose your classes or create your own"
               multiple
