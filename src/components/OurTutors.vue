@@ -1,5 +1,9 @@
 <template>
   <div>
+    <v-card>
+      <v-text-field v-model="emailOfNewAdmin"></v-text-field>
+      <v-btn @click="makeAdmin">test </v-btn>
+    </v-card>
     <h1>Meet our tutors</h1>
     <v-container>
       <v-row>
@@ -108,7 +112,7 @@
                   </v-list-item>
                   <v-list>
                     <v-list-item-title>Contact Info</v-list-item-title>
-                    <v-list-item v-for="(c, i) in t.contactInfo" :key="c">
+                    <v-list-item v-for="(c, i) in t.contactInfo" :key="i">
                       <v-list-item-avatar>
                         <v-avatar size="50px" tile>
                           <img :src="tiles[i].img" />
@@ -131,9 +135,11 @@
 
 <script>
 import firebase from "firebase";
+import axios from "axios";
 export default {
   data() {
     return {
+      emailOfNewAdmin: null,
       tutors: [],
       name: null,
       clsd: null,
@@ -190,6 +196,20 @@ export default {
           userEmail: firebase.auth().currentUser.email,
           name: firebase.auth().currentUser.displayName,
           class: cls,
+        });
+    },
+    makeAdmin() {
+      // var addMessage = firebase.functions().httpsCallable("addAdminRole");
+      // addMessage({ email: "david.dw.guo@gmail.com" }).then((result) => {
+      //   console.log(result.data.message);
+      // });
+      axios
+        .post("functions/addAdminRole", { email: this.emailOfNewAdmin })
+        .then((res) => {
+          console.log(res.data.message);
+        })
+        .catch((error) => {
+          console.log(error);
         });
     },
   },
