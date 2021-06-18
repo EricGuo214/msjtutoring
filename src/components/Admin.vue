@@ -57,7 +57,7 @@
       <v-expansion-panels multiple>
         <v-expansion-panel v-for="(pair, i) in pairs" :key="i">
           <v-expansion-panel-header>
-            {{ pair.tutor.name }} {{ pair.tutor.classes }}
+            {{ pair.tutor.name }} {{ JSON.stringify(pair.tutor.classes) }}
           </v-expansion-panel-header>
           <v-expansion-panel-content>
             <v-btn>test</v-btn>
@@ -71,6 +71,7 @@
 
 <script>
 import firebase from "firebase";
+import axios from "axios";
 export default {
   data() {
     return {
@@ -139,6 +140,20 @@ export default {
       //       title: newTitle,
       //       question: newQ,
       //     });
+    },
+    makeAdmin() {
+      // var addMessage = firebase.functions().httpsCallable("addAdminRole");
+      // addMessage({ email: "david.dw.guo@gmail.com" }).then((result) => {
+      //   console.log(result.data.message);
+      // });
+      axios
+        .post("functions/addAdminRole", { email: this.emailOfNewAdmin })
+        .then((res) => {
+          console.log(res.data.message);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
   },
   created() {

@@ -225,11 +225,18 @@ export default {
     facebook: "",
     instagram: "",
     phonenumber: null,
-    customClass: {
-      teacher: null,
-      sem1: null,
-      sem2: null,
-    },
+    // valid: true,
+    // firstName: "r",
+    // lastName: "b",
+    // grade: null,
+    // grades: ["9", "10", "11", "12"],
+    // selectedClasses: [],
+    // maxTut: 2,
+    // desc: "f",
+    // email: firebase.auth().currentUser.email,
+    // facebook: "s",
+    // instagram: "",
+    // phonenumber: 510,
 
     classes: [
       { header: "Sciences" },

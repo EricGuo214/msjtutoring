@@ -135,7 +135,7 @@
 
 <script>
 import firebase from "firebase";
-import axios from "axios";
+
 export default {
   data() {
     return {
@@ -198,20 +198,20 @@ export default {
           class: cls,
         });
     },
-    makeAdmin() {
-      // var addMessage = firebase.functions().httpsCallable("addAdminRole");
-      // addMessage({ email: "david.dw.guo@gmail.com" }).then((result) => {
-      //   console.log(result.data.message);
-      // });
-      axios
-        .post("functions/addAdminRole", { email: this.emailOfNewAdmin })
-        .then((res) => {
-          console.log(res.data.message);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
+    // makeAdmin() {
+    //   // var addMessage = firebase.functions().httpsCallable("addAdminRole");
+    //   // addMessage({ email: "david.dw.guo@gmail.com" }).then((result) => {
+    //   //   console.log(result.data.message);
+    //   // });
+    //   axios
+    //     .post("functions/addAdminRole", { email: this.emailOfNewAdmin })
+    //     .then((res) => {
+    //       console.log(res.data.message);
+    //     })
+    //     .catch((error) => {
+    //       console.log(error);
+    //     });
+    // },
   },
 
   created() {
