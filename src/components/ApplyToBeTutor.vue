@@ -285,7 +285,7 @@ export default {
       if (this.$refs.form.validate()) {
         firebase
           .firestore()
-          .collection("Our Tutors")
+          .collection("OurTutors")
           .doc(firebase.auth().currentUser.email)
           .set({
             classes: this.selectedClasses,
