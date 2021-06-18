@@ -11,7 +11,7 @@
             <v-img height="200px" :src="t.photoURL"> </v-img>
             <v-card-text>
               Qualified classes:
-              <v-list-item v-for="cls in t.classes" :key="cls">
+              <v-list-item v-for="(cls, i) in t.classes" :key="i">
                 <v-list-item-title v-text="cls"></v-list-item-title>
                 <v-btn
                   v-if="!wasAuthor(t)"

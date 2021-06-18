@@ -131,6 +131,14 @@ export default {
           tutor: tutor,
           tutee: tutee,
         });
+      //   firebase
+      //     .firestore()
+      //     .collection("questions")
+      //     .doc(id)
+      //     .update({
+      //       title: newTitle,
+      //       question: newQ,
+      //     });
     },
   },
   created() {
