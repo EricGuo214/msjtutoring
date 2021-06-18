@@ -41,7 +41,7 @@
             <v-btn
               color="primary"
               @click="post"
-              :disabled="!valid"
+              :disabled="!isValid"
               v-bind="attrs"
               v-on="on"
             >
@@ -135,6 +135,11 @@ export default {
       
     },
   },
+  computed: {
+    isValid() {
+      return (this.name != "" && this.selectedClasses.length != 0)
+    }
+  }
 };
 </script>
 

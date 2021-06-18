@@ -170,7 +170,7 @@ export default {
   created() {
     firebase
       .firestore()
-      .collection("Our Tutors")
+      .collection("OurTutors")
       .onSnapshot((querySnapshot) => {
         var fArray = [];
         querySnapshot.forEach((doc) => {
