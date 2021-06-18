@@ -43,13 +43,25 @@
             ></v-autocomplete>
           </v-col>
           <v-col>
-            <v-text-field
-              v-model.number="phonenumber"
-              type="number"
-              label="Phone Number"
+            <v-combobox
+              v-model="selectedClasses"
+              dense
               :rules="[(v) => !!v || 'This field is required']"
+              :items="classes"
+              :menu-props="{ maxHeight: '400' }"
+              label="Choose your classes or create your own"
+              multiple
+              chips
+              hint="Must have received a grade of 90% or higher both semeseters"
+              persistent-hint
+              required
             >
-            </v-text-field>
+              <template v-slot:item="data">
+                <template>
+                  <v-list-item-content v-text="data.item"></v-list-item-content>
+                </template>
+              </template>
+            </v-combobox>
           </v-col>
         </v-row>
         <v-row align="center" justify="center">
@@ -78,7 +90,6 @@
               label="Available times"
               multiple
               chips
-              required
             ></v-select>
           </v-col>
         </v-row>
@@ -91,106 +102,24 @@
           >
           </v-text-field>
         </v-row>
-        <v-row align="center" justify="center">
-          <v-combobox
-            v-model="selectedClasses"
-            dense
-            :items="classes"
-            item-text="name"
-            :rules="[(v) => !!v || 'This field is required']"
-            label="What classes can you teach?"
-            multiple
-            chips
-            hint="Select a class or type your own"
-            persistent-hint
-            :menu-props="{ maxHeight: '400' }"
-            required
-            return-object
-          >
-          </v-combobox>
-        </v-row>
-        <br />
-
-        <v-row v-for="(cls, i) in selectedClasses" :key="i">
-          <v-text-field
-            :rules="[(v) => !!v || 'This field is required']"
-            v-model="cls.teacher"
-            :label="cls.name + ' Teacher'"
-          >
-          </v-text-field>
-          <v-select
-            style="width: 20%"
-            v-model="cls.sem1"
-            :items="academicGrades"
-            :rules="[(v) => !!v || 'This field is required']"
-            :label="cls.name + ' Sem 1 Grade'"
-          ></v-select>
-          <v-select
-            style="width: 20%"
-            v-model="cls.sem2"
-            :items="academicGrades"
-            :rules="[(v) => !!v || 'This field is required']"
-            :label="cls.name + ' Sem 2 Grade'"
-          ></v-select>
-        </v-row>
-
-        <br />
 
         <h2>Contact Information</h2>
         <v-list>
-          <v-list-item>
+          <v-list-item
+            v-for="tile in tiles"
+            :key="tile.title"
+            @click="sheet = false"
+          >
             <v-list-item-avatar>
               <v-avatar size="50px" tile>
-                <img
-                  :src="`https://img-authors.flaticon.com/google.jpg`"
-                  :alt="'google logo'"
-                />
+                <img :src="`${tile.img}`" :alt="tile.title" />
               </v-avatar>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-text-field
-                v-model="email"
-                :rules="emailRules"
-                label="E-mail"
-                required
-              ></v-text-field>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-avatar>
-              <v-avatar size="50px" tile>
-                <img
-                  :src="
-                    `https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png`
-                  "
-                  :alt="'facebook logo'"
-                />
-              </v-avatar>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-text-field
-                v-model="facebook"
-                :rules="[(v) => !!v || 'This field is required']"
-                label="Facebook Username"
-                required
-              ></v-text-field>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item>
-            <v-list-item-avatar>
-              <v-avatar size="50px" tile>
-                <img
-                  :src="
-                    `https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg`
-                  "
-                  :alt="'instagram logo'"
-                />
-              </v-avatar>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-text-field
-                v-model="instagram"
-                label="Instagram handle (optional)"
+                :label="tile.label"
+                dense
+                v-model="tile.value"
               ></v-text-field>
             </v-list-item-content>
           </v-list-item>
@@ -203,9 +132,6 @@
         </v-row>
       </v-container>
     </v-form>
-    <!-- <v-btn color="primary" @click="test">
-      test
-    </v-btn> -->
   </div>
 </template>
 
@@ -216,6 +142,7 @@ export default {
     valid: true,
     firstName: null,
     lastName: null,
+    email: firebase.auth().currentUser.email,
     grade: null,
     grades: ["9", "10", "11", "12"],
     selectedClasses: [],
@@ -240,33 +167,33 @@ export default {
 
     classes: [
       { header: "Sciences" },
-      { name: "AP Biology" },
-      { name: "AP Chemistry" },
-      { name: "AP Computer Science A" },
-      { name: "AP Physics 1" },
-      { name: "AP Physics C" },
-      { name: "Physics" },
-      { name: "Physics in the Universe" },
-      { name: "Biology" },
-      { name: "Chemistry" },
-      { name: "Living Earth" },
+      "AP Biology",
+      "AP Chemistry",
+      "AP Computer Science A",
+      "AP Physics 1",
+      "AP Physics C",
+      "Physics",
+      "Physics in the Universe",
+      "Biology",
+      "Chemistry",
+      "Living Earth",
       { divider: true },
 
       { header: "Languages" },
-      { name: "AP Spanish" },
-      { name: "AP Chinese" },
+      "AP Spanish",
+      "AP Chinese",
       { divider: true },
 
       { header: "Maths" },
-      { name: "AP Statistics" },
-      { name: "AP Calculus AB" },
-      { name: "AP Calculus BC" },
-      { name: "Calculus" },
-      { name: "Precalculus" },
-      { name: "Algebra 2/Trig" },
-      { name: "Algebra 2" },
-      { name: "Trig" },
-      { name: "Geometry" },
+      "AP Statistics",
+      "AP Calculus AB",
+      "AP Calculus BC",
+      "Calculus",
+      "Precalculus",
+      "Algebra 2/Trig",
+      "Algebra 2",
+      "Trig",
+      "Geometry",
     ],
 
     days: [
@@ -280,19 +207,33 @@ export default {
     ],
     selectedDays: null,
     photoURL: null,
-
-    emailRules: [
-      (v) => !!v || "E-mail is required",
-      (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+    sheet: false,
+    tiles: [
+      {
+        img: "https://img-authors.flaticon.com/google.jpg",
+        label: "cooldude@gmail.com",
+        value: firebase.auth().currentUser.email,
+      },
+      {
+        img:
+          "https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg",
+        label: "@cooldude224 (optional)",
+        value: "",
+      },
+      {
+        img:
+          "https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png",
+        label: "Cool Dude (optional)",
+        value: "",
+      },
     ],
-    academicGrades: ["A", "B", "C", "D", "F"],
   }),
   methods: {
     submit() {
       if (this.$refs.form.validate()) {
         firebase
           .firestore()
-          .collection("Our Tutors")
+          .collection("OurTutors")
           .doc(firebase.auth().currentUser.email)
           .set({
             classes: this.selectedClasses,
@@ -304,16 +245,10 @@ export default {
             days: this.selectedDays,
             desc: this.desc,
             photoURL: firebase.auth().currentUser.photoURL,
-            email: this.email,
-            facebook: this.facebook,
-            instagram: this.instagram,
-            phonenumber: this.phonenumber,
+            contactInfo: this.tiles.map((t) => t.value),
           });
         this.$router.push("/OurTutors");
       }
-    },
-    test() {
-      console.log(JSON.stringify(this.selectedClasses));
     },
   },
 };
