@@ -47,9 +47,7 @@
     </v-card>
     <div class="half">
       <h2 class="half">{{ tutor.name }} x {{ tutee.name }}</h2>
-      <v-btn color="primary" @click="pair(tutor, tutee)">
-        Match!
-      </v-btn>
+      <v-btn color="primary" @click="pair(tutor, tutee)"> Match! </v-btn>
     </div>
     <h2>Pairs</h2>
 
@@ -66,14 +64,25 @@
         </v-expansion-panel>
       </v-expansion-panels>
     </div>
+    <v-card>
+      <v-text-field v-model="emailOfNewAdmin"></v-text-field>
+      <v-btn @click="makeAdmin">make admin </v-btn>
+    </v-card>
+    <v-spacer></v-spacer>
+    <v-card>
+      <v-text-field v-model="emailOfNewAdmin"></v-text-field>
+      <v-btn @click="addToAdminCollection">add to collection </v-btn>
+    </v-card>
   </div>
 </template>
 
 <script>
 import firebase from "firebase";
+import axios from "axios";
 export default {
   data() {
     return {
+      emailOfNewAdmin: null,
       search: "",
       tutor: {},
       tutee: {},
@@ -106,7 +115,36 @@ export default {
     };
   },
   methods: {
-    rowClickTutor: function(item, row) {
+    makeAdmin() {
+      // var addMessage = firebase.functions().httpsCallable("addAdminRole");
+      // addMessage({ email: "david.dw.guo@gmail.com" }).then((result) => {
+      //   console.log(result.data.message);
+      // });
+      axios
+        .post("functions/addAdminRole", { email: this.emailOfNewAdmin })
+        .then((res) => {
+          console.log(res.data.message);
+        })
+        .then(() => {
+          firebase
+            .firestore()
+            .collection("Admins")
+            .doc(this.emailOfNewAdmin)
+            .set({
+              email: this.emailOfNewAdmin,
+            });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    addToAdminCollection() {
+      firebase.firestore().collection("Admins").doc(this.emailOfNewAdmin).set({
+        email: this.emailOfNewAdmin,
+        adder: firebase.auth().currentUser.email
+      });
+    },
+    rowClickTutor: function (item, row) {
       row.select(true);
       this.tutor = item;
       if (row.isSelected) {
@@ -114,7 +152,7 @@ export default {
         this.tutor = "Tutor";
       }
     },
-    rowClickTutee: function(item, row) {
+    rowClickTutee: function (item, row) {
       row.select(true);
       this.tutee = item;
       if (row.isSelected) {
@@ -123,14 +161,10 @@ export default {
       }
     },
     pair(tutor, tutee) {
-      firebase
-        .firestore()
-        .collection("Pairs")
-        .doc()
-        .set({
-          tutor: tutor,
-          tutee: tutee,
-        });
+      firebase.firestore().collection("Pairs").doc().set({
+        tutor: tutor,
+        tutee: tutee,
+      });
     },
   },
   created() {

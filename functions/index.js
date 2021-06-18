@@ -6,6 +6,7 @@ admin.initializeApp();
 exports.addAdminRole = functions.https.onRequest((req, res) => {
     console.log(req.body);
     admin.auth().getUserByEmail(req.body.email).then(user => {
+        console.log('user id: ', user.uid)
         admin.auth().setCustomUserClaims(user.uid,
             {
                 admin: true

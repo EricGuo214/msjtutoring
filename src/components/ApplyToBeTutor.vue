@@ -46,8 +46,8 @@
             <v-combobox
               v-model="selectedClasses"
               dense
-              :rules="[(v) => !!v || 'This field is required']"
               :items="classes"
+              :rules="[(v) => !!v || 'This field is required']"
               :menu-props="{ maxHeight: '400' }"
               label="Choose your classes or create your own"
               multiple
@@ -217,7 +217,7 @@ export default {
       if (this.$refs.form.validate()) {
         firebase
           .firestore()
-          .collection("Our Tutors")
+          .collection("OurTutors")
           .doc(firebase.auth().currentUser.email)
           .set({
             classes: this.selectedClasses,

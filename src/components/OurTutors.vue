@@ -1,9 +1,5 @@
 <template>
   <div>
-    <v-card>
-      <v-text-field v-model="emailOfNewAdmin"></v-text-field>
-      <v-btn @click="makeAdmin">test </v-btn>
-    </v-card>
     <h1>Meet our tutors</h1>
     <v-container>
       <v-row>
@@ -135,11 +131,9 @@
 
 <script>
 import firebase from "firebase";
-import axios from "axios";
 export default {
   data() {
     return {
-      emailOfNewAdmin: null,
       tutors: [],
       name: null,
       clsd: null,
@@ -167,10 +161,10 @@ export default {
   methods: {
     remove(x) {
       const db = firebase.firestore();
-      db.collection("Our Tutors")
+      db.collection("OurTutors")
         .doc(x)
         .delete();
-      db.collection("Our Tutors")
+      db.collection("OurTutors")
         .doc(x)
         .collection("Interested Tutees")
         .get()
@@ -188,7 +182,7 @@ export default {
       console.log("currentUser", firebase.auth().currentUser);
       firebase
         .firestore()
-        .collection("Our Tutors")
+        .collection("OurTutors")
         .doc(toThisTutor)
         .collection("Interested Tutees")
         .doc(firebase.auth().currentUser.email)
@@ -198,26 +192,12 @@ export default {
           class: cls,
         });
     },
-    makeAdmin() {
-      // var addMessage = firebase.functions().httpsCallable("addAdminRole");
-      // addMessage({ email: "david.dw.guo@gmail.com" }).then((result) => {
-      //   console.log(result.data.message);
-      // });
-      axios
-        .post("functions/addAdminRole", { email: this.emailOfNewAdmin })
-        .then((res) => {
-          console.log(res.data.message);
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    },
   },
 
   created() {
     firebase
       .firestore()
-      .collection("Our Tutors")
+      .collection("OurTutors")
       .onSnapshot((querySnapshot) => {
         var fArray = [];
         querySnapshot.forEach((doc) => {
