@@ -224,37 +224,37 @@
 import firebase from "firebase";
 export default {
   data: () => ({
-    // valid: true,
-    // firstName: null,
-    // lastName: null,
-    // grade: null,
-    // grades: ["9", "10", "11", "12"],
-    // selectedClasses: [],
-    // stringClasses: [],
-    // gender: null,
-    // genders: ["Male", "Female", "Other"],
-    // maxTut: null,
-    // desc: null,
-    // email: firebase.auth().currentUser.email,
-    // facebook: "",
-    // instagram: "",
-    // phonenumber: null,
-
     valid: true,
-    firstName: "Rithwik",
-    lastName: "Vaidun",
+    firstName: null,
+    lastName: null,
     grade: null,
     grades: ["9", "10", "11", "12"],
     selectedClasses: [],
     stringClasses: [],
-    gender: "Male",
+    gender: null,
     genders: ["Male", "Female", "Other"],
-    maxTut: 2,
-    desc: "I like to teach people in math",
+    maxTut: null,
+    desc: null,
     email: firebase.auth().currentUser.email,
-    facebook: "Rvaidun",
-    instagram: "@riithwik",
-    phonenumber: 5105886879,
+    facebook: "",
+    instagram: "",
+    phonenumber: null,
+
+    // valid: true,
+    // firstName: "Rithwik",
+    // lastName: "Vaidun",
+    // grade: null,
+    // grades: ["9", "10", "11", "12"],
+    // selectedClasses: [],
+    // stringClasses: [],
+    // gender: "Male",
+    // genders: ["Male", "Female", "Other"],
+    // maxTut: 2,
+    // desc: "I like to teach people in math",
+    // email: firebase.auth().currentUser.email,
+    // facebook: "Rvaidun",
+    // instagram: "@riithwik",
+    // phonenumber: 5105886879,
 
     classes: [
       { header: "Sciences" },
@@ -308,7 +308,6 @@ export default {
   methods: {
     submit() {
       if (this.$refs.form.validate()) {
-        this.stringClasses = this.selectedClasses.map((a) => a.name);
         firebase
           .firestore()
           .collection("OurTutors")
@@ -319,6 +318,7 @@ export default {
             fName: this.firstName,
             lName: this.lastName,
             grade: this.grade,
+            gender: this.gender,
             maxTut: this.maxTut,
             days: this.selectedDays,
             desc: this.desc,
@@ -327,7 +327,6 @@ export default {
             facebook: this.facebook,
             instagram: this.instagram,
             phonenumber: this.phonenumber,
-            stringClasses: this.stringClasses,
           });
         this.$router.push("/OurTutors");
       }

@@ -22,6 +22,13 @@
         :search="search"
         class="elevation-1"
       >
+        <template v-slot:[`item.maxTut`]="{ item }">
+          <v-chip v-if="item.maxTut == 0" color="red">
+            {{ item.maxTut }}
+          </v-chip>
+          <div v-else>{{ item.maxTut }}</div>
+        </template>
+
         <template v-slot:top>
           <v-dialog v-model="dialog" max-width="500px">
             <v-data-table
@@ -52,7 +59,6 @@
         ></v-text-field>
       </v-card-title>
       <v-data-table
-        @click:row="rowClickTutee"
         v-model="selected2"
         item-key="name"
         single-select
@@ -61,10 +67,34 @@
         :items="tutees"
         :search="search"
         class="elevation-1"
-      ></v-data-table>
+      >
+        <template v-slot:[`item.paired`]="{ item }">
+          <v-icon
+            v-for="(cls, i) in item.paired"
+            :key="i"
+            :color="!item.paired[i] ? 'red' : 'green'"
+          >
+            {{
+              !item.paired[i] ? "mdi-close-thick" : "mdi-checkbox-marked-circle"
+            }}
+          </v-icon>
+        </template>
+        <template v-slot:[`item.classes`]="{ item }">
+          <v-btn
+            small
+            rounded
+            v-for="(cls, i) in item.classes"
+            :key="cls.name"
+            :color="clicked == cls.name ? 'primary' : ''"
+            @click="rowClickTutee(item, cls.name, i)"
+          >
+            {{ cls.name }}
+          </v-btn>
+        </template>
+      </v-data-table>
     </v-card>
     <div class="half">
-      <h2 class="half">{{ tutor.name }} x {{ tutee.name }}</h2>
+      <h2 class="half">{{ tutor.name }} x {{ tutee.name }}({{ clicked }})</h2>
       <v-btn
         :disabled="!this.valid"
         color="primary"
@@ -73,28 +103,36 @@
         Match!
       </v-btn>
 
-      <v-btn color="primary" @click="test">
+      <!-- <v-btn color="primary" @click="test">
         test
-      </v-btn>
+      </v-btn> -->
     </div>
     <h2>Pairs</h2>
 
-    <div>
-      <v-expansion-panels multiple>
-        <v-expansion-panel v-for="(pair, i) in pairs" :key="i">
-          <v-expansion-panel-header>
-            Tutor: {{ pair.tutor.name }} Classes: {{ pair.tutor.stringClasses }}
-          </v-expansion-panel-header>
-          <v-expansion-panel-content>
-            <v-btn>test</v-btn>
-            {{ pair.tutee.name }}
-          </v-expansion-panel-content>
-        </v-expansion-panel>
-      </v-expansion-panels>
-    </div>
+    <v-container>
+      <v-row no-gutters>
+        <v-col v-for="(pair, i) in pairs" :key="i" cols="12" sm="3">
+          <v-card class="mx-auto" max-width="344" outlined>
+            <v-list-item three-line>
+              <v-list-item-content>
+                <v-list-item-title class="text-h5 mb-1">
+                  {{ pair.tutee.name }}
+                </v-list-item-title>
+                <v-list-item v-for="(cls, i) in pair.tutee.classes" :key="i"
+                  >{{ cls.name }} --- {{ pair.tutor.name }}</v-list-item
+                >
+              </v-list-item-content>
+            </v-list-item>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+
     <v-card>
-      <v-text-field v-model="emailOfNewAdmin"></v-text-field>
-      <v-btn @click="makeAdmin">make admin </v-btn>
+      <v-text-field style="width: 50%" v-model="emailOfNewAdmin"></v-text-field>
+      <v-card-actions>
+        <v-btn @click="makeAdmin">make admin </v-btn>
+      </v-card-actions>
     </v-card>
     <v-spacer></v-spacer>
     <v-card>
@@ -111,6 +149,8 @@ export default {
   data() {
     return {
       dialog: false,
+      clicked: "",
+      index: -1,
 
       emailOfNewAdmin: null,
       search: "",
@@ -118,6 +158,7 @@ export default {
       tutee: {},
       selected1: [],
       selected2: [],
+      clr: "",
 
       headers1: [
         {
@@ -128,9 +169,9 @@ export default {
         },
         { text: "Gender", value: "gender" },
 
-        { text: "Classes", value: "stringClasses" },
+        { text: "Classes", value: "sClass" },
         { text: "Email", value: "email" },
-        { text: "Phone Number", value: "phonenumber" },
+        { text: "Phone Number", value: "phonenumber " },
         { text: "Tutee spots left", value: "maxTut" },
         { text: "Grade", value: "grade" },
         { text: "Facebook", value: "facebook" },
@@ -144,6 +185,7 @@ export default {
           value: "name",
         },
         { text: "Classes", value: "classes" },
+        { text: "Paired?", value: "paired" },
         { text: "Notes", value: "notes" },
       ],
       gradeHeaders: [
@@ -161,6 +203,7 @@ export default {
       tutees: [],
       pairs: [],
       gradeT: [],
+      paired: [true, false, true],
     };
   },
   methods: {
@@ -198,6 +241,9 @@ export default {
         });
     },
     rowClickTutor: function(item, row) {
+      if (item.maxTut == 0) {
+        row.disable(true);
+      }
       if (row.isSelected) {
         row.select(false);
         this.tutor = {};
@@ -207,14 +253,11 @@ export default {
       }
       this.gradeT = this.tutor.classes;
     },
-    rowClickTutee: function(item, row) {
-      if (row.isSelected) {
-        row.select(false);
-        this.tutee = {};
-      } else {
-        row.select(true);
-        this.tutee = item;
-      }
+    rowClickTutee: function(tutee, j, i) {
+      tutee.clsID = i;
+      this.tutee = tutee;
+      this.clicked = j;
+      console.log(this.clicked, i);
     },
     pair(tutor, tutee) {
       firebase
@@ -233,25 +276,41 @@ export default {
         .update({
           maxTut: dec,
         });
+
+      firebase
+        .firestore()
+        .collection("Tutees")
+        .doc(tutee.id)
+        .get()
+        .then((doc) => {
+          var classes = doc.data().classes;
+          var cls = classes[tutee.clsID];
+          cls.p = true;
+          classes[tutee.clsID] = cls;
+          firebase
+            .firestore()
+            .collection("Tutees")
+            .doc(tutee.id)
+            .update({ classes: classes });
+        });
+
       this.tutor = {};
       this.tutee = {};
       this.selected1 = [];
       this.selected2 = [];
+      this.clicked = "";
     },
     test() {
-      console.log(this.valid);
-      console.log(Object.keys(this.tutor).length == 0);
-      console.log(Object.keys(this.tutee).length == 0);
+      console.log(this.tutee);
+      console.log(this.tutee.clsID);
     },
-    grades(row) {
-      console.log(row);
-      return [{ name: "biology", teacher: "Mr. Melcic", sem1: "A", sem2: "B" }];
-    },
+
     open() {
       this.dialog = true;
     },
   },
   created() {
+    // this.paired = this.tutee.selectedClasses.map((a) => a.p);
     firebase
       .firestore()
       .collection("OurTutors")
@@ -260,6 +319,7 @@ export default {
         querySnapshot.forEach((doc) => {
           let tutor = doc.data();
           tutor.id = doc.id;
+          tutor.sClass = tutor.classes.map((a) => a.name);
           fArray.push(tutor);
         });
         this.tutors = fArray;
@@ -272,6 +332,8 @@ export default {
         querySnapshot.forEach((doc) => {
           let tutee = doc.data();
           tutee.id = doc.id;
+          tutee.paired = tutee.classes.map((a) => a.p);
+          tutee.sClass = tutee.classes.map((a) => a.name);
           fArray.push(tutee);
         });
         this.tutees = fArray;

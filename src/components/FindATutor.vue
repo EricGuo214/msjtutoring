@@ -7,28 +7,26 @@
           v-model="name"
           dense
           :rules="[(v) => !!v || 'This field is required']"
-          label="Name"
+          label="Full Name"
           outlined
           required
         ></v-text-field>
 
-        <v-autocomplete
+        <v-combobox
           v-model="selectedClasses"
           dense
-          :rules="[(v) => !!v || 'This field is required']"
           :items="classes"
-          :menu-props="{ maxHeight: '400' }"
+          item-text="name"
+          :rules="[required]"
           label="Select the classes you need help in"
           multiple
           chips
+          :menu-props="{ maxHeight: '400' }"
           required
+          return-object
         >
-          <template v-slot:item="data">
-            <template>
-              <v-list-item-content v-text="data.item"></v-list-item-content>
-            </template>
-          </template>
-        </v-autocomplete>
+        </v-combobox>
+
         <br />
         <v-text-field
           v-model="notes"
@@ -36,7 +34,7 @@
           outlined
         ></v-text-field>
 
-        <v-dialog v-model="dialog" width="500">
+        <!-- <v-dialog v-model="dialog" width="500">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               color="primary"
@@ -66,12 +64,17 @@
               <v-btn color="primary" to=/inbox text @click="dialog = false">
                 Inbox
               </v-btn>
+
               <v-btn color="primary" to=/ text @click="dialog = false">
                 Home
               </v-btn>
             </v-card-actions>
           </v-card>
-        </v-dialog>
+        </v-dialog> -->
+        <v-btn color="primary" @click="post" :disabled="!isValid">Submit</v-btn>
+        <v-btn color="primary" @click="test">
+          test
+        </v-btn>
       </v-form>
     </div>
   </body>
@@ -86,36 +89,38 @@ export default {
     dialog: false,
     name: "",
     selectedClasses: [],
+
     notes: "",
-    
+
     classes: [
       { header: "Sciences" },
-      "AP Biology",
-      "AP Chemistry",
-      "AP Computer Science A",
-      "AP Physics",
-      "Physics",
-      "Physics in the Universe",
-      "Biology",
-      "Chemistry",
-      "Living Earth",
+      { name: "AP Biology" },
+      { name: "AP Chemistry" },
+      { name: "AP Computer Science A" },
+      { name: "AP Physics 1" },
+      { name: "AP Physics C" },
+      { name: "Physics" },
+      { name: "Physics in the Universe" },
+      { name: "Biology" },
+      { name: "Chemistry" },
+      { name: "Living Earth" },
       { divider: true },
 
       { header: "Languages" },
-      "AP Spanish",
-      "AP Chinese",
+      { name: "AP Spanish" },
+      { name: "AP Chinese" },
       { divider: true },
 
       { header: "Maths" },
-      "AP Statistics",
-      "AP Calculus AB",
-      "AP Calculus BC",
-      "Calculus",
-      "Precalculus",
-      "Algebra 2/Trig",
-      "Algebra 2",
-      "Trig",
-      "Geometry",
+      { name: "AP Statistics" },
+      { name: "AP Calculus AB" },
+      { name: "AP Calculus BC" },
+      { name: "Calculus" },
+      { name: "Precalculus" },
+      { name: "Algebra 2/Trig" },
+      { name: "Algebra 2" },
+      { name: "Trig" },
+      { name: "Geometry" },
     ],
   }),
 
@@ -128,18 +133,36 @@ export default {
           .doc()
           .set({
             name: this.name,
-            classes: this.selectedClasses,
+            classes: this.selectedClasses.map((a) => ({
+              name: a.name,
+              p: false,
+            })),
+
             notes: this.notes,
           });
+        this.name = "";
+        this.selectedClasses = [];
+        this.notes = "";
       }
-      
+    },
+    test() {
+      console.log(this.selectedClasses);
+      console.log(
+        this.selectedClasses.map((a) => ({ name: a.name, p: false }))
+      );
+    },
+    required(value) {
+      if (value instanceof Array && value.length == 0) {
+        return "Required.";
+      }
+      return !!value || "Required.";
     },
   },
   computed: {
     isValid() {
-      return (this.name != "" && this.selectedClasses.length != 0)
-    }
-  }
+      return this.name != "" && this.selectedClasses.length != 0;
+    },
+  },
 };
 </script>
 
