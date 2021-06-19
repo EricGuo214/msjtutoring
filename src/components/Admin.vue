@@ -13,6 +13,7 @@
       </v-card-title>
       <v-data-table
         @click:row="rowClickTutor"
+        v-model="selected1"
         item-key="name"
         single-select
         dense
@@ -20,8 +21,24 @@
         :items="tutors"
         :search="search"
         class="elevation-1"
-      ></v-data-table>
+      >
+        <template v-slot:top>
+          <v-dialog v-model="dialog" max-width="500px">
+            <v-data-table
+              :headers="gradeHeaders"
+              :items="gradeT"
+              hide-default-footer
+            ></v-data-table>
+          </v-dialog>
+        </template>
+        <template v-slot:[`item.actions`]="{ item }">
+          <v-icon @click.prevent="open(item)">
+            mdi-school
+          </v-icon>
+        </template>
+      </v-data-table>
     </v-card>
+
     <br />
     <h2>Tutees</h2>
     <v-card>
@@ -36,6 +53,7 @@
       </v-card-title>
       <v-data-table
         @click:row="rowClickTutee"
+        v-model="selected2"
         item-key="name"
         single-select
         dense
@@ -47,7 +65,17 @@
     </v-card>
     <div class="half">
       <h2 class="half">{{ tutor.name }} x {{ tutee.name }}</h2>
-      <v-btn color="primary" @click="pair(tutor, tutee)"> Match! </v-btn>
+      <v-btn
+        :disabled="!this.valid"
+        color="primary"
+        @click="pair(tutor, tutee)"
+      >
+        Match!
+      </v-btn>
+
+      <v-btn color="primary" @click="test">
+        test
+      </v-btn>
     </div>
     <h2>Pairs</h2>
 
@@ -55,7 +83,7 @@
       <v-expansion-panels multiple>
         <v-expansion-panel v-for="(pair, i) in pairs" :key="i">
           <v-expansion-panel-header>
-            {{ pair.tutor.name }} {{ JSON.stringify(pair.tutor.classes) }}
+            Tutor: {{ pair.tutor.name }} Classes: {{ pair.tutor.stringClasses }}
           </v-expansion-panel-header>
           <v-expansion-panel-content>
             <v-btn>test</v-btn>
@@ -82,10 +110,14 @@ import axios from "axios";
 export default {
   data() {
     return {
+      dialog: false,
+
       emailOfNewAdmin: null,
       search: "",
       tutor: {},
       tutee: {},
+      selected1: [],
+      selected2: [],
 
       headers1: [
         {
@@ -94,10 +126,15 @@ export default {
           filterable: false,
           value: "name",
         },
-        { text: "Classes", value: "classes" },
-        { text: "Email", value: "contactInfo[0]" },
+        { text: "Gender", value: "gender" },
+
+        { text: "Classes", value: "stringClasses" },
+        { text: "Email", value: "email" },
+        { text: "Phone Number", value: "phonenumber" },
         { text: "Tutee spots left", value: "maxTut" },
         { text: "Grade", value: "grade" },
+        { text: "Facebook", value: "facebook" },
+        { text: "More", value: "actions", sortable: false },
       ],
       headers2: [
         {
@@ -109,9 +146,21 @@ export default {
         { text: "Classes", value: "classes" },
         { text: "Notes", value: "notes" },
       ],
+      gradeHeaders: [
+        {
+          text: "Class",
+          align: "start",
+          filterable: false,
+          value: "name",
+        },
+        { text: "Teacher", value: "teacher" },
+        { text: "Semester 1", value: "sem1" },
+        { text: "Semester 2", value: "sem2" },
+      ],
       tutors: [],
       tutees: [],
       pairs: [],
+      gradeT: [],
     };
   },
   methods: {
@@ -139,52 +188,73 @@ export default {
         });
     },
     addToAdminCollection() {
-      firebase.firestore().collection("Admins").doc(this.emailOfNewAdmin).set({
-        email: this.emailOfNewAdmin,
-        adder: firebase.auth().currentUser.email
-      });
+      firebase
+        .firestore()
+        .collection("Admins")
+        .doc(this.emailOfNewAdmin)
+        .set({
+          email: this.emailOfNewAdmin,
+          adder: firebase.auth().currentUser.email,
+        });
     },
-    rowClickTutor: function (item, row) {
-      row.select(true);
-      this.tutor = item;
+    rowClickTutor: function(item, row) {
       if (row.isSelected) {
         row.select(false);
-        this.tutor = "Tutor";
+        this.tutor = {};
+      } else {
+        row.select(true);
+        this.tutor = item;
       }
+      this.gradeT = this.tutor.classes;
     },
-    rowClickTutee: function (item, row) {
-      row.select(true);
-      this.tutee = item;
+    rowClickTutee: function(item, row) {
       if (row.isSelected) {
         row.select(false);
-        this.tutee = "Tutee";
+        this.tutee = {};
+      } else {
+        row.select(true);
+        this.tutee = item;
       }
     },
     pair(tutor, tutee) {
-      firebase.firestore().collection("Pairs").doc().set({
-        tutor: tutor,
-        tutee: tutee,
-      });
-    },
-    makeAdmin() {
-      // var addMessage = firebase.functions().httpsCallable("addAdminRole");
-      // addMessage({ email: "david.dw.guo@gmail.com" }).then((result) => {
-      //   console.log(result.data.message);
-      // });
-      axios
-        .post("functions/addAdminRole", { email: this.emailOfNewAdmin })
-        .then((res) => {
-          console.log(res.data.message);
-        })
-        .catch((error) => {
-          console.log(error);
+      firebase
+        .firestore()
+        .collection("Pairs")
+        .doc()
+        .set({
+          tutor: tutor,
+          tutee: tutee,
         });
+      const dec = firebase.firestore.FieldValue.increment(-1);
+      firebase
+        .firestore()
+        .collection("OurTutors")
+        .doc(tutor.email)
+        .update({
+          maxTut: dec,
+        });
+      this.tutor = {};
+      this.tutee = {};
+      this.selected1 = [];
+      this.selected2 = [];
+    },
+    test() {
+      console.log(this.valid);
+      console.log(Object.keys(this.tutor).length == 0);
+      console.log(Object.keys(this.tutee).length == 0);
+    },
+    grades(row) {
+      console.log(row);
+      return [{ name: "biology", teacher: "Mr. Melcic", sem1: "A", sem2: "B" }];
+    },
+    open() {
+      this.dialog = true;
     },
   },
   created() {
     firebase
       .firestore()
-      .collection("Our Tutors")
+      .collection("OurTutors")
       .onSnapshot((querySnapshot) => {
         var fArray = [];
         querySnapshot.forEach((doc) => {
@@ -221,7 +291,10 @@ export default {
   },
   computed: {
     valid() {
-      return this.tutor != null && this.tutee.length != null;
+      return (
+        Object.keys(this.tutor).length != 0 &&
+        Object.keys(this.tutee).length != 0
+      );
     },
   },
 };

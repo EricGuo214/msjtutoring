@@ -52,6 +52,7 @@
             </v-text-field>
           </v-col>
         </v-row>
+
         <v-row align="center" justify="center">
           <v-col cols="12" md="5">
             <v-text-field
@@ -82,6 +83,16 @@
             ></v-select>
           </v-col>
         </v-row>
+        <v-row md="5">
+          <v-autocomplete
+            v-model="gender"
+            dense
+            :rules="[(v) => !!v || 'This field is required']"
+            :items="genders"
+            label="Gender"
+            outlined
+          ></v-autocomplete>
+        </v-row>
 
         <v-row align="center" justify="center">
           <v-text-field
@@ -97,7 +108,7 @@
             dense
             :items="classes"
             item-text="name"
-            :rules="[(v) => !!v || 'This field is required']"
+            :rules="[required]"
             label="What classes can you teach?"
             multiple
             chips
@@ -213,30 +224,37 @@
 import firebase from "firebase";
 export default {
   data: () => ({
-    valid: true,
-    firstName: null,
-    lastName: null,
-    grade: null,
-    grades: ["9", "10", "11", "12"],
-    selectedClasses: [],
-    maxTut: null,
-    desc: null,
-    email: firebase.auth().currentUser.email,
-    facebook: "",
-    instagram: "",
-    phonenumber: null,
     // valid: true,
-    // firstName: "r",
-    // lastName: "b",
+    // firstName: null,
+    // lastName: null,
     // grade: null,
     // grades: ["9", "10", "11", "12"],
     // selectedClasses: [],
-    // maxTut: 2,
-    // desc: "f",
+    // stringClasses: [],
+    // gender: null,
+    // genders: ["Male", "Female", "Other"],
+    // maxTut: null,
+    // desc: null,
     // email: firebase.auth().currentUser.email,
-    // facebook: "s",
+    // facebook: "",
     // instagram: "",
-    // phonenumber: 510,
+    // phonenumber: null,
+
+    valid: true,
+    firstName: "Rithwik",
+    lastName: "Vaidun",
+    grade: null,
+    grades: ["9", "10", "11", "12"],
+    selectedClasses: [],
+    stringClasses: [],
+    gender: "Male",
+    genders: ["Male", "Female", "Other"],
+    maxTut: 2,
+    desc: "I like to teach people in math",
+    email: firebase.auth().currentUser.email,
+    facebook: "Rvaidun",
+    instagram: "@riithwik",
+    phonenumber: 5105886879,
 
     classes: [
       { header: "Sciences" },
@@ -290,6 +308,7 @@ export default {
   methods: {
     submit() {
       if (this.$refs.form.validate()) {
+        this.stringClasses = this.selectedClasses.map((a) => a.name);
         firebase
           .firestore()
           .collection("OurTutors")
@@ -308,12 +327,21 @@ export default {
             facebook: this.facebook,
             instagram: this.instagram,
             phonenumber: this.phonenumber,
+            stringClasses: this.stringClasses,
           });
         this.$router.push("/OurTutors");
       }
     },
+    required(value) {
+      if (value instanceof Array && value.length == 0) {
+        return "Required.";
+      }
+      return !!value || "Required.";
+    },
     test() {
       console.log(JSON.stringify(this.selectedClasses));
+      this.stringClasses = this.selectedClasses.map((a) => a.name);
+      console.log(this.stringClasses);
     },
   },
 };
