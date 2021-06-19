@@ -52,9 +52,9 @@ const routes = [
     component: () => import("../components/Replies.vue"),
   },
   {
-    path: "/FindATutor",
-    name: "FindATutor",
-    component: () => import("../components/FindATutor.vue"),
+    path: "/ApplyForATutor",
+    name: "ApplyForATutor",
+    component: () => import("../components/ApplyForATutor.vue"),
   },
   {
     path: "/Admin",

@@ -1,7 +1,7 @@
 <template>
   <body>
     <div class="half">
-      <h1>Find a Tutor</h1>
+      <h1>Apply For A Tutor</h1>
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-text-field
           v-model="name"
