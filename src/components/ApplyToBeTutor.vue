@@ -255,7 +255,6 @@ export default {
     facebook: "Rvaidun",
     instagram: "@riithwik",
     phonenumber: 5105886879,
-
     classes: [
       { header: "Sciences" },
       { name: "AP Biology" },

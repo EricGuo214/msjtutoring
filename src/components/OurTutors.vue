@@ -13,28 +13,7 @@
               Qualified classes:
               <v-list-item v-for="(cls, i) in t.classes" :key="i">
                 <v-list-item-title v-text="cls"></v-list-item-title>
-                <v-btn
-                  v-if="!wasAuthor(t)"
-                  class="ma-2"
-                  color="primary"
-                  @click="
-                    snackbar = true;
-                    sendNotice(t.id, cls);
-                  "
-                >
-                  <v-snackbar
-                    v-model="snackbar"
-                    :timeout="timeout"
-                    rounded="pill"
-                    top
-                  >
-                    You have successfully sent a request! Frequently check your
-                    inbox for confirmation.
-                    <template> Close </template>
-                  </v-snackbar>
-                  Sign up
-                  <v-icon dark right>mdi-checkbox-marked-circle </v-icon>
-                </v-btn>
+
               </v-list-item>
               Number of available spaces left:
               <div class="primary--text mb-2" bold>{{ t.maxTut }}</div>
@@ -106,19 +85,55 @@
                       <v-list-item-title>{{ d }}</v-list-item-title>
                     </v-list-item-content>
                   </v-list-item>
+
+
+
+                  <h4>Contact Information</h4>
                   <v-list>
-                    <v-list-item-title>Contact Info</v-list-item-title>
-                    <v-list-item v-for="(c, i) in t.contactInfo" :key="i">
+                    <v-list-item>
                       <v-list-item-avatar>
                         <v-avatar size="50px" tile>
-                          <img :src="tiles[i].img" />
+                          <img
+                            :src="`https://img-authors.flaticon.com/google.jpg`"
+                            :alt="'google logo'"
+                          />
                         </v-avatar>
                       </v-list-item-avatar>
                       <v-list-item-content>
-                        {{ c }}
+                        {{t.email}}
                       </v-list-item-content>
                     </v-list-item>
+                    <v-list-item>
+                      <v-list-item-avatar>
+                        <v-avatar size="50px" tile>
+                          <img
+                            :src="
+                              `https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png`
+                            "
+                            :alt="'facebook logo'"
+                          />
+                        </v-avatar>
+                      </v-list-item-avatar>
+                      <v-list-item-content>
+                        {{t.facebook}}
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-avatar>
+                        <v-avatar size="50px" tile>
+                          <img
+                            :src="
+                              `https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg`
+                            "
+                            :alt="'instagram logo'"
+                          />
+                        </v-avatar>
+                      </v-list-item-avatar>
+                      {{t.instagram}}
+                    </v-list-item>
                   </v-list>
+
+
                 </v-card>
               </div>
             </v-expand-transition>
