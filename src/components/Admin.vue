@@ -112,7 +112,7 @@
         <v-col v-for="(pair, i) in pairs" :key="i" cols="12" sm="3">
           <v-card class="mx-auto" max-width="344" outlined>
             <v-card-title class="title primary--text pl=0">
-              {{ pair.tutee }}
+              {{ pair.tutee.name }}
             </v-card-title>
             <v-list-item v-for="(cls, x) in pair.classes" :key="x">
               {{ cls.class }} --- {{ cls.tutor.name }}</v-list-item
@@ -265,7 +265,7 @@ export default {
         .firestore()
         .collection("Pairs")
         .doc(tutee.name)
-        .set({ tutee: tutee.name });
+        .set({ tutee: tutee });
 
       firebase
         .firestore()
@@ -274,8 +274,7 @@ export default {
         .collection("classes")
         .doc(this.clicked)
         .set({
-          tutor: tutor,
-          tutee: tutee,
+          tutor: tutor
         });
 
       const dec = firebase.firestore.FieldValue.increment(-1);
