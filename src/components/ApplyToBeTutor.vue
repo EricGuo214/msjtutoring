@@ -52,6 +52,7 @@
             </v-text-field>
           </v-col>
         </v-row>
+
         <v-row align="center" justify="center">
           <v-col cols="12" md="5">
             <v-text-field
@@ -82,6 +83,16 @@
             ></v-select>
           </v-col>
         </v-row>
+        <v-row md="5">
+          <v-autocomplete
+            v-model="gender"
+            dense
+            :rules="[(v) => !!v || 'This field is required']"
+            :items="genders"
+            label="Gender"
+            outlined
+          ></v-autocomplete>
+        </v-row>
 
         <v-row align="center" justify="center">
           <v-text-field
@@ -97,7 +108,7 @@
             dense
             :items="classes"
             item-text="name"
-            :rules="[(v) => !!v || 'This field is required']"
+            :rules="[required]"
             label="What classes can you teach?"
             multiple
             chips
@@ -219,17 +230,31 @@ export default {
     grade: null,
     grades: ["9", "10", "11", "12"],
     selectedClasses: [],
+    stringClasses: [],
+    gender: null,
+    genders: ["Male", "Female", "Other"],
     maxTut: null,
     desc: null,
     email: firebase.auth().currentUser.email,
     facebook: "",
     instagram: "",
     phonenumber: null,
-    customClass: {
-      teacher: null,
-      sem1: null,
-      sem2: null,
-    },
+
+    // valid: true,
+    // firstName: "Rithwik",
+    // lastName: "Vaidun",
+    // grade: null,
+    // grades: ["9", "10", "11", "12"],
+    // selectedClasses: [],
+    // stringClasses: [],
+    // gender: "Male",
+    // genders: ["Male", "Female", "Other"],
+    // maxTut: 2,
+    // desc: "I like to teach people in math",
+    // email: firebase.auth().currentUser.email,
+    // facebook: "Rvaidun",
+    // instagram: "@riithwik",
+    // phonenumber: 5105886879,
 
     classes: [
       { header: "Sciences" },
@@ -293,6 +318,7 @@ export default {
             fName: this.firstName,
             lName: this.lastName,
             grade: this.grade,
+            gender: this.gender,
             maxTut: this.maxTut,
             days: this.selectedDays,
             desc: this.desc,
@@ -305,8 +331,16 @@ export default {
         this.$router.push("/OurTutors");
       }
     },
+    required(value) {
+      if (value instanceof Array && value.length == 0) {
+        return "Required.";
+      }
+      return !!value || "Required.";
+    },
     test() {
       console.log(JSON.stringify(this.selectedClasses));
+      this.stringClasses = this.selectedClasses.map((a) => a.name);
+      console.log(this.stringClasses);
     },
   },
 };

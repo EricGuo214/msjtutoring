@@ -67,13 +67,13 @@
             </v-list-item-icon>
             <v-list-item-title>Inbox</v-list-item-title>
           </v-list-item>
+          <v-list-item to="/Admin" v-if="isAdmin">
+            <v-list-item-icon>
+              <v-icon>mdi-head-cog</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Admin</v-list-item-title>
+          </v-list-item>
         </v-list-item-group>
-        <v-list-item to="/Admin">
-          <v-list-item-icon>
-            <v-icon>mdi-head-cog</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>Admin</v-list-item-title>
-        </v-list-item>
       </v-list>
     </v-navigation-drawer>
 
@@ -94,18 +94,50 @@ export default {
       drawer: false,
       group: null,
       user: null,
+      isAdmin: false,
     };
   },
   created() {
     firebase.auth().onAuthStateChanged((user) => {
       this.user = user;
+      if (firebase.auth().currentUser != null) {
+        user.getIdTokenResult().then((idTokenResult) => {
+          // console.log(idTokenResult.claims)
+          if (idTokenResult.claims.admin) {
+            this.isAdmin = true;
+          }
+        });
+      }
+      // let currUser = firebase.auth().currentUser;
+      // currUser.getIdTokenResult().then((idTokenResult) => {
+      //   if (idTokenResult.claims.isAdmin) {
+      //     this.isAdmin = true;
+      //   }
     });
   },
   methods: {
     onSignout(e) {
       e.stopPropagation();
       firebase.auth().signOut();
+      this.isAdmin = false;
     },
+    // isAdmin() {
+    // return false;
+    // let user = firebase.auth().currentUser;
+    // if (user == null) {
+    //   return false;
+    // }
+    // let result = false;
+    // user
+    //   .getIdTokenResult()
+    //   .then((idTokenResult) => {
+    //     if (idTokenResult.claims.isAdmin) {
+    //       result = true;
+    //     }
+    //   })
+    //   .catch(() => {});
+    // return result;
+    // },
   },
 };
 </script>
