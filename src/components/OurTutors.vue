@@ -94,11 +94,27 @@
                             :alt="'google logo'"
                           />
                         </v-avatar>
-
                       </v-list-item-avatar>
                       <v-list-item-content>
                         <v-list-item-content v-if="t.email.length > 0">
                           {{t.email}}
+                        </v-list-item-content>
+                      </v-list-item-content>
+                    </v-list-item>
+                    <v-list-item>
+                      <v-list-item-avatar>
+                        <v-avatar size="50px" tile>
+                          <img
+                            :src="
+                              `https://cdn.iconscout.com/icon/free/png-512/apple-phone-2-493154.png`
+                            "
+                            :alt="'phone logo'"
+                          />
+                        </v-avatar>
+                      </v-list-item-avatar>
+                      <v-list-item-content>
+                        <v-list-item-content>
+                          {{t.phonenumber}}
                         </v-list-item-content>
                       </v-list-item-content>
                     </v-list-item>
@@ -137,6 +153,7 @@
                           </v-list-item-content>
                         </v-list-item-content>
                       </v-list-item>
+
                   </v-list>
                 </v-card>
               </div>
