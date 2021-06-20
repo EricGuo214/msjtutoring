@@ -39,9 +39,7 @@
           </v-dialog>
         </template>
         <template v-slot:[`item.actions`]="{ item }">
-          <v-icon @click.prevent="open(item)">
-            mdi-school
-          </v-icon>
+          <v-icon @click.prevent="open(item)"> mdi-school </v-icon>
         </template>
       </v-data-table>
     </v-card>
@@ -113,7 +111,14 @@
       <v-row no-gutters>
         <v-col v-for="(pair, i) in pairs" :key="i" cols="12" sm="3">
           <v-card class="mx-auto" max-width="344" outlined>
-            <v-list-item three-line>
+            <v-card-title class="title primary--text pl=0">
+              {{ pair.tutee }}
+            </v-card-title>
+            <v-list-item v-for="(cls, x) in pair.classes" :key="x">
+              {{ cls.class }} --- {{ cls.tutor.name }}</v-list-item
+            >
+
+            <!-- <v-list-item three-line>
               <v-list-item-content>
                 <v-list-item-title class="text-h5 mb-1">
                   {{ pair.tutee.name }}
@@ -122,7 +127,7 @@
                   >{{ cls.name }} --- {{ pair.tutor.name }}</v-list-item
                 >
               </v-list-item-content>
-            </v-list-item>
+            </v-list-item> -->
           </v-card>
         </v-col>
       </v-row>
@@ -231,16 +236,12 @@ export default {
         });
     },
     addToAdminCollection() {
-      firebase
-        .firestore()
-        .collection("Admins")
-        .doc(this.emailOfNewAdmin)
-        .set({
-          email: this.emailOfNewAdmin,
-          adder: firebase.auth().currentUser.email,
-        });
+      firebase.firestore().collection("Admins").doc(this.emailOfNewAdmin).set({
+        email: this.emailOfNewAdmin,
+        adder: firebase.auth().currentUser.email,
+      });
     },
-    rowClickTutor: function(item, row) {
+    rowClickTutor: function (item, row) {
       if (item.maxTut == 0) {
         row.disable(true);
       }
@@ -253,7 +254,7 @@ export default {
       }
       this.gradeT = this.tutor.classes;
     },
-    rowClickTutee: function(tutee, j, i) {
+    rowClickTutee: function (tutee, j, i) {
       tutee.clsID = i;
       this.tutee = tutee;
       this.clicked = j;
@@ -263,19 +264,24 @@ export default {
       firebase
         .firestore()
         .collection("Pairs")
-        .doc()
+        .doc(tutee.name)
+        .set({ tutee: tutee.name });
+
+      firebase
+        .firestore()
+        .collection("Pairs")
+        .doc(tutee.name)
+        .collection("classes")
+        .doc(this.clicked)
         .set({
           tutor: tutor,
           tutee: tutee,
         });
+
       const dec = firebase.firestore.FieldValue.increment(-1);
-      firebase
-        .firestore()
-        .collection("OurTutors")
-        .doc(tutor.email)
-        .update({
-          maxTut: dec,
-        });
+      firebase.firestore().collection("OurTutors").doc(tutor.email).update({
+        maxTut: dec,
+      });
 
       firebase
         .firestore()
@@ -346,7 +352,23 @@ export default {
         querySnapshot.forEach((doc) => {
           let pair = doc.data();
           pair.id = doc.id;
-          fArray.push(pair);
+          firebase
+            .firestore()
+            .collection("Pairs")
+            .doc(doc.id)
+            .collection("classes")
+            .get()
+            .then((querySnapshot2) => {
+              pair.classes = [];
+              querySnapshot2.forEach((doc2) => {
+                // doc.data() is never undefined for query doc snapshots
+                //console.log(doc2.id, " => ", doc2.data());
+                let cls = { class: doc2.id, tutor: doc2.data().tutor };
+                console.log(cls);
+                pair.classes.push(cls);
+              });
+              fArray.push(pair);
+            });
         });
         this.pairs = fArray;
       });
