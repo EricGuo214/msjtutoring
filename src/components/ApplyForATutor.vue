@@ -12,6 +12,16 @@
           required
         ></v-text-field>
 
+        <v-col>
+            <v-text-field
+              v-model.number="phonenumber"
+              type="number"
+              label="Phone Number"
+              :rules="[(v) => !!v || 'This field is required']"
+            >
+            </v-text-field>
+          </v-col>
+
         <v-autocomplete
           v-model="selectedClasses"
           dense
@@ -36,6 +46,66 @@
           outlined
         ></v-text-field>
 
+        <h2>Contact Information</h2>
+        <v-list>
+          <v-list-item>
+            <v-list-item-avatar>
+              <v-avatar size="50px" tile>
+                <img
+                  :src="`https://img-authors.flaticon.com/google.jpg`"
+                  :alt="'google logo'"
+                />
+              </v-avatar>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-text-field
+                v-model="email"
+                :rules="[(v) => !!v || 'This field is required']"
+                label="E-mail"
+                required
+              ></v-text-field>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-avatar>
+              <v-avatar size="50px" tile>
+                <img
+                  :src="
+                    `https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png`
+                  "
+                  :alt="'facebook logo'"
+                />
+              </v-avatar>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-text-field
+                v-model="facebook"
+                :rules="[(v) => !!v || 'This field is required']"
+                label="Facebook Username"
+                required
+              ></v-text-field>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-avatar>
+              <v-avatar size="50px" tile>
+                <img
+                  :src="
+                    `https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg`
+                  "
+                  :alt="'instagram logo'"
+                />
+              </v-avatar>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-text-field
+                v-model="instagram"
+                label="Instagram handle (optional)"
+              ></v-text-field>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+
         <v-dialog v-model="dialog" width="500">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
@@ -51,7 +121,7 @@
 
           <v-card>
             <v-card-title>
-              Sucess!
+              Success!
             </v-card-title>
 
             <v-card-text>

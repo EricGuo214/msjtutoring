@@ -40,11 +40,11 @@
             </v-list-item-icon>
             <v-list-item-title>Apply To be a Tutor</v-list-item-title>
           </v-list-item>
-          <v-list-item to="/FindATutor">
+          <v-list-item to="/ApplyForATutor">
             <v-list-item-icon>
               <v-icon>mdi-account-search</v-icon>
             </v-list-item-icon>
-            <v-list-item-title>Find A Tutor</v-list-item-title>
+            <v-list-item-title>Apply For a Tutor</v-list-item-title>
           </v-list-item>
 
           <v-list-item to="/OurTutors">
