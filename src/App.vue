@@ -2,7 +2,7 @@
   <v-app>
     <v-app-bar app color="primary" dark>
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
-      <v-toolbar-title>MSJ Tutoring</v-toolbar-title>
+      <v-toolbar-title>Mission Tutoring</v-toolbar-title>
 
       <v-spacer></v-spacer>
       <v-menu offset-y v-if="user">
