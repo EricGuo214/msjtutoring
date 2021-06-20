@@ -7,26 +7,38 @@
           v-model="name"
           dense
           :rules="[(v) => !!v || 'This field is required']"
-          label="Full Name"
+          label="Name"
           outlined
           required
         ></v-text-field>
 
-        <v-combobox
+        <v-col>
+            <v-text-field
+              v-model.number="phonenumber"
+              type="number"
+              label="Phone Number"
+              :rules="[(v) => !!v || 'This field is required']"
+            >
+            </v-text-field>
+          </v-col>
+
+        <v-autocomplete
           v-model="selectedClasses"
           dense
+          :rules="[(v) => !!v || 'This field is required']"
           :items="classes"
-          item-text="name"
-          :rules="[required]"
+          :menu-props="{ maxHeight: '400' }"
           label="Select the classes you need help in"
           multiple
           chips
-          :menu-props="{ maxHeight: '400' }"
           required
-          return-object
         >
-        </v-combobox>
-
+          <template v-slot:item="data">
+            <template>
+              <v-list-item-content v-text="data.item"></v-list-item-content>
+            </template>
+          </template>
+        </v-autocomplete>
         <br />
         <v-text-field
           v-model="notes"
@@ -34,7 +46,67 @@
           outlined
         ></v-text-field>
 
-        <!-- <v-dialog v-model="dialog" width="500">
+        <h2>Contact Information</h2>
+        <v-list>
+          <v-list-item>
+            <v-list-item-avatar>
+              <v-avatar size="50px" tile>
+                <img
+                  :src="`https://img-authors.flaticon.com/google.jpg`"
+                  :alt="'google logo'"
+                />
+              </v-avatar>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-text-field
+                v-model="email"
+                :rules="[(v) => !!v || 'This field is required']"
+                label="E-mail"
+                required
+              ></v-text-field>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-avatar>
+              <v-avatar size="50px" tile>
+                <img
+                  :src="
+                    `https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png`
+                  "
+                  :alt="'facebook logo'"
+                />
+              </v-avatar>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-text-field
+                v-model="facebook"
+                :rules="[(v) => !!v || 'This field is required']"
+                label="Facebook Username"
+                required
+              ></v-text-field>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item>
+            <v-list-item-avatar>
+              <v-avatar size="50px" tile>
+                <img
+                  :src="
+                    `https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg`
+                  "
+                  :alt="'instagram logo'"
+                />
+              </v-avatar>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-text-field
+                v-model="instagram"
+                label="Instagram handle (optional)"
+              ></v-text-field>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+
+        <v-dialog v-model="dialog" width="500">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               color="primary"
@@ -49,7 +121,7 @@
 
           <v-card>
             <v-card-title>
-              Sucess!
+              Success!
             </v-card-title>
 
             <v-card-text>
@@ -64,17 +136,12 @@
               <v-btn color="primary" to=/inbox text @click="dialog = false">
                 Inbox
               </v-btn>
-
               <v-btn color="primary" to=/ text @click="dialog = false">
                 Home
               </v-btn>
             </v-card-actions>
           </v-card>
-        </v-dialog> -->
-        <v-btn color="primary" @click="post" :disabled="!isValid">Submit</v-btn>
-        <v-btn color="primary" @click="test">
-          test
-        </v-btn>
+        </v-dialog>
       </v-form>
     </div>
   </body>
@@ -89,38 +156,36 @@ export default {
     dialog: false,
     name: "",
     selectedClasses: [],
-
     notes: "",
-
+    
     classes: [
       { header: "Sciences" },
-      { name: "AP Biology" },
-      { name: "AP Chemistry" },
-      { name: "AP Computer Science A" },
-      { name: "AP Physics 1" },
-      { name: "AP Physics C" },
-      { name: "Physics" },
-      { name: "Physics in the Universe" },
-      { name: "Biology" },
-      { name: "Chemistry" },
-      { name: "Living Earth" },
+      "AP Biology",
+      "AP Chemistry",
+      "AP Computer Science A",
+      "AP Physics",
+      "Physics",
+      "Physics in the Universe",
+      "Biology",
+      "Chemistry",
+      "Living Earth",
       { divider: true },
 
       { header: "Languages" },
-      { name: "AP Spanish" },
-      { name: "AP Chinese" },
+      "AP Spanish",
+      "AP Chinese",
       { divider: true },
 
       { header: "Maths" },
-      { name: "AP Statistics" },
-      { name: "AP Calculus AB" },
-      { name: "AP Calculus BC" },
-      { name: "Calculus" },
-      { name: "Precalculus" },
-      { name: "Algebra 2/Trig" },
-      { name: "Algebra 2" },
-      { name: "Trig" },
-      { name: "Geometry" },
+      "AP Statistics",
+      "AP Calculus AB",
+      "AP Calculus BC",
+      "Calculus",
+      "Precalculus",
+      "Algebra 2/Trig",
+      "Algebra 2",
+      "Trig",
+      "Geometry",
     ],
   }),
 
@@ -133,36 +198,18 @@ export default {
           .doc()
           .set({
             name: this.name,
-            classes: this.selectedClasses.map((a) => ({
-              name: a.name,
-              p: false,
-            })),
-
+            classes: this.selectedClasses,
             notes: this.notes,
           });
-        this.name = "";
-        this.selectedClasses = [];
-        this.notes = "";
       }
-    },
-    test() {
-      console.log(this.selectedClasses);
-      console.log(
-        this.selectedClasses.map((a) => ({ name: a.name, p: false }))
-      );
-    },
-    required(value) {
-      if (value instanceof Array && value.length == 0) {
-        return "Required.";
-      }
-      return !!value || "Required.";
+      
     },
   },
   computed: {
     isValid() {
-      return this.name != "" && this.selectedClasses.length != 0;
-    },
-  },
+      return (this.name != "" && this.selectedClasses.length != 0)
+    }
+  }
 };
 </script>
 
