@@ -87,7 +87,7 @@
                   <h4>Contact Information</h4>
                   <v-list>
                     <v-list-item>
-                      <v-list-item-avatar>
+                      <v-list-item-avatar v-if="t.email.length > 0">
                         <v-avatar size="50px" tile>
                           <img
                             :src="`https://img-authors.flaticon.com/google.jpg`"
@@ -97,13 +97,13 @@
 
                       </v-list-item-avatar>
                       <v-list-item-content>
-                        <v-list-item-content>
+                        <v-list-item-content v-if="t.email.length > 0">
                           {{t.email}}
                         </v-list-item-content>
                       </v-list-item-content>
                     </v-list-item>
                     <v-list-item>
-                      <v-list-item-avatar>
+                      <v-list-item-avatar v-if="t.facebook.length > 0">
                         <v-avatar size="50px" tile>
                           <img
                             :src="
@@ -114,28 +114,29 @@
                         </v-avatar>
                       </v-list-item-avatar>
                       <v-list-item-content>
-                        <v-list-item-content>
+                        <v-list-item-content v-if="t.facebook.length > 0">
                           {{t.facebook}}
                         </v-list-item-content>
                       </v-list-item-content>
                     </v-list-item>
-                    <v-list-item>
-                      <v-list-item-avatar>
-                        <v-avatar size="50px" tile>
-                          <img
-                            :src="
-                              `https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg`
-                            "
-                            :alt="'instagram logo'"
-                          />
-                        </v-avatar>
-                      </v-list-item-avatar>
-                      <v-list-item-content>
+
+                      <v-list-item>
+                        <v-list-item-avatar  v-if="t.instagram.length > 0">
+                          <v-avatar size="50px" tile>
+                            <img
+                              :src="
+                                `https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg`
+                              "
+                              :alt="'instagram logo'"
+                            />
+                          </v-avatar>
+                        </v-list-item-avatar>
                         <v-list-item-content>
-                          {{t.instagram}}
+                          <v-list-item-content v-if="t.instagram.length > 0">
+                            {{t.instagram}}
+                          </v-list-item-content>
                         </v-list-item-content>
-                      </v-list-item-content>
-                    </v-list-item>
+                      </v-list-item>
                   </v-list>
                 </v-card>
               </div>
