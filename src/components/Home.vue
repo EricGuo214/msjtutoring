@@ -1,3 +1,6 @@
+<head>
+  <title>Mission Tutoring</title>
+</head>
 <template>
   <body>
     <div>
