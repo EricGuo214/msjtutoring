@@ -12,7 +12,7 @@
             <v-card-text>
               Qualified classes:
               <v-list-item v-for="(cls, i) in t.classes" :key="i">
-                <v-list-item-title v-text="cls"></v-list-item-title>
+                  <v-list-item-content v-text="cls.name"></v-list-item-content>
               </v-list-item>
               Number of available spaces left:
               <div class="primary--text mb-2" bold>{{ t.maxTut }}</div>
@@ -75,16 +75,16 @@
             <v-expand-transition>
               <div v-show="t.show">
                 <v-card class="mx-auto" max-width="344" outlined>
-                  <v-list-item-title>About</v-list-item-title>
+                <h4>About</h4>
                   <v-list-item-content>{{ t.desc }}</v-list-item-content>
-                  <v-list-item-title>Time Availibility</v-list-item-title>
+                  <h4>Time Availibility</h4>
 
                   <v-list-item v-for="d in t.days" :key="d">
                     <v-list-item-content>
-                      <v-list-item-title>{{ d }}</v-list-item-title>
+                      {{ d }}
                     </v-list-item-content>
                   </v-list-item>
-                  <h2>Contact Information</h2>
+                  <h4>Contact Information</h4>
                   <v-list>
                     <v-list-item>
                       <v-list-item-avatar>
