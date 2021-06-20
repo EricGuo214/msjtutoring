@@ -7,38 +7,35 @@
           v-model="name"
           dense
           :rules="[(v) => !!v || 'This field is required']"
-          label="Name"
+          label="Full name"
           outlined
           required
         ></v-text-field>
 
         <v-col>
-            <v-text-field
-              v-model.number="phonenumber"
-              type="number"
-              label="Phone Number"
-              :rules="[(v) => !!v || 'This field is required']"
-            >
-            </v-text-field>
-          </v-col>
+          <v-text-field
+            v-model.number="phonenumber"
+            type="number"
+            label="Phone Number"
+            :rules="[(v) => !!v || 'This field is required']"
+          >
+          </v-text-field>
+        </v-col>
 
-        <v-autocomplete
+        <v-combobox
           v-model="selectedClasses"
           dense
-          :rules="[(v) => !!v || 'This field is required']"
           :items="classes"
           :menu-props="{ maxHeight: '400' }"
+          item-text="name"
+          :rules="[required]"
           label="Select the classes you need help in"
           multiple
           chips
           required
+          return-object
         >
-          <template v-slot:item="data">
-            <template>
-              <v-list-item-content v-text="data.item"></v-list-item-content>
-            </template>
-          </template>
-        </v-autocomplete>
+        </v-combobox>
         <br />
         <v-text-field
           v-model="notes"
@@ -133,12 +130,12 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <v-btn color="primary" to=/inbox text @click="dialog = false">
+              <!-- <v-btn color="primary" to=/inbox text @click="dialog = false">
                 Inbox
               </v-btn>
               <v-btn color="primary" to=/ text @click="dialog = false">
                 Home
-              </v-btn>
+              </v-btn> -->
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -156,36 +153,45 @@ export default {
     dialog: false,
     name: "",
     selectedClasses: [],
+    phonenumber: "",
+    email: "",
+    facebook: "",
+    instagram: "",
     notes: "",
-    
+    gender: null,
+    genders: ["Male", "Female", "Other"],
+
     classes: [
       { header: "Sciences" },
-      "AP Biology",
-      "AP Chemistry",
-      "AP Computer Science A",
-      "AP Physics",
-      "Physics",
-      "Physics in the Universe",
-      "Biology",
-      "Chemistry",
-      "Living Earth",
+      { name: "AP Biology" },
+      { name: "AP Chemistry" },
+      { name: "AP Computer Science A" },
+      { name: "AP Physics 1" },
+      { name: "AP Physics C" },
+      { name: "Physics" },
+      { name: "Physics in the Universe" },
+      { name: "Biology" },
+      { name: "Chemistry" },
+      { name: "Living Earth" },
+      { divider: true },
+      { header: "Languages" },
       { divider: true },
 
       { header: "Languages" },
-      "AP Spanish",
-      "AP Chinese",
+      { name: "AP Spanish" },
+      { name: "AP Chinese" },
       { divider: true },
 
       { header: "Maths" },
-      "AP Statistics",
-      "AP Calculus AB",
-      "AP Calculus BC",
-      "Calculus",
-      "Precalculus",
-      "Algebra 2/Trig",
-      "Algebra 2",
-      "Trig",
-      "Geometry",
+      { name: "AP Statistics" },
+      { name: "AP Calculus AB" },
+      { name: "AP Calculus BC" },
+      { name: "Calculus" },
+      { name: "Precalculus" },
+      { name: "Algebra 2/Trig" },
+      { name: "Algebra 2" },
+      { name: "Trig" },
+      { name: "Geometry" },
     ],
   }),
 
@@ -198,18 +204,32 @@ export default {
           .doc()
           .set({
             name: this.name,
-            classes: this.selectedClasses,
+            classes: this.selectedClasses.map((a) => ({
+              name: a.name,
+              p: false,
+            })),
             notes: this.notes,
+            email: this.email,
+            facebook: this.facebook,
+            instagram: this.instagram,
           });
+        this.name = "";
+        this.selectedClasses = [];
+        this.notes = "";
       }
-      
+    },
+    required(value) {
+      if (value instanceof Array && value.length == 0) {
+        return "Required.";
+      }
+      return !!value || "Required.";
     },
   },
   computed: {
     isValid() {
-      return (this.name != "" && this.selectedClasses.length != 0)
-    }
-  }
+      return this.name != "" && this.selectedClasses.length != 0;
+    },
+  },
 };
 </script>
 
