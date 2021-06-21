@@ -119,19 +119,19 @@ export default {
   }),
 
   created() {
-    const db = firebase.firestore();
-    const ref = db.collection("questions");
-
-    ref.onSnapshot((querySnapshot) => {
-      var fArray = [];
-      querySnapshot.forEach((doc) => {
-        let f = doc.data();
-        f.id = doc.id;
-        f.isEditing = false;
-        fArray.push(f);
+    firebase
+      .firestore()
+      .collection("questions")
+      .onSnapshot((querySnapshot) => {
+        var fArray = [];
+        querySnapshot.forEach((doc) => {
+          let f = doc.data();
+          f.id = doc.id;
+          f.isEditing = false;
+          fArray.push(f);
+        });
+        this.questions = fArray;
       });
-      this.questions = fArray;
-    });
   },
   computed: {
     filtQ: function() {

@@ -260,70 +260,69 @@ export default {
       this.clicked = j;
       console.log(this.clicked, i);
     },
-    pair(tutor, tutee) {
-      // firebase
-      //   .firestore()
-      //   .collection("Pairs")
-      //   .doc(tutee.name)
-      //   .set({ tutee: tutee });
+    // pair(tutor, tutee) {
+    //   // firebase
+    //   //   .firestore()
+    //   //   .collection("Pairs")
+    //   //   .doc(tutee.name)
+    //   //   .set({ tutee: tutee });
 
-      //Each class is unique for the tutee
-      // for tutees to find their tutor
-      firebase
-        .firestore()
-        .collection("Tutees")
-        .doc(tutee.email)
-        .collection("classes")
-        .doc(this.clicked)
-        .set({
-          tutor: tutor.email
-        })
+    //   //Each class is unique for the tutee
+    //   // for tutees to find their tutor
+    //   firebase
+    //     .firestore()
+    //     .collection("Tutees")
+    //     .doc(tutee.email)
+    //     .collection("classes")
+    //     .doc(this.clicked)
+    //     .set({
+    //       tutor: tutor.email,
+    //     });
 
-      //for tutors to find their tutees
-      firebase
-        .firestore()
-        .collection("OurTutors")
-        .doc(tutor.email)
-        .collection("classes")
-        .doc(this.clicked)
-        .collection("correspondingTutees")
-        .doc(tutee.email)
-        .set({
-          tutee: tutee.email
-        })
+    //   //for tutors to find their tutees
+    //   firebase
+    //     .firestore()
+    //     .collection("OurTutors")
+    //     .doc(tutor.email)
+    //     .collection("classes")
+    //     .doc(this.clicked)
 
-      const dec = firebase.firestore.FieldValue.increment(-1);
-      firebase
-        .firestore()
-        .collection("OurTutors")
-        .doc(tutor.email)
-        .update({
-          maxTut: dec,
-        });
+    //     .set({
+    //       tutee: tutee,
+    //     });
 
-      firebase
-        .firestore()
-        .collection("Tutees")
-        .doc(tutee.id)
-        .get()
-        .then((doc) => {
-          var classes = doc.data().classes;
-          var cls = classes[tutee.clsID];
-          cls.p = true;
-          classes[tutee.clsID] = cls;
-          firebase
-            .firestore()
-            .collection("Tutees")
-            .doc(tutee.id)
-            .update({ classes: classes });
-        });
+    //   const dec = firebase.firestore.FieldValue.increment(-1);
+    //   firebase
+    //     .firestore()
+    //     .collection("OurTutors")
+    //     .doc(tutor.email)
+    //     .update({
+    //       maxTut: dec,
+    //     });
 
-      this.tutor = {};
-      this.tutee = {};
-      this.selected1 = [];
-      this.selected2 = [];
-      this.clicked = "";
-    },
+    //   firebase
+    //     .firestore()
+    //     .collection("Tutees")
+    //     .doc(tutee.id)
+    //     .get()
+    //     .then((doc) => {
+    //       var classes = doc.data().classes;
+    //       var cls = classes[tutee.clsID];
+    //       cls.p = true;
+    //       classes[tutee.clsID] = cls;
+    //       firebase
+    //         .firestore()
+    //         .collection("Tutees")
+    //         .doc(tutee.id)
+    //         .update({ classes: classes });
+    //     });
+
+    //   this.tutor = {};
+    //   this.tutee = {};
+    //   this.selected1 = [];
+    //   this.selected2 = [];
+    //   this.clicked = "";
+    // },
     test() {
       console.log(this.tutee);
       console.log(this.tutee.clsID);

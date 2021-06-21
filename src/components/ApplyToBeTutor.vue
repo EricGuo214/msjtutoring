@@ -224,37 +224,37 @@
 import firebase from "firebase";
 export default {
   data: () => ({
-    valid: true,
-    firstName: null,
-    lastName: null,
-    grade: null,
-    grades: ["9", "10", "11", "12"],
-    selectedClasses: [],
-    stringClasses: [],
-    gender: null,
-    genders: ["Male", "Female", "Other"],
-    maxTut: null,
-    desc: null,
-    email: firebase.auth().currentUser.email,
-    facebook: "",
-    instagram: "",
-    phonenumber: null,
-
     // valid: true,
-    // firstName: "Rithwik",
-    // lastName: "Vaidun",
+    // firstName: null,
+    // lastName: null,
     // grade: null,
     // grades: ["9", "10", "11", "12"],
     // selectedClasses: [],
     // stringClasses: [],
-    // gender: "Male",
+    // gender: null,
     // genders: ["Male", "Female", "Other"],
-    // maxTut: 2,
-    // desc: "I like to teach people in math",
+    // maxTut: null,
+    // desc: null,
     // email: firebase.auth().currentUser.email,
-    // facebook: "Rvaidun",
-    // instagram: "@riithwik",
-    // phonenumber: 5105886879,
+    // facebook: "",
+    // instagram: "",
+    // phonenumber: null,
+
+    valid: true,
+    firstName: "Rithwik",
+    lastName: "Vaidun",
+    grade: null,
+    grades: ["9", "10", "11", "12"],
+    selectedClasses: [],
+    stringClasses: [],
+    gender: "Male",
+    genders: ["Male", "Female", "Other"],
+    maxTut: 2,
+    desc: "I like to teach people in math",
+    email: firebase.auth().currentUser.email,
+    facebook: "Rvaidun",
+    instagram: "@riithwik",
+    phonenumber: 5105886879,
 
     classes: [
       { header: "Sciences" },
@@ -308,12 +308,11 @@ export default {
   methods: {
     submit() {
       if (this.$refs.form.validate()) {
-        firebase
-          .firestore()
-          .collection("OurTutors")
+        var db = firebase.firestore();
+        db.collection("OurTutors")
           .doc(firebase.auth().currentUser.email)
           .set({
-            classes: this.selectedClasses,
+            // classes: this.selectedClasses,
             name: this.firstName + " " + this.lastName,
             fName: this.firstName,
             lName: this.lastName,
@@ -328,6 +327,32 @@ export default {
             instagram: this.instagram,
             phonenumber: this.phonenumber,
           });
+        // for (cls in this.selectedClasses) {
+        //   firebase
+        //     .firestore()
+        //     .collection("OurTutors")
+        //     .doc(firebase.auth().currentUser.email)
+        //     .collection("Classes")
+        //     .doc(cls.name)
+        //     .set({
+        //       sem1: cls.sem1,
+        //       sem2: cls.sem2,
+        //       teacher: cls.teacher,
+        //       tutees: [],
+        //     });
+        // }
+        var batch = db.batch();
+        this.selectedClasses.forEach((cls) => {
+          var docRef = db
+            .collection("OurTutors")
+            .doc(firebase.auth().currentUser.email)
+            .collection("Classes")
+            .doc(cls.name);
+          cls.tutees = [];
+          batch.set(docRef, cls);
+        });
+        batch.commit();
+
         this.$router.push("/OurTutors");
       }
     },
