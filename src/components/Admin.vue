@@ -83,6 +83,7 @@
             rounded
             v-for="(cls, i) in item.classes"
             :key="cls.name"
+            :disabled="cls.p"
             :color="clicked == cls.name ? 'primary' : ''"
             @click="rowClickTutee(item, cls.name, i)"
           >
@@ -117,24 +118,17 @@
             <v-list-item v-for="(cls, x) in pair.classes" :key="x">
               {{ cls.class }} --- {{ cls.tutor.name }}</v-list-item
             >
-
-            <!-- <v-list-item three-line>
-              <v-list-item-content>
-                <v-list-item-title class="text-h5 mb-1">
-                  {{ pair.tutee.name }}
-                </v-list-item-title>
-                <v-list-item v-for="(cls, i) in pair.tutee.classes" :key="i"
-                  >{{ cls.name }} --- {{ pair.tutor.name }}</v-list-item
-                >
-              </v-list-item-content>
-            </v-list-item> -->
           </v-card>
         </v-col>
       </v-row>
     </v-container>
 
-    <v-card>
-      <v-text-field style="width: 50%" v-model="emailOfNewAdmin"></v-text-field>
+    <v-card max-width="344" outlined>
+      <v-text-field
+        class="half"
+        style="width: 70%"
+        v-model="emailOfNewAdmin"
+      ></v-text-field>
       <v-card-actions>
         <v-btn @click="makeAdmin">make admin </v-btn>
       </v-card-actions>
@@ -173,14 +167,13 @@ export default {
           value: "name",
         },
         { text: "Gender", value: "gender" },
-
         { text: "Classes", value: "sClass" },
         { text: "Email", value: "email" },
-        { text: "Phone Number", value: "phonenumber " },
+        { text: "Phone Number", value: "phonenumber" },
         { text: "Tutee spots left", value: "maxTut" },
         { text: "Grade", value: "grade" },
         { text: "Facebook", value: "facebook" },
-        { text: "More", value: "actions", sortable: false },
+        { text: "Grades", value: "actions", sortable: false },
       ],
       headers2: [
         {
@@ -191,6 +184,9 @@ export default {
         },
         { text: "Classes", value: "classes" },
         { text: "Paired?", value: "paired" },
+        { text: "Email", value: "email" },
+        { text: "Facebook", value: "facebook" },
+
         { text: "Notes", value: "notes" },
       ],
       gradeHeaders: [
@@ -236,12 +232,16 @@ export default {
         });
     },
     addToAdminCollection() {
-      firebase.firestore().collection("Admins").doc(this.emailOfNewAdmin).set({
-        email: this.emailOfNewAdmin,
-        adder: firebase.auth().currentUser.email,
-      });
+      firebase
+        .firestore()
+        .collection("Admins")
+        .doc(this.emailOfNewAdmin)
+        .set({
+          email: this.emailOfNewAdmin,
+          adder: firebase.auth().currentUser.email,
+        });
     },
-    rowClickTutor: function (item, row) {
+    rowClickTutor: function(item, row) {
       if (item.maxTut == 0) {
         row.disable(true);
       }
@@ -254,7 +254,7 @@ export default {
       }
       this.gradeT = this.tutor.classes;
     },
-    rowClickTutee: function (tutee, j, i) {
+    rowClickTutee: function(tutee, j, i) {
       tutee.clsID = i;
       this.tutee = tutee;
       this.clicked = j;
@@ -274,13 +274,17 @@ export default {
         .collection("classes")
         .doc(this.clicked)
         .set({
-          tutor: tutor
+          tutor: tutor,
         });
 
       const dec = firebase.firestore.FieldValue.increment(-1);
-      firebase.firestore().collection("OurTutors").doc(tutor.email).update({
-        maxTut: dec,
-      });
+      firebase
+        .firestore()
+        .collection("OurTutors")
+        .doc(tutor.email)
+        .update({
+          maxTut: dec,
+        });
 
       firebase
         .firestore()

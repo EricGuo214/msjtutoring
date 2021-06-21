@@ -4,17 +4,26 @@
     <v-container>
       <v-row>
         <v-col v-for="t in tutors" :key="t.id" cols="12" sm="4">
-          <v-card class="mx-auto" max-width="344">
-            <v-card-title class="title primary--text pl-0">
-              {{ t.fName }} {{ t.lName }}
-            </v-card-title>
-            <v-img height="200px" :src="t.photoURL"> </v-img>
+          <v-card class="mx-auto" max-width="400" outlined>
+            <v-list-item three-line>
+              <v-list-item-content>
+                <v-list-item-title class="text-h5 mb-1">
+                  {{ t.fName }} {{ t.lName }}
+                </v-list-item-title>
+                <v-list-item-subtitle>{{ t.desc }}</v-list-item-subtitle>
+              </v-list-item-content>
+
+              <v-list-item-avatar tile size="100" color="grey">
+                <v-img :src="t.photoURL"> </v-img
+              ></v-list-item-avatar>
+            </v-list-item>
+
             <v-card-text>
               Qualified classes:
               <v-list-item v-for="(cls, i) in t.classes" :key="i">
-                  <v-list-item-content v-text="cls.name"></v-list-item-content>
+                <v-list-item-content v-text="cls.name"></v-list-item-content>
               </v-list-item>
-              Number of available spaces left:
+              Availible spaces:
               <div class="primary--text mb-2" bold>{{ t.maxTut }}</div>
             </v-card-text>
             <v-card-actions>
@@ -74,88 +83,83 @@
 
             <v-expand-transition>
               <div v-show="t.show">
-                <v-card class="mx-auto" max-width="344" outlined>
-                <h4>About</h4>
-                  <v-list-item-content>{{ t.desc }}</v-list-item-content>
-                  <h4>Time Availibility</h4>
+                <h4>Time Availibility</h4>
 
-                  <v-list-item v-for="d in t.days" :key="d">
+                <v-list-item v-for="d in t.days" :key="d">
+                  <v-list-item-content>
+                    {{ d }}
+                  </v-list-item-content>
+                </v-list-item>
+                <h4>Contact Information</h4>
+                <v-list>
+                  <v-list-item>
+                    <v-list-item-avatar v-if="t.email.length > 0">
+                      <v-avatar size="50px" tile>
+                        <img
+                          :src="`https://img-authors.flaticon.com/google.jpg`"
+                          :alt="'google logo'"
+                        />
+                      </v-avatar>
+                    </v-list-item-avatar>
                     <v-list-item-content>
-                      {{ d }}
+                      <v-list-item-content v-if="t.email.length > 0">
+                        {{ t.email }}
+                      </v-list-item-content>
                     </v-list-item-content>
                   </v-list-item>
-                  <h4>Contact Information</h4>
-                  <v-list>
-                    <v-list-item>
-                      <v-list-item-avatar v-if="t.email.length > 0">
-                        <v-avatar size="50px" tile>
-                          <img
-                            :src="`https://img-authors.flaticon.com/google.jpg`"
-                            :alt="'google logo'"
-                          />
-                        </v-avatar>
-                      </v-list-item-avatar>
+                  <!-- <v-list-item>
+                    <v-list-item-avatar>
+                      <v-avatar size="50px" tile>
+                        <img
+                          :src="
+                            `https://cdn.iconscout.com/icon/free/png-512/apple-phone-2-493154.png`
+                          "
+                          :alt="'phone logo'"
+                        />
+                      </v-avatar>
+                    </v-list-item-avatar>
+                    <v-list-item-content>
                       <v-list-item-content>
-                        <v-list-item-content v-if="t.email.length > 0">
-                          {{t.email}}
-                        </v-list-item-content>
+                        {{ t.phonenumber }}
                       </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item>
-                      <v-list-item-avatar>
-                        <v-avatar size="50px" tile>
-                          <img
-                            :src="
-                              `https://cdn.iconscout.com/icon/free/png-512/apple-phone-2-493154.png`
-                            "
-                            :alt="'phone logo'"
-                          />
-                        </v-avatar>
-                      </v-list-item-avatar>
-                      <v-list-item-content>
-                        <v-list-item-content>
-                          {{t.phonenumber}}
-                        </v-list-item-content>
+                    </v-list-item-content>
+                  </v-list-item> -->
+                  <v-list-item>
+                    <v-list-item-avatar v-if="t.facebook.length > 0">
+                      <v-avatar size="50px" tile>
+                        <img
+                          :src="
+                            `https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png`
+                          "
+                          :alt="'facebook logo'"
+                        />
+                      </v-avatar>
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                      <v-list-item-content v-if="t.facebook.length > 0">
+                        {{ t.facebook }}
                       </v-list-item-content>
-                    </v-list-item>
-                    <v-list-item>
-                      <v-list-item-avatar v-if="t.facebook.length > 0">
-                        <v-avatar size="50px" tile>
-                          <img
-                            :src="
-                              `https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png`
-                            "
-                            :alt="'facebook logo'"
-                          />
-                        </v-avatar>
-                      </v-list-item-avatar>
-                      <v-list-item-content>
-                        <v-list-item-content v-if="t.facebook.length > 0">
-                          {{t.facebook}}
-                        </v-list-item-content>
-                      </v-list-item-content>
-                    </v-list-item>
+                    </v-list-item-content>
+                  </v-list-item>
 
-                      <v-list-item>
-                        <v-list-item-avatar  v-if="t.instagram.length > 0">
-                          <v-avatar size="50px" tile>
-                            <img
-                              :src="
-                                `https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg`
-                              "
-                              :alt="'instagram logo'"
-                            />
-                          </v-avatar>
-                        </v-list-item-avatar>
-                        <v-list-item-content>
-                          <v-list-item-content v-if="t.instagram.length > 0">
-                            {{t.instagram}}
-                          </v-list-item-content>
-                        </v-list-item-content>
-                      </v-list-item>
-
-                  </v-list>
-                </v-card>
+                  <v-list-item>
+                    <v-list-item-avatar v-if="t.instagram.length > 0">
+                      <v-avatar size="50px" tile>
+                        <img
+                          :src="
+                            `https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg`
+                          "
+                          :alt="'instagram logo'"
+                        />
+                      </v-avatar>
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                      <v-list-item-content v-if="t.instagram.length > 0">
+                        {{ t.instagram }}
+                      </v-list-item-content>
+                    </v-list-item-content>
+                  </v-list-item>
+                </v-list>
               </div>
             </v-expand-transition>
           </v-card>
@@ -172,26 +176,9 @@ export default {
     return {
       tutors: [],
       name: null,
-      clsd: null,
+
       show: false,
       dialog: false,
-      nameOfCurrentUser: null,
-      snackbar: false,
-      timeout: 10000,
-      errors: [],
-      tiles: [
-        {
-          img: "https://img-authors.flaticon.com/google.jpg",
-        },
-        {
-          img:
-            "https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg",
-        },
-        {
-          img:
-            "https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png",
-        },
-      ],
     };
   },
   methods: {
