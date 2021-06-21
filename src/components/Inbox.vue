@@ -1,23 +1,46 @@
 <template>
   <div>
     <h1>Your Inbox</h1>
-    <h2>Interested tutees will show up here!</h2>
-    <!-- {{ interested }} -->
+    <h2>Your tutor(s) are shown below!</h2>
+    <!-- {{ tutors }} -->
     <!-- <v-btn @click="test"></v-btn> -->
     <v-container>
       <v-row>
-        <v-col v-for="t in interested" :key="t.id" cols="12" sm="4">
+        <v-col v-for="t in tutors" :key="t.id" cols="12" sm="4">
           <v-card class="mx-auto" max-width="344">
             <v-card-title class="title primary--text pl-0">
-              {{ t.name }}
+              {{ t.tutor.name }}
             </v-card-title>
             <v-card-text>
               Interested class:
-              <div class="primary--text mb -2">{{ t.class }}</div>
+              <div class="primary--text mb -2">{{ t.classForTutee }}</div>
             </v-card-text>
             <v-card-text>
               Contact information:
-              <div class="primary--text mb-2">{{ t.userEmail }}</div>
+              <div class="primary--text mb-2">{{ t.tutor.email }}</div>
+            </v-card-text>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
+    <v-spacer> </v-spacer>
+    <h2>Your tutees are shown below!</h2>
+    <!-- {{ tutors }} -->
+    <!-- <v-btn @click="test"></v-btn> -->
+    <v-container>
+      <v-row>
+        <v-col v-for="t in tutees" :key="t.id" cols="12" sm="4">
+          <v-card class="mx-auto" max-width="344">
+            <v-card-title class="title primary--text pl-0">
+              {{ t.tutee.name }}
+            </v-card-title>
+            <v-card-text>
+              Interested class:
+              <div class="primary--text mb -2">{{ t.tutorsClass }}</div>
+            </v-card-text>
+            <v-card-text>
+              Contact information:
+              <div class="primary--text mb-2">{{ t.tutee.email }}</div>
             </v-card-text>
           </v-card>
         </v-col>
@@ -31,52 +54,83 @@ import firebase from "firebase";
 export default {
   data() {
     return {
-      interested: [],
+      tutors: [],
+      tutees: [],
+      userTutee: null,
+      userTutor: null,
     };
   },
   created() {
+    // to see your tutors
     firebase
       .firestore()
-      .collection("Our Tutors")
+      .collection("Tutees")
       .doc(firebase.auth().currentUser.email)
-      .collection("Interested Tutees")
+      .collection("classes")
       .onSnapshot((querySnapshot) => {
-        this.interested = [];
+        this.tutors = [];
         querySnapshot.forEach((doc) => {
-          console.log(doc);
-          var tutee = doc.data();
-          tutee.id = doc.id;
-          this.interested.push(tutee);
+          console.log(doc.data());
+          var tutor = doc.data();
+          tutor.classForTutee = doc.id;
+          this.tutors.push(tutor);
         });
       });
-  },
-  methods: {
-    test() {
-      console.log(firebase.auth().currentUser.uid);
-      firebase
-        .firestore()
-        .collection("Our Tutors")
-        .doc(firebase.auth().currentUser.uid)
-        .get()
-        .then((doc) => {
-            if(doc.exists) {
-                console.log("exists, data: ", doc.data);
-            }else{
-                console.log("does not exist");
-            }
+    // to see your tutees
+    firebase
+      .firestore()
+      .collection("OurTutors")
+      .doc(firebase.auth().currentUser.email)
+      .collection("classes")
+      .onSnapshot((querySnapshot) => {
+        var fArray = [];
+        querySnapshot.forEach((doc) => {
+          let pair = doc.data();
+          pair.id = doc.id;
+          firebase
+            .firestore()
+            .collection("OurTutors")
+            .doc(firebase.auth().currentUser.email)
+            .collection("classes")
+            .doc(doc.id)
+            .collection("correspondingTutees")
+            .get()
+            .then((querySnapshot2) => {
+              pair.classes = [];
+              querySnapshot2.forEach((doc2) => {
+                let cls = doc2.data();
+                console.log(cls);
+                pair.classes.push(cls);
+              });
+              fArray.push(pair);
+            });
+          this.tutees.push(pair);
         });
-        // .collection("Interested Tutees")
-        // .get()
-        // .then((querySnapshot) => {
-        //   this.interested = [];
-        //   querySnapshot.forEach((doc) => {
-        //     console.log(doc);
-        //     var tutee = doc.data();
-        //     tutee.id = doc.id;
-        //     this.interested.push(tutee);
-        //   });
-        // });
-    },
+      });
+
+    // this.tutees = [];
+    // querySnapshot.forEach((doc) => {
+    //   var tutee = doc.data();
+    //   tutee.tutorsClass = doc.id;
+    //   this.tutees.push(tutee);
+
+    // firebase
+    //   .firestore()
+    //   .collection("Tutees")
+    //   .doc(firebase.auth().currentUser.email)
+    //   .get()
+    //   .then((doc) => {
+    //     this.userTutee = doc.data();
+    //   })
+    // firebase
+    //   .firestore()
+    //   .collection("OurTutors")
+    //   .doc(firebase.auth().currentUser.email)
+    //   .get()
+    //   .then((doc) => {
+    //     this.userTutor = doc.data();
+    //   })
   },
+  methods: {},
 };
 </script>

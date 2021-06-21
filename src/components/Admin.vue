@@ -113,7 +113,7 @@
         <v-col v-for="(pair, i) in pairs" :key="i" cols="12" sm="3">
           <v-card class="mx-auto" max-width="344" outlined>
             <v-card-title class="title primary--text pl=0">
-              {{ pair.tutee.name }}
+              {{ pair.name }}
             </v-card-title>
             <v-list-item v-for="(cls, x) in pair.classes" :key="x">
               {{ cls.class }} --- {{ cls.tutor.name }}</v-list-item
@@ -261,21 +261,36 @@ export default {
       console.log(this.clicked, i);
     },
     pair(tutor, tutee) {
-      firebase
-        .firestore()
-        .collection("Pairs")
-        .doc(tutee.name)
-        .set({ tutee: tutee });
+      // firebase
+      //   .firestore()
+      //   .collection("Pairs")
+      //   .doc(tutee.name)
+      //   .set({ tutee: tutee });
 
+      //Each class is unique for the tutee
+      // for tutees to find their tutor
       firebase
         .firestore()
-        .collection("Pairs")
-        .doc(tutee.name)
+        .collection("Tutees")
+        .doc(tutee.email)
         .collection("classes")
         .doc(this.clicked)
         .set({
-          tutor: tutor,
-        });
+          tutor: tutor.email
+        })
+
+      //for tutors to find their tutees
+      firebase
+        .firestore()
+        .collection("OurTutors")
+        .doc(tutor.email)
+        .collection("classes")
+        .doc(this.clicked)
+        .collection("correspondingTutees")
+        .doc(tutee.email)
+        .set({
+          tutee: tutee.email
+        })
 
       const dec = firebase.firestore.FieldValue.increment(-1);
       firebase
@@ -349,7 +364,7 @@ export default {
       });
     firebase
       .firestore()
-      .collection("Pairs")
+      .collection("Tutees")
       .onSnapshot((querySnapshot) => {
         var fArray = [];
         querySnapshot.forEach((doc) => {
@@ -357,7 +372,7 @@ export default {
           pair.id = doc.id;
           firebase
             .firestore()
-            .collection("Pairs")
+            .collection("Tutees")
             .doc(doc.id)
             .collection("classes")
             .get()

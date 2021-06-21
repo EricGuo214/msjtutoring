@@ -201,7 +201,7 @@ export default {
         firebase
           .firestore()
           .collection("Tutees")
-          .doc()
+          .doc(this.email)
           .set({
             name: this.name,
             classes: this.selectedClasses.map((a) => ({
