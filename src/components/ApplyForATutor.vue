@@ -198,21 +198,28 @@ export default {
   methods: {
     post() {
       if (this.$refs.form.validate()) {
-        firebase
-          .firestore()
-          .collection("Tutees")
+        var db = firebase.firestore();
+
+        db.collection("Tutees")
           .doc(this.email)
           .set({
             name: this.name,
-            classes: this.selectedClasses.map((a) => ({
-              name: a.name,
-              p: false,
-            })),
             notes: this.notes,
             email: this.email,
             facebook: this.facebook,
             instagram: this.instagram,
           });
+        var batch = db.batch();
+        this.selectedClasses.forEach((cls) => {
+          var docRef = db
+            .collection("Tutees")
+            .doc(this.email)
+            .collection("Classes")
+            .doc(cls.name);
+          cls.tutor = {};
+          batch.set(docRef, cls);
+        });
+        batch.commit();
         this.name = "";
         this.selectedClasses = [];
         this.notes = "";
