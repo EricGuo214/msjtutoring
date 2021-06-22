@@ -103,7 +103,7 @@
           </v-list-item>
         </v-list>
 
-        <v-dialog v-model="dialog" width="500">
+        <!-- <v-dialog v-model="dialog" width="500">
           <template v-slot:activator="{ on, attrs }">
             <v-btn
               color="primary"
@@ -130,15 +130,16 @@
 
             <v-card-actions>
               <v-spacer></v-spacer>
-              <!-- <v-btn color="primary" to=/inbox text @click="dialog = false">
+              <v-btn color="primary" to=/inbox text @click="dialog = false">
                 Inbox
               </v-btn>
               <v-btn color="primary" to=/ text @click="dialog = false">
                 Home
-              </v-btn> -->
+              </v-btn>
             </v-card-actions>
           </v-card>
-        </v-dialog>
+        </v-dialog> -->
+        <v-btn color="primary" @click="post"> Post</v-btn>
       </v-form>
     </div>
   </body>
@@ -149,16 +150,28 @@ import firebase from "firebase";
 
 export default {
   data: () => ({
+    // valid: true,
+    // dialog: false,
+    // name: "",
+    // selectedClasses: [],
+    // phonenumber: "",
+    // email: "",
+    // facebook: "",
+    // instagram: "",
+    // notes: "",
+    // gender: null,
+    // genders: ["Male", "Female", "Other"],
+
     valid: true,
     dialog: false,
-    name: "",
+    name: "bob man",
     selectedClasses: [],
-    phonenumber: "",
-    email: "",
-    facebook: "",
+    phonenumber: "510",
+    email: "test.email",
+    facebook: "facebok",
     instagram: "",
     notes: "",
-    gender: null,
+    gender: "",
     genders: ["Male", "Female", "Other"],
 
     classes: [
@@ -216,13 +229,14 @@ export default {
             .doc(this.email)
             .collection("Classes")
             .doc(cls.name);
+          cls.p = false;
           cls.tutor = {};
           batch.set(docRef, cls);
         });
         batch.commit();
-        this.name = "";
-        this.selectedClasses = [];
-        this.notes = "";
+        // this.name = "";
+        // this.selectedClasses = [];
+        // this.notes = "";
       }
     },
     required(value) {

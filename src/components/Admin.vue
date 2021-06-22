@@ -77,13 +77,13 @@
             }}
           </v-icon>
         </template>
-        <template v-slot:[`item.sClass`]="{ item }">
+        <template v-slot:[`item.classes`]="{ item }">
           <v-btn
             small
             rounded
             v-for="(cls, i) in item.classes"
-            :key="cls.name"
             :disabled="cls.p"
+            :key="i"
             :color="clicked == cls.name ? 'primary' : ''"
             @click="rowClickTutee(item, cls.name, i)"
           >
@@ -102,9 +102,9 @@
         Match!
       </v-btn>
 
-      <!-- <v-btn color="primary" @click="test">
+      <v-btn color="primary" @click="test">
         test
-      </v-btn> -->
+      </v-btn>
     </div>
     <h2>Pairs</h2>
 
@@ -182,7 +182,7 @@ export default {
           filterable: false,
           value: "name",
         },
-        { text: "Classes", value: "sClass" },
+        { text: "Classes", value: "classes" },
         { text: "Paired?", value: "paired" },
         { text: "Email", value: "email" },
         { text: "Facebook", value: "facebook" },
@@ -257,17 +257,8 @@ export default {
       tutee.clsID = i;
       this.tutee = tutee;
       this.clicked = j;
-      console.log(this.clicked, i);
     },
     pair(tutor, tutee) {
-      // firebase
-      //   .firestore()
-      //   .collection("Pairs")
-      //   .doc(tutee.name)
-      //   .set({ tutee: tutee });
-
-      //Each class is unique for the tutee
-      // for tutees to find their tutor
       firebase
         .firestore()
         .collection("Tutees")
@@ -276,29 +267,8 @@ export default {
         .doc(this.clicked)
         .update({
           tutor: tutor,
+          p: true,
         });
-
-      // //for tutors to find their tutees
-      // firebase
-      //   .firestore()
-      //   .collection("OurTutors")
-      //   .doc(tutor.email)
-      //   .collection("classes")
-      //   .doc(this.clicked)
-
-      //   .set({
-      //     tutee: tutee,
-      //   });
-
-      const dec = firebase.firestore.FieldValue.increment(-1);
-      firebase
-        .firestore()
-        .collection("OurTutors")
-        .doc(tutor.email)
-        .update({
-          maxTut: dec,
-        });
-
       // firebase
       //   .firestore()
       //   .collection("Tutees")
@@ -316,14 +286,36 @@ export default {
       //       .update({ classes: classes });
       //   });
 
+      // //for tutors to find their tutees
+
+      firebase
+        .firestore()
+        .collection("OurTutors")
+        .doc(tutor.email)
+        .collection("Classes")
+        .doc(this.clicked)
+        .update({
+          tutees: firebase.firestore.FieldValue.arrayUnion(tutee),
+        });
+
+      const dec = firebase.firestore.FieldValue.increment(-1);
+      firebase
+        .firestore()
+        .collection("OurTutors")
+        .doc(tutor.email)
+        .update({
+          maxTut: dec,
+        });
+
       this.tutor = {};
       this.tutee = {};
       this.selected1 = [];
       this.selected2 = [];
       this.clicked = "";
     },
+
     test() {
-      console.log(this.tutee);
+      console.log(this.tutee.classes);
       console.log(this.tutee.clsID);
     },
 
@@ -333,52 +325,75 @@ export default {
   },
   created() {
     const db = firebase.firestore();
-    var query = db.collection("OurTutors");
-
-    query.onSnapshot((querySnapshot) => {
+    db.collection("OurTutors").onSnapshot((querySnapshot) => {
       var fArray = [];
       querySnapshot.forEach((doc) => {
         let tutor = doc.data();
         tutor.id = doc.id;
         var names = [];
+        var classes = [];
 
         doc.ref.collection("Classes").onSnapshot((snap) => {
-          console.log(snap);
           snap.forEach((doc) => {
-            names.push(doc.data().name);
+            var cls = doc.data();
+            classes.push({
+              name: cls.name,
+              sem1: cls.sem1,
+              sem2: cls.sem2,
+              teacher: cls.teacher,
+            });
+            names.push(cls.name);
           });
         });
         tutor.sClass = names;
+        tutor.classes = classes;
 
         fArray.push(tutor);
       });
       this.tutors = fArray;
     });
+
     db.collection("Tutees").onSnapshot((querySnapshot) => {
+      console.log("IN TUTEES");
       var fArray = [];
       querySnapshot.forEach((doc) => {
         let tutee = doc.data();
-        tutee.id = doc.id;
-        var paired = [];
-        var names = [];
-        var classes = [];
-
+        // START CLASSES
         doc.ref.collection("Classes").onSnapshot((snap) => {
+          console.log("IN CLASSES");
+          var paired = [];
+          var names = [];
+          var classes1 = [];
           snap.forEach((doc) => {
-            classes.push(doc.data());
-            paired.push(doc.data().p);
-            names.push(doc.data().name);
+            var cls = doc.data();
+            classes1.push({ name: cls.name, p: cls.p });
+            paired.push(cls.p);
+            names.push(cls.name);
           });
+          tutee.classes = classes1;
+          tutee.sClass = names;
+          tutee.paired = paired;
+          var found = false;
+          for (var i = 0; i < fArray.length; i++) {
+            var t = fArray[i];
+            if (t.email == tutee.email) {
+              found = true;
+              fArray[i] = tutee;
+            }
+          }
+          if (!found) {
+            fArray.push(tutee);
+          }
         });
-        console.log(classes);
-        tutee.classes = classes;
-        tutee.sClass = names;
-        tutee.paired = paired;
+        // END CLASSES
 
-        fArray.push(tutee);
+        console.log("farray", tutee);
       });
       this.tutees = fArray;
+      console.log(this.tutees);
     });
+    // db.collection("Tutees").collection("")
+
     // db.collection("Tutees").onSnapshot((querySnapshot) => {
     //   var fArray = [];
     //   querySnapshot.forEach((doc) => {
