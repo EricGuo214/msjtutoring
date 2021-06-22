@@ -163,6 +163,7 @@ export default {
 
     classes: [
       { header: "Sciences" },
+      { divider: true },
       { name: "AP Biology" },
       { name: "AP Chemistry" },
       { name: "AP Computer Science A" },
@@ -173,11 +174,10 @@ export default {
       { name: "Biology" },
       { name: "Chemistry" },
       { name: "Living Earth" },
-      { divider: true },
+
       { header: "Languages" },
       { divider: true },
 
-      { header: "Languages" },
       { name: "AP Spanish" },
       { name: "AP Chinese" },
       { divider: true },

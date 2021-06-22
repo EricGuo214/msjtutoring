@@ -189,7 +189,7 @@ export default {
         .delete();
       db.collection("OurTutors")
         .doc(x)
-        .collection("Interested Tutees")
+        .collection("Classes")
         .get()
         .then((res) => {
           res.forEach((element) => {
