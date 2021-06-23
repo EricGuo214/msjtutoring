@@ -241,20 +241,20 @@ export default {
     // phonenumber: null,
 
     valid: true,
-    firstName: "Rithwik",
-    lastName: "Vaidun",
+    firstName: "",
+    lastName: "",
     grade: null,
     grades: ["9", "10", "11", "12"],
     selectedClasses: [],
     stringClasses: [],
-    gender: "Male",
+    gender: "",
     genders: ["Male", "Female", "Other"],
     maxTut: 2,
-    desc: "I like to teach people in math",
+    desc: "",
     email: firebase.auth().currentUser.email,
-    facebook: "Rvaidun",
-    instagram: "@riithwik",
-    phonenumber: 5105886879,
+    facebook: "",
+    instagram: "@",
+    phonenumber: null,
 
     classes: [
       { header: "Sciences" },
@@ -348,7 +348,7 @@ export default {
             .doc(firebase.auth().currentUser.email)
             .collection("Classes")
             .doc(cls.name);
-          cls.tutees = [];
+          // cls.tutees = [];
           batch.set(docRef, cls);
         });
         batch.commit();

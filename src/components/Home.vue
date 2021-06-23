@@ -22,19 +22,7 @@
 
         <table class="table">
           <tr>
-            <td class="td1">
-              <img src="./Pictures/ankith_pic.png" />
-              <h3 class="people">Ankith Bachhu</h3>
-              <p>
-                Hello! I am currently 16 years old and a junior at Mission San
-                Jose High. I joined MSJ tutoring because I wanted to give people
-                an opportunity to get help if they needed it. I wanted to spread
-                my knowledge with the community. I hope that anyone who uses
-                this website will find academic success. In my spare time I love
-                to code and run.
-              </p>
-            </td>
-
+    
             <td class="td1">
               <img src="./Pictures/david.jpg" />
               <h3 class="people">David Guo</h3>
@@ -58,6 +46,19 @@
                 for people like me to not to be able to help and teach people.
                 In my spare time I love to run and play sports, especially table
                 tennis.
+              </p>
+            </td>
+
+            <td class="td1">
+              <img src="./Pictures/ankith_pic.png" />
+              <h3 class="people">Ankith Bachhu</h3>
+              <p>
+                Hello! I am currently 16 years old and a junior at Mission San
+                Jose High. I joined MSJ tutoring because I wanted to give people
+                an opportunity to get help if they needed it. I wanted to spread
+                my knowledge with the community. I hope that anyone who uses
+                this website will find academic success. In my spare time I love
+                to code and run.
               </p>
             </td>
 

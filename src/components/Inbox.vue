@@ -55,13 +55,15 @@ export default {
   data() {
     return {
       tutors: [],
+      tutorsInfo: [],
       tutees: [],
+      tuteesInfo: [],
       userTutee: null,
       userTutor: null,
     };
   },
   created() {
-    // to see your tutors
+    // to see your tutors (all your tutors -> tutors[])
     firebase
       .firestore()
       .collection("Tutees")
@@ -74,9 +76,10 @@ export default {
           var tutor = doc.data();
           tutor.classForTutee = doc.id;
           this.tutors.push(tutor);
+          this.getTutorInfo(tutor, this.tutorsInfo);
         });
       });
-    // to see your tutees
+    // to see your tutees (all your tutees -> tutees[])
     firebase
       .firestore()
       .collection("OurTutors")
@@ -105,6 +108,7 @@ export default {
               fArray.push(pair);
             });
           this.tutees.push(pair);
+          this.getTuteeInfo(pair, this.tuteesInfo);
         });
       });
 
@@ -113,24 +117,29 @@ export default {
     //   var tutee = doc.data();
     //   tutee.tutorsClass = doc.id;
     //   this.tutees.push(tutee);
-
-    // firebase
-    //   .firestore()
-    //   .collection("Tutees")
-    //   .doc(firebase.auth().currentUser.email)
-    //   .get()
-    //   .then((doc) => {
-    //     this.userTutee = doc.data();
-    //   })
-    // firebase
-    //   .firestore()
-    //   .collection("OurTutors")
-    //   .doc(firebase.auth().currentUser.email)
-    //   .get()
-    //   .then((doc) => {
-    //     this.userTutor = doc.data();
-    //   })
   },
-  methods: {},
+  methods: {
+    getTuteeInfo(emailOfTutee, tuteesInfo) {
+      this.userTutee = null;
+      firebase
+        .firestore()
+        .collection("Tutees")
+        .doc(emailOfTutee)
+        .get()
+        .then((doc) => {
+          tuteesInfo.push(doc.data());
+        });
+    },
+    getTutorInfo(emailOfTutor, tutorsInfo) {
+      firebase
+        .firestore()
+        .collection("OurTutors")
+        .doc(emailOfTutor)
+        .get()
+        .then((doc) => {
+          tutorsInfo.push(doc.data());
+        });
+    },
+  },
 };
 </script>
