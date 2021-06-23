@@ -94,17 +94,11 @@
     </v-card>
     <div class="half">
       <h2 class="half">{{ tutor.name }} x {{ tutee.name }}({{ clicked }})</h2>
-      <v-btn
-        :disabled="!this.valid"
-        color="primary"
-        @click="pair(tutor, tutee)"
-      >
+      <v-btn :disabled="!valid" color="primary" @click="pair(tutor, tutee)">
         Match!
       </v-btn>
 
-      <v-btn color="primary" @click="test">
-        test
-      </v-btn>
+      <v-btn color="primary" @click="test"> test </v-btn>
     </div>
     <h2>Pairs</h2>
 
@@ -204,6 +198,7 @@ export default {
       tutees: [],
       pairs: [],
       gradeT: [],
+      check: false,
     };
   },
   methods: {
@@ -231,16 +226,12 @@ export default {
         });
     },
     addToAdminCollection() {
-      firebase
-        .firestore()
-        .collection("Admins")
-        .doc(this.emailOfNewAdmin)
-        .set({
-          email: this.emailOfNewAdmin,
-          adder: firebase.auth().currentUser.email,
-        });
+      firebase.firestore().collection("Admins").doc(this.emailOfNewAdmin).set({
+        email: this.emailOfNewAdmin,
+        adder: firebase.auth().currentUser.email,
+      });
     },
-    rowClickTutor: function(item, row) {
+    rowClickTutor: function (item, row) {
       if (item.maxTut == 0) {
         row.disable(true);
       }
@@ -253,10 +244,28 @@ export default {
       }
       this.gradeT = this.tutor.classes;
     },
-    rowClickTutee: function(tutee, j, i) {
+    rowClickTutee: function (tutee, j, i) {
       tutee.clsID = i;
       this.tutee = tutee;
       this.clicked = j;
+      var counter = 0;
+      firebase
+        .firestore()
+        .collection("OurTutors")
+        .doc(this.tutor.email)
+        .collection("Classes")
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            if (doc.id == this.clicked) {
+              this.check = true;
+              counter = 1;
+            }
+          });
+          if(counter == 0){
+            this.check = false;
+          }
+        });
     },
     pair(tutor, tutee) {
       firebase
@@ -267,6 +276,7 @@ export default {
         .doc(this.clicked)
         .update({
           tutor: tutor,
+          tutorEmail: tutor.email,
           p: true,
         });
       // firebase
@@ -294,18 +304,14 @@ export default {
         .doc(tutor.email)
         .collection("Classes")
         .doc(this.clicked)
-        .update({
-          tutees: firebase.firestore.FieldValue.arrayUnion(tutee),
-        });
+        .collection("correspondingTutees")
+        .doc(tutee.email)
+        .set({ tutee: tutee.email });
 
       const dec = firebase.firestore.FieldValue.increment(-1);
-      firebase
-        .firestore()
-        .collection("OurTutors")
-        .doc(tutor.email)
-        .update({
-          maxTut: dec,
-        });
+      firebase.firestore().collection("OurTutors").doc(tutor.email).update({
+        maxTut: dec,
+      });
 
       this.tutor = {};
       this.tutee = {};
@@ -394,37 +400,38 @@ export default {
     });
     // db.collection("Tutees").collection("")
 
-    // db.collection("Tutees").onSnapshot((querySnapshot) => {
-    //   var fArray = [];
-    //   querySnapshot.forEach((doc) => {
-    //     let pair = doc.data();
-    //     pair.id = doc.id;
-    //     firebase
-    //       .firestore()
-    //       .collection("Tutees")
-    //       .doc(doc.id)
-    //       .collection("classes")
-    //       .get()
-    //       .then((querySnapshot2) => {
-    //         pair.classes = [];
-    //         querySnapshot2.forEach((doc2) => {
-    //           // doc.data() is never undefined for query doc snapshots
-    //           //console.log(doc2.id, " => ", doc2.data());
-    //           let cls = { class: doc2.id, tutor: doc2.data().tutor };
-    //           console.log(cls);
-    //           pair.classes.push(cls);
-    //         });
-    //         fArray.push(pair);
-    //       });
-    //   });
-    //   this.pairs = fArray;
-    // });
+    db.collection("Tutees").onSnapshot((querySnapshot) => {
+      var fArray = [];
+      querySnapshot.forEach((doc) => {
+        let pair = doc.data();
+        pair.id = doc.id;
+        firebase
+          .firestore()
+          .collection("Tutees")
+          .doc(doc.id)
+          .collection("Classes")
+          .get()
+          .then((querySnapshot2) => {
+            pair.classes = [];
+            querySnapshot2.forEach((doc2) => {
+              // doc.data() is never undefined for query doc snapshots
+              //console.log(doc2.id, " => ", doc2.data());
+              let cls = { class: doc2.id, tutor: doc2.data().tutor };
+              console.log(cls);
+              pair.classes.push(cls);
+            });
+            fArray.push(pair);
+          });
+      });
+      this.pairs = fArray;
+    });
   },
   computed: {
     valid() {
       return (
         Object.keys(this.tutor).length != 0 &&
-        Object.keys(this.tutee).length != 0
+        Object.keys(this.tutee).length != 0 &&
+        this.check
       );
     },
   },
