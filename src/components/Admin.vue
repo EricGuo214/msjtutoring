@@ -97,12 +97,18 @@
       <v-btn :disabled="!valid" color="primary" @click="pair(tutor, tutee)">
         Match!
       </v-btn>
+      <h4 class="red--text">{{ error }}</h4>
 
       <v-btn color="primary" @click="test"> test </v-btn>
     </div>
     <h2>Pairs</h2>
+    <v-switch
+      v-model="viewToggle"
+      :label="viewToggle ? 'Tutee View' : 'Tutor View'"
+    ></v-switch>
 
-    <v-container>
+    <!-- TUTEE VIEW -->
+    <v-container v-if="viewToggle">
       <v-row no-gutters>
         <v-col v-for="(pair, i) in this.pairedTutees" :key="i" cols="12" sm="3">
           <v-card class="mx-auto" max-width="344" outlined>
@@ -116,13 +122,22 @@
         </v-col>
       </v-row>
     </v-container>
-    <!-- <v-card class="mx-auto" max-width="344" outlined>
-      <v-btn @click="test">test</v-btn>
-      <v-card-title class="title primary--text pl=0">
-        {{ pairedTutees }}
-      </v-card-title>
-      <v-list-item>{{ pair.tutor }}</v-list-item>
-    </v-card> -->
+
+    <!-- TUTOR VIEW -->
+    <v-container v-else>
+      <v-row no-gutters>
+        <v-col v-for="(pair, i) in this.pairedTutors" :key="i" cols="12" sm="3">
+          <v-card class="mx-auto" outlined>
+            <v-card-title class="title primary--text pl=0">
+              {{ pair.tutor }}
+            </v-card-title>
+            <v-list-item v-for="(t, i) in pair.tInfo" :key="i">
+              {{ t.name }}--- {{ getTutees(t) }}</v-list-item
+            >
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
 
     <v-card max-width="344" outlined>
       <v-text-field
@@ -201,7 +216,7 @@ export default {
       tutees: [],
       pairs: [],
       gradeT: [],
-      check: false,
+      viewToggle: true,
       pairedTutors: {},
       pairedTutees: {},
     };
@@ -252,28 +267,12 @@ export default {
         this.tutor = item;
       }
       this.gradeT = this.tutor.classes;
+      console.log(this.tutor);
     },
     rowClickTutee: function(tutee, selectedClass) {
       this.tutee = tutee;
       this.clicked = selectedClass;
-      // var counter = 0;
-      // firebase
-      //   .firestore()
-      //   .collection("OurTutors")
-      //   .doc(this.tutor.email)
-      //   .collection("Classes")
-      //   .get()
-      //   .then((querySnapshot) => {
-      //     querySnapshot.forEach((doc) => {
-      //       if (doc.id == this.clicked) {
-      //         this.check = true;
-      //         counter = 1;
-      //       }
-      //     });
-      //     if(counter == 0){
-      //       this.check = false;
-      //     }
-      //   });
+      console.log(this.tutee);
     },
     pair(tutor, tutee) {
       firebase
@@ -316,7 +315,17 @@ export default {
       this.clicked = "";
     },
 
-    test() {},
+    test() {
+      var classes = this.tutor.classes.map((a) => a.name);
+      console.log(classes);
+    },
+    getTutees(t) {
+      var ret = "";
+      for (var i = 0; i < t.tutees.length; i++) {
+        ret += ", " + t.tutees[i].tuteeName;
+      }
+      return ret;
+    },
 
     open() {
       this.dialog = true;
@@ -324,6 +333,7 @@ export default {
   },
   created() {
     const db = firebase.firestore();
+    var allTutorPairs = [];
     db.collection("OurTutors").onSnapshot((querySnapshot) => {
       var fArray = [];
       querySnapshot.forEach((doc) => {
@@ -348,19 +358,34 @@ export default {
         tutor.classes = classes;
 
         fArray.push(tutor);
+
+        doc.ref
+          .collection("Classes")
+          .where("tutees", "!=", [])
+          .onSnapshot((snap) => {
+            var tutorPairings = [];
+            snap.forEach((doc1) => {
+              let cls = doc1.data();
+              //console.log("class", cls);
+              tutorPairings.push({ name: cls.name, tutees: cls.tutees });
+            });
+            // console.log("pair", JSON.stringify(tutorPairings));
+            allTutorPairs.push({ tutor: tutor.name, tInfo: tutorPairings });
+          });
+        this.pairedTutors = allTutorPairs;
+        //console.log("tutors", JSON.stringify(this.pairedTutors));
       });
+
       this.tutors = fArray;
     });
     var allPairs = [];
 
     db.collection("Tutees").onSnapshot((querySnapshot) => {
-      //console.log("IN TUTEES");
       var fArray = [];
       querySnapshot.forEach((doc) => {
         let tutee = doc.data();
         // START CLASSES
         doc.ref.collection("Classes").onSnapshot((snap) => {
-          //console.log("IN CLASSES");
           var paired = [];
           var names = [];
           var classes1 = [];
@@ -404,18 +429,35 @@ export default {
             allPairs.push({ tutee: tutee.name, tInfo: tuteePairings });
             this.pairedTutees = allPairs;
 
-            console.log("tutees", JSON.stringify(this.pairedTutees));
+            // console.log("tutees", JSON.stringify(this.pairedTutees));
           });
       });
       this.tutees = fArray;
     });
   },
   computed: {
+    error() {
+      if (Object.keys(this.tutor).length == 0) {
+        return "Select a tutor";
+      }
+      if (Object.keys(this.tutee).length == 0) {
+        return "Select a tutee";
+      }
+      if (
+        Object.keys(this.tutor).length != 0 &&
+        Object.keys(this.tutee).length != 0
+      ) {
+        if (!this.tutor.sClass.includes(this.selectedClass)) {
+          return "Tutor does not teach this class";
+        }
+      }
+      return "t";
+    },
     valid() {
       return (
         Object.keys(this.tutor).length != 0 &&
-        Object.keys(this.tutee).length != 0
-        //&& this.check
+        Object.keys(this.tutee).length != 0 &&
+        this.tutor.sClass.includes(this.selectedClass)
       );
     },
   },
