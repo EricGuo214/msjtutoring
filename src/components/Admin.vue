@@ -109,7 +109,9 @@
             <v-card-title class="title primary--text pl=0">
               {{ pair.tutee }}
             </v-card-title>
-            <v-list-item>{{ pair.cls }}--- {{ pair.tutor }}</v-list-item>
+            <v-list-item v-for="(t, i) in pair.tInfo" :key="i">
+              {{ t.name }}--- {{ t.tutor }}</v-list-item
+            >
           </v-card>
         </v-col>
       </v-row>
@@ -393,9 +395,13 @@ export default {
             //for each class that has tutor
             snap.forEach((doc1) => {
               let cls = doc1.data();
-              tuteePairings.push(cls);
+              tuteePairings.push({
+                name: cls.name,
+                tutor: cls.tutor.tutorName,
+              });
             });
-            allPairs.push(tuteePairings);
+
+            allPairs.push({ tutee: tutee.name, tInfo: tuteePairings });
             this.pairedTutees = allPairs;
 
             console.log("tutees", JSON.stringify(this.pairedTutees));
