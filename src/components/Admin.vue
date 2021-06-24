@@ -447,7 +447,7 @@ export default {
         Object.keys(this.tutor).length != 0 &&
         Object.keys(this.tutee).length != 0
       ) {
-        if (!this.tutor.sClass.includes(this.selectedClass)) {
+        if (!this.tutor.sClass.includes(this.clicked)) {
           return "Tutor does not teach this class";
         }
       }
@@ -457,7 +457,7 @@ export default {
       return (
         Object.keys(this.tutor).length != 0 &&
         Object.keys(this.tutee).length != 0 &&
-        this.tutor.sClass.includes(this.selectedClass)
+        this.tutor.sClass.includes(this.clicked)
       );
     },
   },
