@@ -6,7 +6,7 @@
     <!-- <v-btn @click="test"></v-btn> -->
     {{ classes }}
     <!-- {{tutorsInfo}} -->
-    <!-- <v-container>
+    <v-container>
       <v-row>
         <v-col v-for="t in classes" :key="t.id" cols="12" sm="4">
           <v-card class="mx-auto" max-width="344">
@@ -24,30 +24,30 @@
           </v-card>
         </v-col>
       </v-row>
-    </v-container> -->
+    </v-container>
     <v-spacer> </v-spacer>
     <h2>Your tutees are shown below!</h2>
-    <!-- {{ classes }} -->
+    {{ tuteesInfo }}
     <!-- <v-btn @click="test"></v-btn> -->
-    <!-- <v-container>
+    <v-container>
       <v-row>
-        <v-col v-for="t in tutees" :key="t.id" cols="12" sm="4">
+        <v-col v-for="t in tuteesInfo" :key="t.id" cols="12" sm="4">
           <v-card class="mx-auto" max-width="344">
             <v-card-title class="title primary--text pl-0">
-              {{ t.tutee.name }}
+              {{ t.tuteeInfo.name }}
             </v-card-title>
             <v-card-text>
               Interested class:
-              <div class="primary--text mb -2">{{ t.tutorsClass }}</div>
+              <div class="primary--text mb -2">{{ t.name }}</div>
             </v-card-text>
             <v-card-text>
               Contact information:
-              <div class="primary--text mb-2">{{ t.tutee.email }}</div>
+              <div class="primary--text mb-2">{{ t.tuteeInfo.email }}</div>
             </v-card-text>
           </v-card>
         </v-col>
       </v-row>
-    </v-container> -->
+    </v-container>
   </div>
 </template>
 
@@ -57,11 +57,8 @@ export default {
   data() {
     return {
       classes: [],
-      tutorsInfo: [],
       tutees: [],
       tuteesInfo: [],
-      userTutee: null,
-      userTutor: null,
     };
   },
   created() {
@@ -74,47 +71,33 @@ export default {
       .onSnapshot((querySnapshot) => {
         this.classes = [];
         querySnapshot.forEach((doc) => {
-          console.log("class", doc.data());
-          if (doc.p == true) {
+          var cls = doc.data();
+          console.log("class", cls);
+          console.log("is it paired?", cls.name, cls.p);
+          if (cls.p == true) {
             console.log(doc.name, "is paired = true");
-            var cls = doc.data();
             // this.classes.push(cls);
-            this.getTutorInfo(cls.tutorEmail, cls);
+            this.getTutorInfo(cls.tutor.tutorEmail, cls);
           }
         });
       });
     // to see your tutees (all your tutees -> tutees[])
-    // firebase
-    //   .firestore()
-    //   .collection("OurTutors")
-    //   .doc(firebase.auth().currentUser.email)
-    //   .collection("Classes")
-    //   .onSnapshot((querySnapshot) => {
-    //     var fArray = [];
-    //     querySnapshot.forEach((doc) => {
-    //       let pair = doc.data();
-    //       pair.id = doc.id;
-    //       firebase
-    //         .firestore()
-    //         .collection("OurTutors")
-    //         .doc(firebase.auth().currentUser.email)
-    //         .collection("classes")
-    //         .doc(doc.id)
-    //         .collection("correspondingTutees")
-    //         .get()
-    //         .then((querySnapshot2) => {
-    //           pair.classes = [];
-    //           querySnapshot2.forEach((doc2) => {
-    //             let cls = doc2.data();
-    //             console.log(cls);
-    //             pair.classes.push(cls);
-    //           });
-    //           fArray.push(pair);
-    //         });
-    //       this.tutees.push(pair);
-    //       this.getTuteeInfo(pair, this.tuteesInfo);
-    //     });
-    //   });
+    firebase
+      .firestore()
+      .collection("OurTutors")
+      .doc(firebase.auth().currentUser.email)
+      .collection("Classes")
+      .onSnapshot((querySnapshot) => {
+        this.tuteesInfo = [];
+        querySnapshot.forEach((doc) => {
+          var cls = doc.data();
+          console.log("class", cls);
+          if (cls.tutees !== undefined) {
+            console.log("has tutee ", cls);
+            this.getTuteeInfo(cls.tutees, cls);
+          }
+        });
+      });
 
     // this.tutees = [];
     // querySnapshot.forEach((doc) => {
@@ -123,16 +106,18 @@ export default {
     //   this.tutees.push(tutee);
   },
   methods: {
-    getTuteeInfo(emailOfTutee, tuteesInfo) {
-      this.userTutee = null;
-      firebase
-        .firestore()
-        .collection("Tutees")
-        .doc(emailOfTutee)
-        .get()
-        .then((doc) => {
-          tuteesInfo.push(doc.data());
-        });
+    getTuteeInfo(emailOfTutees, cls) {
+      emailOfTutees.forEach((tuteeEmail) =>
+        firebase
+          .firestore()
+          .collection("Tutees")
+          .doc(tuteeEmail.tuteeEmail)
+          .get()
+          .then((doc) => {
+            cls.tuteeInfo = doc.data();
+            this.tuteesInfo.push(cls);
+          })
+      );
     },
     getTutorInfo(emailOfTutor, cls) {
       firebase
