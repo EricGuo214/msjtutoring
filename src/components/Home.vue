@@ -7,7 +7,7 @@
       <div class="margins">
         <h1>Mission Tutoring</h1>
 
-        <img src="./Pictures/mission_pic.jpg" width="300" height="300" />
+        <img src="./Pictures/MissionTutoringLogo.png" width="300" height="300" />
 
         <p class="create"></p>
         <h2>Our Mission</h2>
@@ -22,7 +22,7 @@
 
         <table class="table">
           <tr>
-    
+
             <td class="td1">
               <img src="./Pictures/david.jpg" />
               <h3 class="people">David Guo</h3>
