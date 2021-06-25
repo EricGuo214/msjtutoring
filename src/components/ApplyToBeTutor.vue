@@ -253,7 +253,7 @@ export default {
     desc: "",
     email: firebase.auth().currentUser.email,
     facebook: "",
-    instagram: "@",
+    instagram: "",
     phonenumber: null,
 
     classes: [

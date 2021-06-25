@@ -2,10 +2,9 @@
   <div>
     <h1>Your Inbox</h1>
     <h2>Your tutor(s) are shown below!</h2>
-    <!-- {{ classes }} -->
-    <!-- <v-btn @click="test"></v-btn> -->
-    {{ classes }}
-    <!-- {{tutorsInfo}} -->
+    <v-list-item-content v-if="classes.length > 0">
+      {{ classes }}
+    </v-list-item-content>
     <v-container>
       <v-row>
         <v-col v-for="t in classes" :key="t.id" cols="12" sm="4">
@@ -27,7 +26,9 @@
     </v-container>
     <v-spacer> </v-spacer>
     <h2>Your tutees are shown below!</h2>
-    {{ tuteesInfo }}
+    <v-list-item-content v-if="tuteesInfo.length > 0">
+      {{ tuteesInfo }}
+    </v-list-item-content>
     <!-- <v-btn @click="test"></v-btn> -->
     <v-container>
       <v-row>
