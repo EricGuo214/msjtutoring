@@ -4,7 +4,6 @@
     <h2>Your tutor(s) are shown below!</h2>
     <!-- {{ classes }} -->
     <!-- <v-btn @click="test"></v-btn> -->
-    {{ classes }}
     <!-- {{tutorsInfo}} -->
     <v-container>
       <v-row>
@@ -27,7 +26,6 @@
     </v-container>
     <v-spacer> </v-spacer>
     <h2>Your tutees are shown below!</h2>
-    {{ tuteesInfo }}
     <!-- <v-btn @click="test"></v-btn> -->
     <v-container>
       <v-row>

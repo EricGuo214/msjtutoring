@@ -246,16 +246,12 @@ export default {
         });
     },
     addToAdminCollection() {
-      firebase
-        .firestore()
-        .collection("Admins")
-        .doc(this.emailOfNewAdmin)
-        .set({
-          email: this.emailOfNewAdmin,
-          adder: firebase.auth().currentUser.email,
-        });
+      firebase.firestore().collection("Admins").doc(this.emailOfNewAdmin).set({
+        email: this.emailOfNewAdmin,
+        adder: firebase.auth().currentUser.email,
+      });
     },
-    rowClickTutor: function(item, row) {
+    rowClickTutor: function (item, row) {
       if (item.maxTut == 0) {
         row.disable(true);
       }
@@ -269,7 +265,7 @@ export default {
       this.gradeT = this.tutor.classes;
       console.log(this.tutor);
     },
-    rowClickTutee: function(tutee, selectedClass) {
+    rowClickTutee: function (tutee, selectedClass) {
       this.tutee = tutee;
       this.clicked = selectedClass;
       console.log(this.tutee);
@@ -300,13 +296,9 @@ export default {
         });
 
       const dec = firebase.firestore.FieldValue.increment(-1);
-      firebase
-        .firestore()
-        .collection("OurTutors")
-        .doc(tutor.email)
-        .update({
-          maxTut: dec,
-        });
+      firebase.firestore().collection("OurTutors").doc(tutor.email).update({
+        maxTut: dec,
+      });
 
       this.tutor = {};
       this.tutee = {};
@@ -370,7 +362,9 @@ export default {
               tutorPairings.push({ name: cls.name, tutees: cls.tutees });
             });
             // console.log("pair", JSON.stringify(tutorPairings));
-            allTutorPairs.push({ tutor: tutor.name, tInfo: tutorPairings });
+            if (tutorPairings.length !== 0) {
+              allTutorPairs.push({ tutor: tutor.name, tInfo: tutorPairings });
+            }
           });
         this.pairedTutors = allTutorPairs;
         //console.log("tutors", JSON.stringify(this.pairedTutors));
@@ -425,9 +419,10 @@ export default {
                 tutor: cls.tutor.tutorName,
               });
             });
-
-            allPairs.push({ tutee: tutee.name, tInfo: tuteePairings });
-            this.pairedTutees = allPairs;
+            if (tuteePairings.length !== 0) {
+              allPairs.push({ tutee: tutee.name, tInfo: tuteePairings });
+              this.pairedTutees = allPairs;
+            }
 
             // console.log("tutees", JSON.stringify(this.pairedTutees));
           });
