@@ -1,13 +1,13 @@
 <template>
   <v-app>
-    <v-app-bar app color="#1a8737" dark>
+    <v-app-bar app color="#2bbafc" dark>
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
       <v-toolbar-title>Mission Tutoring</v-toolbar-title>
 
       <v-spacer></v-spacer>
       <v-menu offset-y v-if="user">
         <template v-slot:activator="{ on }">
-          <v-btn color="#14a63b" dark v-on="on">{{ user.email }}</v-btn>
+          <v-btn color="#027df0" dark v-on="on">{{ user.email }}</v-btn>
         </template>
         <v-list>
           <v-list-item to="/profile?">

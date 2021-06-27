@@ -241,6 +241,6 @@ body {
 }
 h1{
   text-align: center;
-  color: #065c1d
+  color: #2961e6;
 }
 </style>
