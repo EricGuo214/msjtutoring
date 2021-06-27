@@ -169,7 +169,7 @@ export default {
     phonenumber: "",
     email: firebase.auth().currentUser.email,
     facebook: "",
-    instagram: "@",
+    instagram: "",
     notes: "",
     gender: "",
     genders: ["Male", "Female", "Other"],

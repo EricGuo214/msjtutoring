@@ -4,6 +4,7 @@
       <h1 class="centered">
         Questions
       </h1>
+
       <v-text-field
         v-model="search"
         append-icon="mdi-magnify"
@@ -13,7 +14,13 @@
         style="width: 50%"
         class="mx-auto"
       ></v-text-field>
-      <br />
+      <br/>
+      <div class="centered">
+        <v-btn color="primary" to="/askquestion">
+          Ask a question
+        </v-btn>
+      </div>
+      <br/>
       <v-card
         class="mx-auto"
         max-width="600"
@@ -100,11 +107,7 @@
         </v-card-actions>
       </v-card>
       <br />
-      <div class="centered">
-        <v-btn color="primary" to="/askquestion">
-          Ask a question
-        </v-btn>
-      </div>
+
     </div>
   </body>
 </template>
