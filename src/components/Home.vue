@@ -139,7 +139,7 @@ export default {
         },
         {
           image: require("./Pictures/ankith_pic.png"),
-          title: "Ankith Bacchu",
+          title: "Ankith Bachhu",
           text: "Hello! I am currently 16 years old and a junior at Mission San Jose High. I joined MSJ tutoring because I wanted to give people an opportunity to get help if they needed it. I wanted to spread my knowledge with the community. I hope that anyone who uses this website will find academic success. In my spare time I love to code and run.",
         },
         {
