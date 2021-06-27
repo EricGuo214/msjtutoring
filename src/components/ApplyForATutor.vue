@@ -26,12 +26,13 @@
           v-model="selectedClasses"
           dense
           :items="classes"
-          :menu-props="{ maxHeight: '400' }"
           item-text="name"
           :rules="[required]"
           label="Select the classes you need help in"
           multiple
           chips
+          hint="Or type in a class if it doesn't exsist"
+          persistent-hint
           required
           return-object
         >
@@ -45,24 +46,6 @@
 
         <h2>Contact Information</h2>
         <v-list>
-          <v-list-item>
-            <v-list-item-avatar>
-              <v-avatar size="50px" tile>
-                <img
-                  :src="`https://img-authors.flaticon.com/google.jpg`"
-                  :alt="'google logo'"
-                />
-              </v-avatar>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-text-field
-                v-model="email"
-                :rules="[(v) => !!v || 'This field is required']"
-                label="E-mail"
-                required
-              ></v-text-field>
-            </v-list-item-content>
-          </v-list-item>
           <v-list-item>
             <v-list-item-avatar>
               <v-avatar size="50px" tile>
@@ -97,7 +80,7 @@
             <v-list-item-content>
               <v-text-field
                 v-model="instagram"
-                label="Instagram handle (optional)"
+                label="Instagram (optional)"
               ></v-text-field>
             </v-list-item-content>
           </v-list-item>
@@ -150,24 +133,12 @@ import firebase from "firebase";
 
 export default {
   data: () => ({
-    // valid: true,
-    // dialog: false,
-    // name: "",
-    // selectedClasses: [],
-    // phonenumber: "",
-    // email: "",
-    // facebook: "",
-    // instagram: "",
-    // notes: "",
-    // gender: null,
-    // genders: ["Male", "Female", "Other"],
-
     valid: true,
     dialog: false,
-    name: "bob man",
+    name: "",
     selectedClasses: [],
     phonenumber: "",
-    email: firebase.auth().currentUser.email,
+
     facebook: "",
     instagram: "",
     notes: "",
@@ -211,14 +182,14 @@ export default {
   methods: {
     post() {
       if (this.$refs.form.validate()) {
+        const userEmail = firebase.auth().currentUser.email;
         var db = firebase.firestore();
-
         db.collection("Tutees")
-          .doc(this.email)
+          .doc(userEmail)
           .set({
             name: this.name,
             notes: this.notes,
-            email: this.email,
+            email: userEmail,
             facebook: this.facebook,
             instagram: this.instagram,
           });
@@ -226,7 +197,7 @@ export default {
         this.selectedClasses.forEach((cls) => {
           var docRef = db
             .collection("Tutees")
-            .doc(this.email)
+            .doc(userEmail)
             .collection("Classes")
             .doc(cls.name);
           cls.p = false;

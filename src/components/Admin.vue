@@ -246,12 +246,16 @@ export default {
         });
     },
     addToAdminCollection() {
-      firebase.firestore().collection("Admins").doc(this.emailOfNewAdmin).set({
-        email: this.emailOfNewAdmin,
-        adder: firebase.auth().currentUser.email,
-      });
+      firebase
+        .firestore()
+        .collection("Admins")
+        .doc(this.emailOfNewAdmin)
+        .set({
+          email: this.emailOfNewAdmin,
+          adder: firebase.auth().currentUser.email,
+        });
     },
-    rowClickTutor: function (item, row) {
+    rowClickTutor: function(item, row) {
       if (item.maxTut == 0) {
         row.disable(true);
       }
@@ -265,7 +269,7 @@ export default {
       this.gradeT = this.tutor.classes;
       console.log(this.tutor);
     },
-    rowClickTutee: function (tutee, selectedClass) {
+    rowClickTutee: function(tutee, selectedClass) {
       this.tutee = tutee;
       this.clicked = selectedClass;
       console.log(this.tutee);
@@ -296,9 +300,13 @@ export default {
         });
 
       const dec = firebase.firestore.FieldValue.increment(-1);
-      firebase.firestore().collection("OurTutors").doc(tutor.email).update({
-        maxTut: dec,
-      });
+      firebase
+        .firestore()
+        .collection("OurTutors")
+        .doc(tutor.email)
+        .update({
+          maxTut: dec,
+        });
 
       this.tutor = {};
       this.tutee = {};
@@ -314,7 +322,7 @@ export default {
     getTutees(t) {
       var ret = "";
       for (var i = 0; i < t.tutees.length; i++) {
-        ret += ", " + t.tutees[i].tuteeName;
+        ret += t.tutees[i].tuteeName + ", ";
       }
       return ret;
     },
@@ -446,7 +454,7 @@ export default {
           return "Tutor does not teach this class";
         }
       }
-      return "t";
+      return "";
     },
     valid() {
       return (

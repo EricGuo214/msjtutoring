@@ -70,28 +70,15 @@
             ></v-text-field>
           </v-col>
           <v-col>
-            <v-select
+            <v-autocomplete
+              v-model="gender"
               dense
-              v-model="selectedDays"
-              :items="days"
-              :menu-props="{ maxHeight: '400' }"
               :rules="[(v) => !!v || 'This field is required']"
-              label="Available times"
-              multiple
-              chips
-              required
-            ></v-select>
+              :items="genders"
+              label="Gender"
+              outlined
+            ></v-autocomplete>
           </v-col>
-        </v-row>
-        <v-row md="5">
-          <v-autocomplete
-            v-model="gender"
-            dense
-            :rules="[(v) => !!v || 'This field is required']"
-            :items="genders"
-            label="Gender"
-            outlined
-          ></v-autocomplete>
         </v-row>
 
         <v-row align="center" justify="center">
@@ -103,7 +90,7 @@
           </v-text-field>
         </v-row>
         <v-row align="center" justify="center">
-          <v-combobox
+          <v-select
             v-model="selectedClasses"
             dense
             :items="classes"
@@ -112,13 +99,10 @@
             label="What classes can you teach?"
             multiple
             chips
-            hint="Select a class or type your own"
-            persistent-hint
-            :menu-props="{ maxHeight: '400' }"
             required
             return-object
           >
-          </v-combobox>
+          </v-select>
         </v-row>
         <br />
 
@@ -130,14 +114,12 @@
           >
           </v-text-field>
           <v-select
-            style="width: 20%"
             v-model="cls.sem1"
             :items="academicGrades"
             :rules="[(v) => !!v || 'This field is required']"
             :label="cls.name + ' Sem 1 Grade'"
           ></v-select>
           <v-select
-            style="width: 20%"
             v-model="cls.sem2"
             :items="academicGrades"
             :rules="[(v) => !!v || 'This field is required']"
@@ -149,24 +131,6 @@
 
         <h2>Contact Information</h2>
         <v-list>
-          <v-list-item>
-            <v-list-item-avatar>
-              <v-avatar size="50px" tile>
-                <img
-                  :src="`https://img-authors.flaticon.com/google.jpg`"
-                  :alt="'google logo'"
-                />
-              </v-avatar>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-text-field
-                v-model="email"
-                :rules="emailRules"
-                label="E-mail"
-                required
-              ></v-text-field>
-            </v-list-item-content>
-          </v-list-item>
           <v-list-item>
             <v-list-item-avatar>
               <v-avatar size="50px" tile>
@@ -201,7 +165,7 @@
             <v-list-item-content>
               <v-text-field
                 v-model="instagram"
-                label="Instagram handle (optional)"
+                label="Instagram (optional)"
               ></v-text-field>
             </v-list-item-content>
           </v-list-item>
@@ -224,22 +188,6 @@
 import firebase from "firebase";
 export default {
   data: () => ({
-    // valid: true,
-    // firstName: null,
-    // lastName: null,
-    // grade: null,
-    // grades: ["9", "10", "11", "12"],
-    // selectedClasses: [],
-    // stringClasses: [],
-    // gender: null,
-    // genders: ["Male", "Female", "Other"],
-    // maxTut: null,
-    // desc: null,
-    // email: firebase.auth().currentUser.email,
-    // facebook: "",
-    // instagram: "",
-    // phonenumber: null,
-
     valid: true,
     firstName: "",
     lastName: "",
@@ -251,13 +199,13 @@ export default {
     genders: ["Male", "Female", "Other"],
     maxTut: 2,
     desc: "",
-    email: firebase.auth().currentUser.email,
     facebook: "",
     instagram: "",
     phonenumber: null,
 
     classes: [
       { header: "Sciences" },
+
       { name: "AP Biology" },
       { name: "AP Chemistry" },
       { name: "AP Computer Science A" },
@@ -285,18 +233,12 @@ export default {
       { name: "Algebra 2" },
       { name: "Trig" },
       { name: "Geometry" },
+      { divider: true },
+      { header: "Standarized Tests" },
+      { name: "SAT" },
+      { name: "ACT" },
     ],
 
-    days: [
-      "Monday",
-      "Tuesday",
-      "Wednesday",
-      "Thursday",
-      "Friday",
-      "Saturday",
-      "Sunday",
-    ],
-    selectedDays: null,
     photoURL: null,
 
     emailRules: [
@@ -307,48 +249,35 @@ export default {
   }),
   methods: {
     submit() {
+      const userEmail = firebase.auth().currentUser.email;
+
       if (this.$refs.form.validate()) {
         var db = firebase.firestore();
         db.collection("OurTutors")
-          .doc(firebase.auth().currentUser.email)
+          .doc(userEmail)
           .set({
-            // classes: this.selectedClasses,
             name: this.firstName + " " + this.lastName,
             fName: this.firstName,
             lName: this.lastName,
             grade: this.grade,
             gender: this.gender,
             maxTut: this.maxTut,
-            days: this.selectedDays,
             desc: this.desc,
             photoURL: firebase.auth().currentUser.photoURL,
-            email: this.email,
+            email: userEmail,
             facebook: this.facebook,
             instagram: this.instagram,
             phonenumber: this.phonenumber,
           });
-        // for (cls in this.selectedClasses) {
-        //   firebase
-        //     .firestore()
-        //     .collection("OurTutors")
-        //     .doc(firebase.auth().currentUser.email)
-        //     .collection("Classes")
-        //     .doc(cls.name)
-        //     .set({
-        //       sem1: cls.sem1,
-        //       sem2: cls.sem2,
-        //       teacher: cls.teacher,
-        //       tutees: [],
-        //     });
-        // }
+
         var batch = db.batch();
         this.selectedClasses.forEach((cls) => {
           var docRef = db
             .collection("OurTutors")
-            .doc(firebase.auth().currentUser.email)
+            .doc(userEmail)
             .collection("Classes")
             .doc(cls.name);
-          // cls.tutees = [];
+
           batch.set(docRef, cls);
         });
         batch.commit();
@@ -372,7 +301,7 @@ export default {
 </script>
 
 <style>
-h1{
+h1 {
   color: #065c1d;
   text-align: center;
 }

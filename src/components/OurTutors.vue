@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 >Meet Our Tutors</h1>
+    <h1>Meet Our Tutors</h1>
     <v-container>
       <v-row>
         <v-col v-for="t in tutors" :key="t.id" cols="12" sm="4">
@@ -20,8 +20,8 @@
 
             <v-card-text>
               Qualified classes:
-              <v-list-item v-for="(cls, i) in t.classes" :key="i">
-                <v-list-item-content v-text="cls.name"></v-list-item-content>
+              <v-list-item v-for="(cls, i) in t.names" :key="i">
+                <v-list-item-content v-text="cls"></v-list-item-content>
               </v-list-item>
               Availible spaces:
               <div class="primary--text mb-2" bold>{{ t.maxTut }}</div>
@@ -83,17 +83,10 @@
 
             <v-expand-transition>
               <div v-show="t.show">
-                <h4>Time Availibility</h4>
-
-                <v-list-item v-for="d in t.days" :key="d">
-                  <v-list-item-content>
-                    {{ d }}
-                  </v-list-item-content>
-                </v-list-item>
                 <h4>Contact Information</h4>
                 <v-list>
                   <v-list-item>
-                    <v-list-item-avatar v-if="t.email.length > 0">
+                    <v-list-item-avatar>
                       <v-avatar size="50px" tile>
                         <img
                           :src="`https://img-authors.flaticon.com/google.jpg`"
@@ -102,30 +95,14 @@
                       </v-avatar>
                     </v-list-item-avatar>
                     <v-list-item-content>
-                      <v-list-item-content v-if="t.email.length > 0">
+                      <v-list-item-content>
                         {{ t.email }}
                       </v-list-item-content>
                     </v-list-item-content>
                   </v-list-item>
-                  <!-- <v-list-item>
-                    <v-list-item-avatar>
-                      <v-avatar size="50px" tile>
-                        <img
-                          :src="
-                            `https://cdn.iconscout.com/icon/free/png-512/apple-phone-2-493154.png`
-                          "
-                          :alt="'phone logo'"
-                        />
-                      </v-avatar>
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                      <v-list-item-content>
-                        {{ t.phonenumber }}
-                      </v-list-item-content>
-                    </v-list-item-content>
-                  </v-list-item> -->
+
                   <v-list-item>
-                    <v-list-item-avatar v-if="t.facebook.length > 0">
+                    <v-list-item-avatar>
                       <v-avatar size="50px" tile>
                         <img
                           :src="
@@ -136,7 +113,7 @@
                       </v-avatar>
                     </v-list-item-avatar>
                     <v-list-item-content>
-                      <v-list-item-content v-if="t.facebook.length > 0">
+                      <v-list-item-content>
                         {{ t.facebook }}
                       </v-list-item-content>
                     </v-list-item-content>
@@ -200,21 +177,6 @@ export default {
     wasAuthor(t) {
       return t.id == firebase.auth().currentUser.email;
     },
-    sendNotice(toThisTutor, cls) {
-      console.log("sendNotice", toThisTutor, cls);
-      console.log("currentUser", firebase.auth().currentUser);
-      firebase
-        .firestore()
-        .collection("OurTutors")
-        .doc(toThisTutor)
-        .collection("Interested Tutees")
-        .doc(firebase.auth().currentUser.email)
-        .set({
-          userEmail: firebase.auth().currentUser.email,
-          name: firebase.auth().currentUser.displayName,
-          class: cls,
-        });
-    },
   },
 
   created() {
@@ -227,6 +189,14 @@ export default {
           var tutor = doc.data();
           tutor.id = doc.id;
           tutor.show = false;
+          var names = [];
+          doc.ref.collection("Classes").onSnapshot((snap) => {
+            snap.forEach((doc) => {
+              var cls = doc.data();
+              names.push(cls.name);
+            });
+          });
+          tutor.names = names;
           fArray.push(tutor);
         });
         this.tutors = fArray;
@@ -239,8 +209,8 @@ export default {
 body {
   text-align: center;
 }
-h1{
+h1 {
   text-align: center;
-  color: #065c1d
+  color: #065c1d;
 }
 </style>
