@@ -93,13 +93,34 @@
       </v-data-table>
     </v-card>
     <div class="half">
-      <h2 class="half">{{ tutor.name }} x {{ tutee.name }}({{ clicked }})</h2>
-      <v-btn :disabled="!valid" color="primary" @click="pair(tutor, tutee)">
-        Match!
+      <h2>{{ tutor.name }} x {{ tutee.name }}({{ clicked }})</h2>
+      <v-btn
+        :disabled="!valid"
+        color="primary"
+        @click="pair(tutor, tutee, false)"
+      >
+        Match
       </v-btn>
       <h4 class="red--text">{{ error }}</h4>
 
-      <v-btn color="primary" @click="test"> test </v-btn>
+      <!-- <v-btn color="primary" @click="test"> test </v-btn> -->
+      <v-btn
+        :disabled="!overrideValid"
+        color="error"
+        @click="pair(tutor, tutee, true)"
+      >
+        override
+      </v-btn>
+
+      <v-select
+        v-model="overrideClass"
+        dense
+        :items="this.tutor.sClass"
+        :rules="[required]"
+        label="Select class"
+        required
+      >
+      </v-select>
     </div>
     <h2>Pairs</h2>
     <v-switch
@@ -116,7 +137,7 @@
               {{ pair.tutee }}
             </v-card-title>
             <v-list-item v-for="(t, i) in pair.tInfo" :key="i">
-              {{ t.name }}--- {{ t.tutor }}</v-list-item
+              {{ t.name }} --- {{ t.tutor }}</v-list-item
             >
           </v-card>
         </v-col>
@@ -132,7 +153,7 @@
               {{ pair.tutor }}
             </v-card-title>
             <v-list-item v-for="(t, i) in pair.tInfo" :key="i">
-              {{ t.name }}--- {{ getTutees(t) }}</v-list-item
+              {{ t.name }} --- {{ getTutees(t) }}</v-list-item
             >
           </v-card>
         </v-col>
@@ -165,6 +186,7 @@ export default {
     return {
       dialog: false,
       clicked: "",
+      overrideClass: "",
       emailOfNewAdmin: null,
       search: "",
       tutor: {},
@@ -255,6 +277,9 @@ export default {
           adder: firebase.auth().currentUser.email,
         });
     },
+    override(tutorClass) {
+      console.log(tutorClass);
+    },
     rowClickTutor: function(item, row) {
       if (item.maxTut == 0) {
         row.disable(true);
@@ -267,14 +292,13 @@ export default {
         this.tutor = item;
       }
       this.gradeT = this.tutor.classes;
-      console.log(this.tutor);
     },
     rowClickTutee: function(tutee, selectedClass) {
       this.tutee = tutee;
       this.clicked = selectedClass;
-      console.log(this.tutee);
     },
-    pair(tutor, tutee) {
+    pair(tutor, tutee, override) {
+      var updateClass = override ? this.overrideClass : this.clicked;
       firebase
         .firestore()
         .collection("Tutees")
@@ -291,7 +315,7 @@ export default {
         .collection("OurTutors")
         .doc(tutor.email)
         .collection("Classes")
-        .doc(this.clicked)
+        .doc(updateClass)
         .update({
           tutees: firebase.firestore.FieldValue.arrayUnion({
             tuteeName: tutee.name,
@@ -329,6 +353,12 @@ export default {
 
     open() {
       this.dialog = true;
+    },
+    required(value) {
+      if (value instanceof Array && value.length == 0) {
+        return "Required.";
+      }
+      return !!value || "Required.";
     },
   },
   created() {
@@ -461,6 +491,13 @@ export default {
         Object.keys(this.tutor).length != 0 &&
         Object.keys(this.tutee).length != 0 &&
         this.tutor.sClass.includes(this.clicked)
+      );
+    },
+    overrideValid() {
+      return (
+        Object.keys(this.tutor).length != 0 &&
+        Object.keys(this.tutee).length != 0 &&
+        this.overrideClass != ""
       );
     },
   },
