@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>Meet our tutors</h1>
+    <h1 >Meet Our Tutors</h1>
     <v-container>
       <v-row>
         <v-col v-for="t in tutors" :key="t.id" cols="12" sm="4">
@@ -238,5 +238,9 @@ export default {
 <style scoped>
 body {
   text-align: center;
+}
+h1{
+  text-align: center;
+  color: #065c1d
 }
 </style>
