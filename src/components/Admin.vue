@@ -79,13 +79,15 @@
         </template>
         <template v-slot:[`item.classes`]="{ item }">
           <v-btn
+            v-for="(cls, i) in item.classes"
+            @click="rowClickTutee(item, cls.name)"
             small
             rounded
-            v-for="(cls, i) in item.classes"
             :disabled="cls.p"
+            :color="
+              clicked == cls.name && tutee.email == cls.tutee ? 'primary' : ''
+            "
             :key="i"
-            :color="clicked == cls.name ? 'primary' : ''"
-            @click="rowClickTutee(item, cls.name)"
           >
             {{ cls.name }}
           </v-btn>
@@ -193,6 +195,7 @@ export default {
       tutee: {},
       selected1: [],
       selected2: [],
+      toggle_exclusive: null,
       headers1: [
         {
           text: "Name",
@@ -296,6 +299,7 @@ export default {
     rowClickTutee: function(tutee, selectedClass) {
       this.tutee = tutee;
       this.clicked = selectedClass;
+      console.log(tutee);
     },
     pair(tutor, tutee, override) {
       var updateClass = override ? this.overrideClass : this.clicked;
@@ -423,7 +427,7 @@ export default {
           var classes1 = [];
           snap.forEach((doc) => {
             var cls = doc.data();
-            classes1.push({ name: cls.name, p: cls.p });
+            classes1.push({ name: cls.name, p: cls.p, tutee: tutee.email });
             paired.push(cls.p);
             names.push(cls.name);
           });
@@ -530,5 +534,8 @@ export default {
 }
 tr.v-data-table__selected {
   background: #7d92f5 !important;
+}
+.cc {
+  background: blue !important;
 }
 </style>
