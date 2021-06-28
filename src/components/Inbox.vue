@@ -66,17 +66,18 @@ export default {
       .collection("Tutees")
       .doc(firebase.auth().currentUser.email)
       .collection("Classes")
+      .where("p", "==", true)
       .onSnapshot((querySnapshot) => {
         this.classes = [];
         querySnapshot.forEach((doc) => {
           var cls = doc.data();
           console.log("class", cls);
           console.log("is it paired?", cls.name, cls.p);
-          if (cls.p == true) {
-            console.log(doc.name, "is paired = true");
-            // this.classes.push(cls);
-            this.getTutorInfo(cls.tutor.tutorEmail, cls);
-          }
+          // if (cls.p == true) {
+          console.log(doc.name, "is paired = true");
+          // this.classes.push(cls);
+          this.getTutorInfo(cls.tutor.tutorEmail, cls);
+          // }
         });
       });
     // to see your tutees (all your tutees -> tutees[])
@@ -85,15 +86,16 @@ export default {
       .collection("OurTutors")
       .doc(firebase.auth().currentUser.email)
       .collection("Classes")
+      .where("tutees", "!=", [])
       .onSnapshot((querySnapshot) => {
         this.tuteesInfo = [];
         querySnapshot.forEach((doc) => {
           var cls = doc.data();
           console.log("class", cls);
-          if (cls.tutees !== undefined) {
-            console.log("has tutee ", cls);
-            this.getTuteeInfo(cls.tutees, cls);
-          }
+          // if (cls.tutees !== undefined) {
+          console.log("has tutee ", cls);
+          this.getTuteeInfo(cls.tutees, cls);
+          // }
         });
       });
 
