@@ -130,15 +130,22 @@
 
     <!-- TUTEE VIEW -->
     <v-container v-if="viewToggle">
-      <v-row no-gutters>
+      <v-row no-gutters justify="space-around">
         <v-col v-for="(pair, i) in this.pairedTutees" :key="i" cols="12" sm="3">
           <v-card class="mx-auto" max-width="344" outlined>
             <v-card-title class="title primary--text pl=0">
-              {{ pair.tutee }}
+              {{ pair.tutee.name }}
             </v-card-title>
             <v-list-item v-for="(t, i) in pair.tInfo" :key="i">
-              {{ t.name }} --- {{ t.tutor }}</v-list-item
-            >
+              <v-btn
+                depressed
+                color="error"
+                @click="unpair(t.emailOfTutor, pair.tutee, t.name)"
+              >
+                Unpair
+              </v-btn>
+              {{ t.name }}--- {{ t.tutor }}
+            </v-list-item>
           </v-card>
         </v-col>
       </v-row>
@@ -150,7 +157,7 @@
         <v-col v-for="(pair, i) in this.pairedTutors" :key="i" cols="12" sm="3">
           <v-card class="mx-auto" outlined>
             <v-card-title class="title primary--text pl=0">
-              {{ pair.tutor }}
+              {{ pair.tutor.name }}
             </v-card-title>
             <v-list-item v-for="(t, i) in pair.tInfo" :key="i">
               {{ t.name }} --- {{ getTutees(t) }}</v-list-item
@@ -268,14 +275,10 @@ export default {
         });
     },
     addToAdminCollection() {
-      firebase
-        .firestore()
-        .collection("Admins")
-        .doc(this.emailOfNewAdmin)
-        .set({
-          email: this.emailOfNewAdmin,
-          adder: firebase.auth().currentUser.email,
-        });
+      firebase.firestore().collection("Admins").doc(this.emailOfNewAdmin).set({
+        email: this.emailOfNewAdmin,
+        adder: firebase.auth().currentUser.email,
+      });
     },
     override(tutorClass) {
       console.log(tutorClass);
@@ -293,7 +296,7 @@ export default {
       }
       this.gradeT = this.tutor.classes;
     },
-    rowClickTutee: function(tutee, selectedClass) {
+    rowClickTutee: function (tutee, selectedClass) {
       this.tutee = tutee;
       this.clicked = selectedClass;
     },
@@ -324,19 +327,47 @@ export default {
         });
 
       const dec = firebase.firestore.FieldValue.increment(-1);
-      firebase
-        .firestore()
-        .collection("OurTutors")
-        .doc(tutor.email)
-        .update({
-          maxTut: dec,
-        });
+      firebase.firestore().collection("OurTutors").doc(tutor.email).update({
+        maxTut: dec,
+      });
 
       this.tutor = {};
       this.tutee = {};
       this.selected1 = [];
       this.selected2 = [];
       this.clicked = "";
+    },
+
+    unpair(tutorEmail, tutee, cls) {
+      console.log("unpair: ", tutorEmail, tutee.name, tutee.email, cls);
+      // removes tutee from Tutor's list of tutees
+      firebase
+        .firestore()
+        .collection("OurTutors")
+        .doc(tutorEmail)
+        .collection("Classes")
+        .doc(cls)
+        .update({
+          tutees: firebase.firestore.FieldValue.arrayRemove({
+            tuteeName: tutee.name,
+            tuteeEmail: tutee.email,
+          }),
+        });
+      console.log("tutee removed from Tutor's list of clases");
+      // removes tutor from Tutee's tutors
+      firebase
+        .firestore()
+        .collection("Tutees")
+        .doc(tutee.email)
+        .collection("Classes")
+        .doc(cls)
+        .update({
+          tutor: null,
+          p: false,
+        });
+      console.log("tutor removed from Tutee's tutors");
+      const indexOfRemoved = this.pairedTutees.indexOf(tutee);
+      this.pairedTutees.splice(indexOfRemoved, 1);
     },
 
     test() {
@@ -397,11 +428,11 @@ export default {
             snap.forEach((doc1) => {
               let cls = doc1.data();
               //console.log("class", cls);
-              tutorPairings.push({ name: cls.name, tutees: cls.tutees });
+              tutorPairings.push({ name: cls.name, tutees: cls.tutees,  });
             });
             // console.log("pair", JSON.stringify(tutorPairings));
             if (tutorPairings.length !== 0) {
-              allTutorPairs.push({ tutor: tutor.name, tInfo: tutorPairings });
+              allTutorPairs.push({ tutor: tutor, tInfo: tutorPairings });
             }
           });
         this.pairedTutors = allTutorPairs;
@@ -455,10 +486,11 @@ export default {
               tuteePairings.push({
                 name: cls.name,
                 tutor: cls.tutor.tutorName,
+                emailOfTutor: cls.tutor.tutorEmail,
               });
             });
             if (tuteePairings.length !== 0) {
-              allPairs.push({ tutee: tutee.name, tInfo: tuteePairings });
+              allPairs.push({ tutee: tutee, tInfo: tuteePairings });
               this.pairedTutees = allPairs;
             }
 
