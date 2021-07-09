@@ -73,6 +73,12 @@
             </v-list-item-icon>
             <v-list-item-title>Admin</v-list-item-title>
           </v-list-item>
+          <v-list-item to="/ContactUs">
+            <v-list-item-icon>
+              <v-icon>mdi-account-supervisor-outline</v-icon>
+            </v-list-item-icon>
+            <v-list-item-title>Contact Us</v-list-item-title>
+          </v-list-item>
         </v-list-item-group>
       </v-list>
     </v-navigation-drawer>
