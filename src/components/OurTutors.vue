@@ -209,8 +209,4 @@ export default {
 body {
   text-align: center;
 }
-h1 {
-  text-align: center;
-  color: #065c1d;
-}
 </style>

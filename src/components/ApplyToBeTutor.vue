@@ -302,7 +302,7 @@ export default {
 
 <style>
 h1 {
-  color: #065c1d;
+  color: #046bd1;
   text-align: center;
 }
 </style>
