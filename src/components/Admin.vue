@@ -139,14 +139,16 @@
               {{ pair.tutee.name }}
             </v-card-title>
             <v-list-item v-for="(t, i) in pair.tInfo" :key="i">
+              {{ t.name }}--- {{ t.tutor }}
               <v-btn
+                text
+                icon
                 depressed
                 color="error"
                 @click="unpair(t.emailOfTutor, pair.tutee, t.name)"
               >
-                Unpair
+                <v-icon>mdi-account-multiple-remove-outline</v-icon>
               </v-btn>
-              {{ t.name }}--- {{ t.tutor }}
             </v-list-item>
           </v-card>
         </v-col>
@@ -180,10 +182,10 @@
       </v-card-actions>
     </v-card>
     <v-spacer></v-spacer>
-    <v-card>
+    <!-- <v-card>
       <v-text-field v-model="emailOfNewAdmin"></v-text-field>
       <v-btn @click="addToAdminCollection">add to collection </v-btn>
-    </v-card>
+    </v-card> -->
   </div>
 </template>
 
@@ -230,7 +232,6 @@ export default {
         { text: "Paired?", value: "paired" },
         { text: "Email", value: "email" },
         { text: "Facebook", value: "facebook" },
-
         { text: "Notes", value: "notes" },
       ],
       gradeHeaders: [
@@ -278,14 +279,16 @@ export default {
         });
     },
     addToAdminCollection() {
-      firebase.firestore().collection("Admins").doc(this.emailOfNewAdmin).set({
-        email: this.emailOfNewAdmin,
-        adder: firebase.auth().currentUser.email,
-      });
+      firebase
+        .firestore()
+        .collection("Admins")
+        .doc(this.emailOfNewAdmin)
+        .set({
+          email: this.emailOfNewAdmin,
+          adder: firebase.auth().currentUser.email,
+        });
     },
-    override(tutorClass) {
-      console.log(tutorClass);
-    },
+
     rowClickTutor: function(item, row) {
       if (item.maxTut == 0) {
         row.disable(true);
@@ -299,7 +302,7 @@ export default {
       }
       this.gradeT = this.tutor.classes;
     },
-    rowClickTutee: function (tutee, selectedClass) {
+    rowClickTutee: function(tutee, selectedClass) {
       this.tutee = tutee;
       this.clicked = selectedClass;
       console.log(tutee);
@@ -331,9 +334,13 @@ export default {
         });
 
       const dec = firebase.firestore.FieldValue.increment(-1);
-      firebase.firestore().collection("OurTutors").doc(tutor.email).update({
-        maxTut: dec,
-      });
+      firebase
+        .firestore()
+        .collection("OurTutors")
+        .doc(tutor.email)
+        .update({
+          maxTut: dec,
+        });
 
       this.tutor = {};
       this.tutee = {};
@@ -432,7 +439,7 @@ export default {
             snap.forEach((doc1) => {
               let cls = doc1.data();
               //console.log("class", cls);
-              tutorPairings.push({ name: cls.name, tutees: cls.tutees,  });
+              tutorPairings.push({ name: cls.name, tutees: cls.tutees });
             });
             // console.log("pair", JSON.stringify(tutorPairings));
             if (tutorPairings.length !== 0) {
