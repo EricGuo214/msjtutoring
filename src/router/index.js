@@ -5,6 +5,8 @@ import SignIn from "@/components/SignIn";
 import firebase from "firebase";
 import ApplyToBeTutor from "@/components/ApplyToBeTutor";
 import ApplyForATutor from "@/components/ApplyForATutor";
+import UpdateTutor from "@/components/UpdateTutor";
+import UpdateTutee from "@/components/UpdateTutee";
 import Inbox from "@/components/Inbox";
 
 Vue.use(VueRouter);
@@ -27,6 +29,22 @@ const routes = [
     path: "/ApplyToBeTutor",
     name: "ApplyToBeTutor",
     component: ApplyToBeTutor,
+    meta: {
+      auth: true,
+    },
+  },
+  {
+    path: "/UpdateTutor",
+    name: "UpdateTutor",
+    component: UpdateTutor,
+    meta: {
+      auth: true,
+    },
+  },
+  {
+    path: "/UpdateTutee",
+    name: "UpdateTutee",
+    component: UpdateTutee,
     meta: {
       auth: true,
     },
@@ -79,6 +97,11 @@ const routes = [
     path: "/EditTutor/:id",
     name: "EditTutor",
     component: () => import("../components/EditTutor.vue"),
+  },
+  {
+    path: "/profile",
+    name: "Profile",
+    component: () => import("../components/Profile.vue"),
   },
   {
     path: "/Inbox",

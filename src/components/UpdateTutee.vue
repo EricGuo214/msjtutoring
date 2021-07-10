@@ -1,7 +1,7 @@
 <template>
   <body>
     <div class="half">
-      <h1>Apply For A Tutor</h1>
+      <h1>Apply For A Tutor! Update your information.</h1>
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-text-field
           v-model="name"
@@ -31,7 +31,7 @@
           label="Select the classes you need help in"
           multiple
           chips
-          hint="Or type in a class if it doesn't exist"
+          hint="Or type in a class if it doesn't exsist"
           persistent-hint
           required
           return-object
@@ -50,9 +50,7 @@
             <v-list-item-avatar>
               <v-avatar size="50px" tile>
                 <img
-                  :src="
-                    `https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png`
-                  "
+                  :src="`https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png`"
                   :alt="'facebook logo'"
                 />
               </v-avatar>
@@ -70,9 +68,7 @@
             <v-list-item-avatar>
               <v-avatar size="50px" tile>
                 <img
-                  :src="
-                    `https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg`
-                  "
+                  :src="`https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg`"
                   :alt="'instagram logo'"
                 />
               </v-avatar>
@@ -137,7 +133,7 @@ export default {
     dialog: false,
     name: "",
     selectedClasses: [],
-    phonenumber: "",
+    phonenumber: null,
     facebook: "",
     instagram: "",
     notes: "",
@@ -178,6 +174,39 @@ export default {
     ],
   }),
 
+  created(){
+      firebase
+        .firestore()
+        .collection("Tutees")
+        .doc(firebase.auth().currentUser.email)
+        .onSnapshot((doc) => {
+          var tuteeInfo = doc.data();
+          this.name = tuteeInfo.name;
+          this.phonenumber = tuteeInfo.phonenumber;
+          this.facebook = tuteeInfo.facebook;
+          this.notes = tuteeInfo.notes;
+          this.gender = tuteeInfo.gender;
+          this.grade = tuteeInfo.grade;
+          this.instagram = tuteeInfo.instagram;
+          this.maxTut = tuteeInfo.maxTut;
+        });
+
+      firebase
+        .firestore()
+        .collection("Tutees")
+        .doc(firebase.auth().currentUser.email)
+        .collection("Classes")
+        .get()
+        .then((querySnapshot) => {
+            var classNames = []
+            querySnapshot.forEach((doc) => {
+                console.log("Document data:", doc.data())
+                classNames.push(doc.data().name)
+            })
+            this.selectedClasses = classNames
+        })
+  },
+
   methods: {
     post() {
       if (this.$refs.form.validate()) {
@@ -189,9 +218,9 @@ export default {
             name: this.name,
             notes: this.notes,
             email: userEmail,
+            phonenumber: this.phonenumber,
             facebook: this.facebook,
             instagram: this.instagram,
-            phonenumber: this.phonenumber,
           });
         var batch = db.batch();
         this.selectedClasses.forEach((cls) => {
