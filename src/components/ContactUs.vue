@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-card class="mx-auto" outlined>
-      <v-list-item three-line>
+      <v-list-item three-line class="centers">
         <v-list-item-content>
           <v-list-item-title class="text-h5 mb-1">
             Contact Us
@@ -86,3 +86,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.centers{
+  text-align: center;
+}
+</style>
