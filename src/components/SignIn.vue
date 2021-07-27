@@ -4,7 +4,7 @@
       Welcome to MSJ Tutoring!
     </h1>
     <h3 class="text-center display-2 primary-text text-accent-3">
-      You must be signed in to use some functions.
+      Please Sign In
     </h3>
     <section>
       <!-- <navigation></navigation> -->

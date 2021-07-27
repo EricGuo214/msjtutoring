@@ -379,6 +379,14 @@ export default {
       console.log("tutor removed from Tutee's tutors");
       const indexOfRemoved = this.pairedTutees.indexOf(tutee);
       this.pairedTutees.splice(indexOfRemoved, 1);
+      const inc = firebase.firestore.FieldValue.increment(1);
+      firebase
+        .firestore()
+        .collection("OurTutors")
+        .doc(tutorEmail)
+        .update({
+          maxTut: inc,
+        });
     },
 
     test() {

@@ -122,7 +122,8 @@
             </v-card-actions>
           </v-card>
         </v-dialog> -->
-        <v-btn color="primary" @click="post"> Post</v-btn>
+        <v-btn color="primary" @click="submit"> submit</v-btn>
+        <v-btn color="primary" @click="test"> test</v-btn>
       </v-form>
     </div>
   </body>
@@ -179,7 +180,10 @@ export default {
   }),
 
   methods: {
-    post() {
+    test() {
+      console.log(this.selectedClasses);
+    },
+    submit() {
       if (this.$refs.form.validate()) {
         const userEmail = firebase.auth().currentUser.email;
         var db = firebase.firestore();
@@ -193,7 +197,9 @@ export default {
             instagram: this.instagram,
             phonenumber: this.phonenumber,
           });
+
         var batch = db.batch();
+        console.log(this.selectedClasses);
         this.selectedClasses.forEach((cls) => {
           var docRef = db
             .collection("Tutees")
@@ -205,9 +211,6 @@ export default {
           batch.set(docRef, cls);
         });
         batch.commit();
-        // this.name = "";
-        // this.selectedClasses = [];
-        // this.notes = "";
       }
     },
     required(value) {

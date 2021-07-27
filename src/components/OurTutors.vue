@@ -75,7 +75,7 @@
                 v-if="wasAuthor(t)"
                 text
                 icon
-                :to="{ name: 'EditTutor', params: { id: t.id } }"
+                to="/profile"
               >
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>

@@ -1,14 +1,14 @@
 <template>
   <div>
     <h1 class="text-center display-2 text-accent-3">
-      Apply To Be A Tutor! Update Your Information.
+      Edit Tutor
     </h1>
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-container style="width: 50%">
         <v-row align="center" justify="center">
           <v-col cols="12" md="5" class="mx-auto">
             <v-text-field
-              v-model="firstName"
+              v-model="info.fName"
               dense
               :rules="[
                 (v) => !!v || 'This field is required',
@@ -20,7 +20,7 @@
           </v-col>
           <v-col>
             <v-text-field
-              v-model="lastName"
+              v-model="info.lName"
               dense
               :rules="[
                 (v) => !!v || 'This field is required',
@@ -34,7 +34,7 @@
         <v-row align="center" justify="center">
           <v-col md="5">
             <v-autocomplete
-              v-model="grade"
+              v-model="info.grade"
               dense
               :rules="[(v) => !!v || 'This field is required']"
               :items="grades"
@@ -44,7 +44,7 @@
           </v-col>
           <v-col>
             <v-text-field
-              v-model.number="phonenumber"
+              v-model.number="info.phonenumber"
               type="number"
               label="Phone Number"
               :rules="[(v) => !!v || 'This field is required']"
@@ -56,7 +56,7 @@
         <v-row align="center" justify="center">
           <v-col cols="12" md="5">
             <v-text-field
-              v-model.number="maxTut"
+              v-model.number="info.maxTut"
               type="number"
               dense
               :step="1"
@@ -71,7 +71,7 @@
           </v-col>
           <v-col>
             <v-autocomplete
-              v-model="gender"
+              v-model="info.gender"
               dense
               :rules="[(v) => !!v || 'This field is required']"
               :items="genders"
@@ -81,9 +81,9 @@
           </v-col>
         </v-row>
 
-        <v-row align="center" justify="center">
+        <!-- <v-row align="center" justify="center">
           <v-text-field
-            v-model="desc"
+            v-model="info.desc"
             label="Enter a short description for tutees to see"
             :rules="[(v) => !!v || 'This field is required']"
           >
@@ -125,7 +125,12 @@
             :rules="[(v) => !!v || 'This field is required']"
             :label="cls.name + ' Sem 2 Grade'"
           ></v-select>
-        </v-row>
+        </v-row> -->
+        <v-alert dense border="left" type="warning">
+          Classes <strong>cannot </strong> be changed if you paired are with a
+          tutee. Please contact us at msjstemsuccess@gmail.com to remove or add
+          classes
+        </v-alert>
 
         <br />
 
@@ -144,7 +149,7 @@
             </v-list-item-avatar>
             <v-list-item-content>
               <v-text-field
-                v-model="facebook"
+                v-model="info.facebook"
                 :rules="[(v) => !!v || 'This field is required']"
                 label="Facebook Username"
                 required
@@ -164,7 +169,7 @@
             </v-list-item-avatar>
             <v-list-item-content>
               <v-text-field
-                v-model="instagram"
+                v-model="info.instagram"
                 label="Instagram (optional)"
               ></v-text-field>
             </v-list-item-content>
@@ -172,7 +177,12 @@
         </v-list>
 
         <v-row align="center" justify="center">
-          <v-btn color="primary" @click="submit" :disabled="!valid">
+          <v-btn
+            color="primary"
+            to="/OurTutors"
+            @click="onSubmit"
+            :disabled="!valid"
+          >
             Submit
           </v-btn>
         </v-row>
@@ -189,19 +199,10 @@ import firebase from "firebase";
 export default {
   data: () => ({
     valid: true,
-    firstName: "",
-    lastName: "",
-    grade: null,
+    info: {},
+
     grades: ["9", "10", "11", "12"],
-    selectedClasses: [],
-    stringClasses: [],
-    gender: "",
     genders: ["Male", "Female", "Other"],
-    maxTut: 2,
-    desc: "",
-    facebook: "",
-    instagram: "",
-    phonenumber: null,
 
     classes: [
       { header: "Sciences" },
@@ -239,8 +240,6 @@ export default {
       { name: "ACT" },
     ],
 
-    photoURL: null,
-
     emailRules: [
       (v) => !!v || "E-mail is required",
       (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
@@ -248,78 +247,14 @@ export default {
     academicGrades: ["A", "B", "C", "D", "F"],
   }),
 
-  created() {
-    firebase
-      .firestore()
-      .collection("OurTutors")
-      .doc(firebase.auth().currentUser.email)
-      .onSnapshot((doc) => {
-          var tutorInfo = doc.data();
-          //console.log(tutorInfo);
-          this.email = tutorInfo.email;
-          this.desc = tutorInfo.desc;
-          this.firstName = tutorInfo.fName;
-          this.lastName = tutorInfo.lName;
-          this.facebook = tutorInfo.facebook;
-          this.gender = tutorInfo.gender;
-          this.grade = tutorInfo.grade;
-          this.instagram = tutorInfo.instagram;
-          this.maxTut = tutorInfo.maxTut;
-          this.phonenumber = tutorInfo.phonenumber;
-      });
-
-    firebase
-      .firestore()
-      .collection("OurTutors")
-      .doc(firebase.auth().currentUser.email)
-      .collection("Classes")
-      .get()
-      .then((querySnapshot) => {
-        var classNames = []
-        querySnapshot.forEach((doc) => {
-          classNames.push(doc.data().name)
-        })
-        this.selectedClasses = classNames
-      })
-  },
-  
   methods: {
-    submit() {
-      const userEmail = firebase.auth().currentUser.email;
-
-      if (this.$refs.form.validate()) {
-        var db = firebase.firestore();
-        db.collection("OurTutors")
-          .doc(userEmail)
-          .set({
-            name: this.firstName + " " + this.lastName,
-            fName: this.firstName,
-            lName: this.lastName,
-            grade: this.grade,
-            gender: this.gender,
-            maxTut: this.maxTut,
-            desc: this.desc,
-            photoURL: firebase.auth().currentUser.photoURL,
-            email: userEmail,
-            facebook: this.facebook,
-            instagram: this.instagram,
-            phonenumber: this.phonenumber,
-          });
-
-        var batch = db.batch();
-        this.selectedClasses.forEach((cls) => {
-          var docRef = db
-            .collection("OurTutors")
-            .doc(userEmail)
-            .collection("Classes")
-            .doc(cls.name);
-
-          batch.set(docRef, cls);
-        });
-        batch.commit();
-
-        this.$router.push("/OurTutors");
-      }
+    onSubmit() {
+      this.info.name = this.info.fName + " " + this.info.lName;
+      firebase
+        .firestore()
+        .collection("OurTutors")
+        .doc(firebase.auth().currentUser.email)
+        .update(this.info);
     },
     required(value) {
       if (value instanceof Array && value.length == 0) {
@@ -327,14 +262,16 @@ export default {
       }
       return !!value || "Required.";
     },
-    test() {
-      console.log(JSON.stringify(this.selectedClasses));
-      this.stringClasses = this.selectedClasses.map((a) => a.name);
-      console.log(this.stringClasses);
-    },
-    changeFirstName(varName, newValue){
-      this[varName] = newValue;
-    },
+  },
+  created() {
+    firebase
+      .firestore()
+      .collection("OurTutors")
+      .doc(firebase.auth().currentUser.email)
+      .get()
+      .then((doc) => {
+        this.info = doc.data();
+      });
   },
 };
 </script>

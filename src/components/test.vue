@@ -1,32 +1,20 @@
 <template>
-  <div>
-    <p>Exclusive</p>
-
-    <v-btn-toggle v-model="toggle_exclusive">
-      <v-btn>
-        <v-icon>mdi-format-align-left</v-icon>
-      </v-btn>
-
-      <v-btn>
-        <v-icon>mdi-format-align-center</v-icon>
-      </v-btn>
-
-      <v-btn>
-        <v-icon>mdi-format-align-right</v-icon>
-      </v-btn>
-
-      <v-btn>
-        <v-icon>mdi-format-align-justify</v-icon>
-      </v-btn>
-    </v-btn-toggle>
-  </div>
+  <v-container fluid class="pa-0">
+    <v-row align="center">
+      <v-col cols="12" sm="6">
+        <div class="text-center">
+          <div class="my-2">
+            <v-btn x-small color="secondary" dark>
+              Extra small Button
+            </v-btn>
+          </div>
+          <div class="my-2">
+            <v-btn small color="primary" dark>
+              Small Button
+            </v-btn>
+          </div>
+        </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
-<script>
-export default {
-  data() {
-    return {
-      toggle_exclusive: 1,
-    };
-  },
-};
-</script>

@@ -1,10 +1,10 @@
 <template>
   <body>
     <div class="half">
-      <h1>Apply For A Tutor! Update your information.</h1>
+      <h1>Edit Tutee</h1>
       <v-form ref="form" v-model="valid" lazy-validation>
         <v-text-field
-          v-model="name"
+          v-model="info.name"
           dense
           :rules="[(v) => !!v || 'This field is required']"
           label="Full name"
@@ -14,7 +14,7 @@
 
         <v-col>
           <v-text-field
-            v-model.number="phonenumber"
+            v-model.number="info.phonenumber"
             type="number"
             label="Phone Number"
             :rules="[(v) => !!v || 'This field is required']"
@@ -39,7 +39,7 @@
         </v-combobox>
         <br />
         <v-text-field
-          v-model="notes"
+          v-model="info.notes"
           label="Any preferences or notes for your tutor? (optional)"
           outlined
         ></v-text-field>
@@ -50,14 +50,16 @@
             <v-list-item-avatar>
               <v-avatar size="50px" tile>
                 <img
-                  :src="`https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png`"
+                  :src="
+                    `https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png`
+                  "
                   :alt="'facebook logo'"
                 />
               </v-avatar>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-text-field
-                v-model="facebook"
+                v-model="info.facebook"
                 :rules="[(v) => !!v || 'This field is required']"
                 label="Facebook Username"
                 required
@@ -68,57 +70,25 @@
             <v-list-item-avatar>
               <v-avatar size="50px" tile>
                 <img
-                  :src="`https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg`"
+                  :src="
+                    `https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg`
+                  "
                   :alt="'instagram logo'"
                 />
               </v-avatar>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-text-field
-                v-model="instagram"
+                v-model="info.instagram"
                 label="Instagram (optional)"
               ></v-text-field>
             </v-list-item-content>
           </v-list-item>
         </v-list>
 
-        <!-- <v-dialog v-model="dialog" width="500">
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn
-              color="primary"
-              @click="post"
-              :disabled="!isValid"
-              v-bind="attrs"
-              v-on="on"
-            >
-              Submit
-            </v-btn>
-          </template>
-
-          <v-card>
-            <v-card-title>
-              Success!
-            </v-card-title>
-
-            <v-card-text>
-              Please check your inbox often to see if you have been paired with
-              a tutor
-            </v-card-text>
-
-            <v-divider></v-divider>
-
-            <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn color="primary" to=/inbox text @click="dialog = false">
-                Inbox
-              </v-btn>
-              <v-btn color="primary" to=/ text @click="dialog = false">
-                Home
-              </v-btn>
-            </v-card-actions>
-          </v-card>
-        </v-dialog> -->
-        <v-btn color="primary" @click="post"> Post</v-btn>
+        <v-btn color="primary" @click="save"> save</v-btn>
+        <!-- <v-btn color="primary" @click="test"> test</v-btn> -->
+        <!-- <v-btn color="warning" @click="clearClass"> delete class</v-btn> -->
       </v-form>
     </div>
   </body>
@@ -130,14 +100,10 @@ import firebase from "firebase";
 export default {
   data: () => ({
     valid: true,
-    dialog: false,
-    name: "",
+    info: {},
     selectedClasses: [],
-    phonenumber: null,
-    facebook: "",
-    instagram: "",
-    notes: "",
-    gender: "",
+    og: [],
+    getClass: [],
     genders: ["Male", "Female", "Other"],
 
     classes: [
@@ -174,54 +140,42 @@ export default {
     ],
   }),
 
-  created(){
-      firebase
-        .firestore()
-        .collection("Tutees")
-        .doc(firebase.auth().currentUser.email)
-        .onSnapshot((doc) => {
-          var tuteeInfo = doc.data();
-          this.name = tuteeInfo.name;
-          this.phonenumber = tuteeInfo.phonenumber;
-          this.facebook = tuteeInfo.facebook;
-          this.notes = tuteeInfo.notes;
-          this.gender = tuteeInfo.gender;
-          this.grade = tuteeInfo.grade;
-          this.instagram = tuteeInfo.instagram;
-          this.maxTut = tuteeInfo.maxTut;
-        });
+  created() {
+    firebase
+      .firestore()
+      .collection("Tutees")
+      .doc(firebase.auth().currentUser.email)
+      .get()
+      .then((doc) => {
+        this.info = doc.data();
+      });
 
-      firebase
-        .firestore()
-        .collection("Tutees")
-        .doc(firebase.auth().currentUser.email)
-        .collection("Classes")
-        .get()
-        .then((querySnapshot) => {
-            var classNames = []
-            querySnapshot.forEach((doc) => {
-                console.log("Document data:", doc.data())
-                classNames.push(doc.data().name)
-            })
-            this.selectedClasses = classNames
-        })
+    firebase
+      .firestore()
+      .collection("Tutees")
+      .doc(firebase.auth().currentUser.email)
+      .collection("Classes")
+      .get()
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
+          this.selectedClasses.push(doc.data().name);
+          this.og.push(doc.data().name);
+        });
+      });
   },
 
   methods: {
-    post() {
+    test() {},
+
+    save() {
       if (this.$refs.form.validate()) {
         const userEmail = firebase.auth().currentUser.email;
         var db = firebase.firestore();
+
         db.collection("Tutees")
           .doc(userEmail)
-          .set({
-            name: this.name,
-            notes: this.notes,
-            email: userEmail,
-            phonenumber: this.phonenumber,
-            facebook: this.facebook,
-            instagram: this.instagram,
-          });
+          .set(this.info);
+
         var batch = db.batch();
         this.selectedClasses.forEach((cls) => {
           var docRef = db
@@ -231,12 +185,50 @@ export default {
             .doc(cls.name);
           cls.p = false;
           cls.tutor = {};
+
           batch.set(docRef, cls);
         });
+        console.log("came here?");
         batch.commit();
-        // this.name = "";
-        // this.selectedClasses = [];
-        // this.notes = "";
+
+        // db.collection("Tutees")
+        //   .doc(userEmail)
+        //   .collection("Classes")
+        //   .get()
+        //   .then((res) => {
+        //     res.forEach((element) => {
+        //       var cls = element.data()
+        //       if (cls.p && this.selectedClasses.includes(cls.name)) {
+        //         console.log("already paired");
+        //       }
+
+        //     });
+        //   });
+        // db.collection("Tutees")
+        //   .doc(userEmail)
+        //   .collection("Classes")
+        //   .get()
+        //   .then((res) => {
+        //     res.forEach((element) => {
+        //       element.ref.delete();
+        //     });
+        //   })
+        //   .then(() => {
+        //     var batch = db.batch();
+        //     this.selectedClasses.forEach((cls) => {
+        //       var docRef = db
+        //         .collection("Tutees")
+        //         .doc(userEmail)
+        //         .collection("Classes")
+        //         .doc(cls.name);
+        //       cls.p = false;
+        //       cls.tutor = {};
+
+        //       batch.set(docRef, cls);
+        //     });
+        //     console.log("came here?");
+        //     batch.commit();
+        //   });
       }
     },
     required(value) {
