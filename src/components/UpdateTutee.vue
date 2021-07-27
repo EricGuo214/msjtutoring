@@ -183,8 +183,15 @@ export default {
             .doc(userEmail)
             .collection("Classes")
             .doc(cls.name);
-          cls.p = false;
-          cls.tutor = {};
+
+          docRef.get().then((doc) => {
+            if (doc.data().p) {
+              console.log("already paired");
+            } else {
+              cls.p = false;
+              cls.tutor = {};
+            }
+          });
 
           batch.set(docRef, cls);
         });
