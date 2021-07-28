@@ -1,6 +1,7 @@
 <template>
   <div>
-    <h2>Tutors</h2>
+    <h2 class="centered">Tutors</h2>
+    <br>
     <v-card>
       <v-card-title>
         <v-text-field
@@ -45,7 +46,8 @@
     </v-card>
 
     <br />
-    <h2>Tutees</h2>
+    <h2 class="centered">Tutees</h2>
+    <br>
     <v-card>
       <v-card-title>
         <v-text-field
@@ -584,5 +586,9 @@ tr.v-data-table__selected {
 }
 .cc {
   background: blue !important;
+}
+.centered{
+  text-align: center;
+  color: #0947C4;
 }
 </style>
