@@ -91,4 +91,8 @@ export default {
 .centers{
   text-align: center;
 }
+
+h1{
+  color: #0947C4;
+}
 </style>

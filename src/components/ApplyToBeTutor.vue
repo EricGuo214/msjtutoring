@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1 class="text-center display-2 text-accent-3">
+    <h1 class="text-center">
       Apply To Be A Tutor!
     </h1>
     <v-form ref="form" v-model="valid" lazy-validation>
