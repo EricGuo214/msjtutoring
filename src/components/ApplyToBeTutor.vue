@@ -126,9 +126,6 @@
             :label="cls.name + ' Sem 2 Grade'"
           ></v-select>
         </v-row>
-        <v-alert dense border="left" type="warning">
-          Classes <strong>cannot </strong> be changed after application
-        </v-alert>
 
         <br />
 
