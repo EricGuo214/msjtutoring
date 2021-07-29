@@ -7,7 +7,7 @@
             Contact Us
           </v-list-item-title>
           <v-list-item-subtitle
-            >Feel free to contact us at msjstemsuccess@gmail.com if you have any
+            >Feel free to contact us at <strong> msjstemsuccess@gmail.com </strong> if you have any
             questions, comments, or concerns.</v-list-item-subtitle
           >
         </v-list-item-content>

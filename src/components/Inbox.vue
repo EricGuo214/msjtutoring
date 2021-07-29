@@ -136,3 +136,8 @@ export default {
   },
 };
 </script>
+<style>
+h1{
+  color: #0947C4;
+}
+</style>
