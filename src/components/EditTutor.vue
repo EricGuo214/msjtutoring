@@ -119,7 +119,7 @@
               <v-text-field
                 :label="tile.label"
                 dense
-               
+
               ></v-text-field>
             </v-list-item-content>
           </v-list-item>
@@ -129,7 +129,7 @@
           <v-btn color="primary" @click="onSubmit"> Save </v-btn>
           <v-btn color="primary" to=/OurTutors> Back </v-btn>
         </v-row>
-        
+
       </v-container>
     </v-form>
   </div>
@@ -144,7 +144,7 @@ export default {
       valid: true,
       tID: this.$route.params.id,
       info: {},
-      
+
       grades: ["9", "10", "11", "12"],
 
        classes: [
@@ -214,14 +214,14 @@ export default {
         .collection("Our Tutors")
         .doc(firebase.auth().currentUser.email)
         .update(this.info);
-        
-     
+
+
     },
   },
   created() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        
+
         firebase
           .firestore()
           .collection("Our Tutors")
@@ -237,3 +237,9 @@ export default {
   },
 };
 </script>
+
+<style>
+h1{
+  color: #0947C4;
+}
+</style>

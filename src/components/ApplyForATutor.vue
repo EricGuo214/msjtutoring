@@ -240,4 +240,7 @@ export default {
   margin: auto;
   width: 50%;
 }
+h1{
+  color: #0947C4;
+}
 </style>

@@ -189,7 +189,9 @@ export default {
 /* body {
   text-align: center;
 } */
-
+h1{
+  color: #0947C4;
+}
 .centered {
   text-align: center;
 }

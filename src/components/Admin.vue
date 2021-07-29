@@ -591,4 +591,7 @@ tr.v-data-table__selected {
   text-align: center;
   color: #0947C4;
 }
+h1{
+  color: #0947C4;
+}
 </style>

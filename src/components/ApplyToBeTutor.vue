@@ -317,4 +317,9 @@ h1 {
   color: #046bd1;
   text-align: center;
 }
+
+h2{
+  color: #046bd1;
+  text-align: center;
+}
 </style>
