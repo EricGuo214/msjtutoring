@@ -81,7 +81,7 @@
           </v-col>
         </v-row>
 
-        <!-- <v-row align="center" justify="center">
+        <v-row align="center" justify="center">
           <v-text-field
             v-model="info.desc"
             label="Enter a short description for tutees to see"
@@ -89,8 +89,9 @@
           >
           </v-text-field>
         </v-row>
-        <v-row align="center" justify="center">
+        <!-- <v-row align="center" justify="center">
           <v-select
+            return-object
             v-model="selectedClasses"
             dense
             :items="classes"
@@ -100,7 +101,6 @@
             multiple
             chips
             required
-            return-object
           >
           </v-select>
         </v-row>
@@ -180,17 +180,17 @@
           <v-btn
             color="primary"
             to="/OurTutors"
-            @click="onSubmit"
+            @click="save"
             :disabled="!valid"
           >
-            Submit
+            save
           </v-btn>
         </v-row>
       </v-container>
     </v-form>
-    <!-- <v-btn color="primary" @click="test">
+    <v-btn color="primary" @click="test">
       test
-    </v-btn> -->
+    </v-btn>
   </div>
 </template>
 
@@ -203,6 +203,12 @@ export default {
 
     grades: ["9", "10", "11", "12"],
     genders: ["Male", "Female", "Other"],
+    emailRules: [
+      (v) => !!v || "E-mail is required",
+      (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
+    ],
+    academicGrades: ["A", "B", "C", "D", "F"],
+    selectedClasses: [],
 
     classes: [
       { header: "Sciences" },
@@ -239,39 +245,39 @@ export default {
       { name: "SAT" },
       { name: "ACT" },
     ],
-
-    emailRules: [
-      (v) => !!v || "E-mail is required",
-      (v) => /.+@.+\..+/.test(v) || "E-mail must be valid",
-    ],
-    academicGrades: ["A", "B", "C", "D", "F"],
   }),
+  created() {
+    var db = firebase.firestore();
+    const userEmail = firebase.auth().currentUser.email;
+    db.collection("OurTutors")
+      .doc(userEmail)
+      .get()
+      .then((doc) => {
+        this.info = doc.data();
+      });
+  },
 
   methods: {
-    onSubmit() {
-      this.info.name = this.info.fName + " " + this.info.lName;
-      firebase
-        .firestore()
-        .collection("OurTutors")
-        .doc(firebase.auth().currentUser.email)
-        .update(this.info);
+    test() {
+      console.log(this.selectedClasses);
     },
+    save() {
+      if (this.$refs.form.validate()) {
+        var db = firebase.firestore();
+        const userEmail = firebase.auth().currentUser.email;
+        this.info.name = this.info.fName + " " + this.info.lName;
+        db.collection("OurTutors")
+          .doc(userEmail)
+          .update(this.info);
+      }
+    },
+
     required(value) {
       if (value instanceof Array && value.length == 0) {
         return "Required.";
       }
       return !!value || "Required.";
     },
-  },
-  created() {
-    firebase
-      .firestore()
-      .collection("OurTutors")
-      .doc(firebase.auth().currentUser.email)
-      .get()
-      .then((doc) => {
-        this.info = doc.data();
-      });
   },
 };
 </script>

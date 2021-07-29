@@ -126,6 +126,9 @@
             :label="cls.name + ' Sem 2 Grade'"
           ></v-select>
         </v-row>
+        <v-alert dense border="left" type="warning">
+          Classes <strong>cannot </strong> be changed after application
+        </v-alert>
 
         <br />
 
@@ -189,19 +192,32 @@ import firebase from "firebase";
 export default {
   data: () => ({
     valid: true,
-    firstName: "",
-    lastName: "",
-    grade: null,
+
+    firstName: "Rithwik",
+    lastName: "Viaudn",
+    grade: "9",
     grades: ["9", "10", "11", "12"],
+    phonenumber: 5103546054,
     selectedClasses: [],
-    stringClasses: [],
-    gender: "",
+    gender: "Male",
     genders: ["Male", "Female", "Other"],
-    maxTut: 2,
-    desc: "",
-    facebook: "",
-    instagram: "",
-    phonenumber: null,
+    maxTut: 9,
+    desc: "I like puie",
+    facebook: "Rbaidun",
+    instagram: "riths",
+
+    // firstName: "",
+    // lastName: "",
+    // grade: null,
+    // grades: ["9", "10", "11", "12"],
+    // phonenumber: null,
+    // selectedClasses: [],
+    // gender: "",
+    // genders: ["Male", "Female", "Other"],
+    // maxTut: null,
+    // desc: "",
+    // facebook: "",
+    // instagram: "",
 
     classes: [
       { header: "Sciences" },
@@ -291,11 +307,7 @@ export default {
       }
       return !!value || "Required.";
     },
-    test() {
-      console.log(JSON.stringify(this.selectedClasses));
-      this.stringClasses = this.selectedClasses.map((a) => a.name);
-      console.log(this.stringClasses);
-    },
+    test() {},
   },
 };
 </script>

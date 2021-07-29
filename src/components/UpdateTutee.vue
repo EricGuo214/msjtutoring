@@ -22,7 +22,8 @@
           </v-text-field>
         </v-col>
 
-        <v-combobox
+        <v-select
+          return-object
           v-model="selectedClasses"
           dense
           :items="classes"
@@ -31,12 +32,14 @@
           label="Select the classes you need help in"
           multiple
           chips
-          hint="Or type in a class if it doesn't exsist"
-          persistent-hint
           required
-          return-object
         >
-        </v-combobox>
+        </v-select>
+        <v-alert dense border="left" type="warning">
+          Classes <strong>cannot </strong> be changed if you paired are with a
+          tutor. Please check your inbox or contact us at
+          msjstemsuccess@gmail.com to remove or add classes
+        </v-alert>
         <br />
         <v-text-field
           v-model="info.notes"
@@ -87,7 +90,7 @@
         </v-list>
 
         <v-btn color="primary" @click="save"> save</v-btn>
-        <!-- <v-btn color="primary" @click="test"> test</v-btn> -->
+        <v-btn color="primary" @click="test"> test</v-btn>
         <!-- <v-btn color="warning" @click="clearClass"> delete class</v-btn> -->
       </v-form>
     </div>
@@ -102,8 +105,6 @@ export default {
     valid: true,
     info: {},
     selectedClasses: [],
-    og: [],
-    getClass: [],
     genders: ["Male", "Female", "Other"],
 
     classes: [
@@ -141,101 +142,117 @@ export default {
   }),
 
   created() {
-    firebase
-      .firestore()
-      .collection("Tutees")
-      .doc(firebase.auth().currentUser.email)
+    var db = firebase.firestore();
+    const userEmail = firebase.auth().currentUser.email;
+    db.collection("Tutees")
+      .doc(userEmail)
       .get()
       .then((doc) => {
         this.info = doc.data();
       });
 
-    firebase
-      .firestore()
-      .collection("Tutees")
-      .doc(firebase.auth().currentUser.email)
+    db.collection("Tutees")
+      .doc(userEmail)
       .collection("Classes")
       .get()
       .then((querySnapshot) => {
         querySnapshot.forEach((doc) => {
-          this.selectedClasses.push(doc.data().name);
-          this.og.push(doc.data().name);
+          this.selectedClasses.push(doc.data());
+        });
+        this.selectedClasses.forEach((cls) => {
+          if (cls.p) {
+            this.classes[this.getInd(cls.name)].disabled = true;
+          }
         });
       });
   },
 
   methods: {
     test() {},
+    getInd(n) {
+      for (var i = 0; i < this.classes.length; i++) {
+        if (this.classes[i].name == n) {
+          return i;
+        }
+      }
+    },
 
     save() {
       if (this.$refs.form.validate()) {
-        const userEmail = firebase.auth().currentUser.email;
         var db = firebase.firestore();
+        const userEmail = firebase.auth().currentUser.email;
 
         db.collection("Tutees")
           .doc(userEmail)
           .set(this.info);
 
         var batch = db.batch();
-        this.selectedClasses.forEach((cls) => {
-          var docRef = db
-            .collection("Tutees")
-            .doc(userEmail)
-            .collection("Classes")
-            .doc(cls.name);
+        db.collection("Tutees")
+          .doc(userEmail)
+          .collection("Classes")
+          .where("p", "==", false)
+          .get()
+          .then((res) => {
+            res.forEach((element) => {
+              element.ref.delete();
+            });
+          })
+          .then(() => {
+            this.selectedClasses.forEach((cls, index, arr) => {
+              var docRef = db
+                .collection("Tutees")
+                .doc(userEmail)
+                .collection("Classes")
+                .doc(cls.name);
 
-          docRef.get().then((doc) => {
-            if (doc.data().p) {
-              console.log("already paired");
-            } else {
-              cls.p = false;
-              cls.tutor = {};
-            }
+              docRef.get().then((doc) => {
+                if (doc.exists) {
+                  console.log("exists");
+                } else {
+                  cls.p = false;
+                  cls.tutor = {};
+                  batch.set(docRef, cls);
+                }
+                if (index == arr.length - 1) batch.commit();
+              });
+            });
           });
 
-          batch.set(docRef, cls);
-        });
-        console.log("came here?");
-        batch.commit();
+        // this.selectedClasses.forEach((cls, index, arr) => {
+        //   var docRef = db
+        //     .collection("Tutees")
+        //     .doc(userEmail)
+        //     .collection("Classes")
+        //     .doc(cls.name);
 
-        // db.collection("Tutees")
-        //   .doc(userEmail)
-        //   .collection("Classes")
-        //   .get()
-        //   .then((res) => {
-        //     res.forEach((element) => {
-        //       var cls = element.data()
-        //       if (cls.p && this.selectedClasses.includes(cls.name)) {
-        //         console.log("already paired");
-        //       }
-
-        //     });
-        //   });
-        // db.collection("Tutees")
-        //   .doc(userEmail)
-        //   .collection("Classes")
-        //   .get()
-        //   .then((res) => {
-        //     res.forEach((element) => {
-        //       element.ref.delete();
-        //     });
-        //   })
-        //   .then(() => {
-        //     var batch = db.batch();
-        //     this.selectedClasses.forEach((cls) => {
-        //       var docRef = db
-        //         .collection("Tutees")
-        //         .doc(userEmail)
-        //         .collection("Classes")
-        //         .doc(cls.name);
+        //   docRef.get().then((doc) => {
+        //     if (doc.exists) {
+        //       this.toDelete[cls.name] = false;
+        //     } else {
         //       cls.p = false;
         //       cls.tutor = {};
-
         //       batch.set(docRef, cls);
-        //     });
-        //     console.log("came here?");
-        //     batch.commit();
+        //     }
+        //     if (index == arr.length - 1) {
+        //       batch.commit();
+        //       console.log(this.toDelete);
+        //       for (const cls in this.toDelete) {
+        //         console.log(this.toDelete[cls]);
+
+        //         if (this.toDelete[cls]) {
+        //           console.log(`${cls} marked to del`);
+
+        //           db.collection("Tutees")
+        //             .doc(userEmail)
+        //             .collection("Classes")
+        //             .doc(cls)
+        //             .delete();
+        //           console.log("deleted cls");
+        //         }
+        //       }
+        //     }
         //   });
+        // });
       }
     },
     required(value) {

@@ -22,7 +22,7 @@
           </v-text-field>
         </v-col>
 
-        <v-combobox
+        <v-select
           v-model="selectedClasses"
           dense
           :items="classes"
@@ -31,12 +31,10 @@
           label="Select the classes you need help in"
           multiple
           chips
-          hint="Or type in a class if it doesn't exist"
-          persistent-hint
           required
           return-object
         >
-        </v-combobox>
+        </v-select>
         <br />
         <v-text-field
           v-model="notes"
@@ -136,12 +134,20 @@ export default {
   data: () => ({
     valid: true,
     dialog: false,
+
     name: "",
-    selectedClasses: [],
     phonenumber: "",
+    selectedClasses: [],
+    notes: "",
     facebook: "",
     instagram: "",
-    notes: "",
+    // name: "Rithwik V",
+    // phonenumber: "150345",
+    // selectedClasses: [],
+    // notes: "guy",
+    // facebook: "rvaidun",
+    // instagram: "rith",
+
     gender: "",
     genders: ["Male", "Female", "Other"],
 
