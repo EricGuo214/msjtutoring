@@ -65,14 +65,11 @@ export default {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         const userEmail = firebase.auth().currentUser.email;
-        db.collection("Tutees")
+        db.collection("OurTutors")
           .doc(userEmail)
-          .collection("Classes")
           .get()
-          .then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-              this.selectedClasses.push(doc.data());
-            });
+          .then((doc) => {
+            this.tutor = doc.data();
           });
       }
     });

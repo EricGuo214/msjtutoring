@@ -218,38 +218,31 @@ export default {
 
     classes: [
       { header: "Sciences" },
-
+      { divider: true },
       { name: "AP Biology" },
       { name: "AP Chemistry" },
-      { name: "AP Computer Science A" },
+
       { name: "AP Physics 1" },
       { name: "AP Physics C" },
-      { name: "Physics" },
+      { name: "CP Physics" },
       { name: "Physics in the Universe" },
       { name: "Biology" },
       { name: "Chemistry" },
       { name: "Living Earth" },
       { divider: true },
 
-      { header: "Languages" },
-      { name: "AP Spanish" },
-      { name: "AP Chinese" },
-      { divider: true },
-
       { header: "Maths" },
+      { divider: true },
       { name: "AP Statistics" },
+      { name: "AP Computer Science A" },
       { name: "AP Calculus AB" },
       { name: "AP Calculus BC" },
-      { name: "Calculus" },
+      { name: "CP Calculus" },
       { name: "Precalculus" },
       { name: "Algebra 2/Trig" },
       { name: "Algebra 2" },
-      { name: "Trig" },
+      { name: "Trigonometry" },
       { name: "Geometry" },
-      { divider: true },
-      { header: "Standarized Tests" },
-      { name: "SAT" },
-      { name: "ACT" },
     ],
 
     photoURL: null,
@@ -315,7 +308,7 @@ h1 {
   text-align: center;
 }
 
-h2{
+h2 {
   color: #046bd1;
   text-align: center;
 }

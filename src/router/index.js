@@ -93,11 +93,7 @@ const routes = [
     name: "test",
     component: () => import("../components/test.vue"),
   },
-  {
-    path: "/EditTutor/:id",
-    name: "EditTutor",
-    component: () => import("../components/EditTutor.vue"),
-  },
+
   {
     path: "/profile",
     name: "Profile",
