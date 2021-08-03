@@ -6,7 +6,7 @@
         <v-text-field
           v-model="info.name"
           dense
-          :rules="[(v) => !!v || 'This field is required']"
+          :rules="[v => !!v || 'This field is required']"
           label="Full name"
           outlined
           required
@@ -17,7 +17,7 @@
             v-model.number="info.phonenumber"
             type="number"
             label="Phone Number"
-            :rules="[(v) => !!v || 'This field is required']"
+            :rules="[v => !!v || 'This field is required']"
           >
           </v-text-field>
         </v-col>
@@ -63,7 +63,7 @@
             <v-list-item-content>
               <v-text-field
                 v-model="info.facebook"
-                :rules="[(v) => !!v || 'This field is required']"
+                :rules="[v => !!v || 'This field is required']"
                 label="Facebook Username"
                 required
               ></v-text-field>
@@ -134,7 +134,9 @@ export default {
       { name: "Algebra 2" },
       { name: "Trigonometry" },
       { name: "Geometry" },
-    ],
+      { name: "Trig" },
+      { name: "Geometry" }
+    ]
   }),
 
   created() {
@@ -143,7 +145,7 @@ export default {
     db.collection("Tutees")
       .doc(userEmail)
       .get()
-      .then((doc) => {
+      .then(doc => {
         this.info = doc.data();
       });
 
@@ -151,11 +153,11 @@ export default {
       .doc(userEmail)
       .collection("Classes")
       .get()
-      .then((querySnapshot) => {
-        querySnapshot.forEach((doc) => {
+      .then(querySnapshot => {
+        querySnapshot.forEach(doc => {
           this.selectedClasses.push(doc.data());
         });
-        this.selectedClasses.forEach((cls) => {
+        this.selectedClasses.forEach(cls => {
           if (cls.p) {
             this.classes[this.getInd(cls.name)].disabled = true;
           }
@@ -186,8 +188,8 @@ export default {
           .collection("Classes")
           .where("p", "==", false)
           .get()
-          .then((res) => {
-            res.forEach((element) => {
+          .then(res => {
+            res.forEach(element => {
               element.ref.delete();
             });
           })
@@ -199,7 +201,7 @@ export default {
                 .collection("Classes")
                 .doc(cls.name);
 
-              docRef.get().then((doc) => {
+              docRef.get().then(doc => {
                 if (doc.exists) {
                   console.log("exists");
                 } else {
@@ -254,13 +256,13 @@ export default {
         return "Required.";
       }
       return !!value || "Required.";
-    },
+    }
   },
   computed: {
     isValid() {
       return this.name != "" && this.selectedClasses.length != 0;
-    },
-  },
+    }
+  }
 };
 </script>
 

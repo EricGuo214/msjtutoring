@@ -176,15 +176,11 @@ export default {
       { name: "Precalculus" },
       { name: "Algebra 2/Trig" },
       { name: "Algebra 2" },
-<<<<<<< Updated upstream
       { name: "Trigonometry" },
       { name: "Geometry" },
-    ],
-=======
       { name: "Trig" },
       { name: "Geometry" }
     ]
->>>>>>> Stashed changes
   }),
 
   methods: {
