@@ -6,7 +6,7 @@
         <v-text-field
           v-model="name"
           dense
-          :rules="[(v) => !!v || 'This field is required']"
+          :rules="[v => !!v || 'This field is required']"
           label="Full name"
           outlined
           required
@@ -17,7 +17,7 @@
             v-model.number="phonenumber"
             type="number"
             label="Phone Number"
-            :rules="[(v) => !!v || 'This field is required']"
+            :rules="[v => !!v || 'This field is required']"
           >
           </v-text-field>
         </v-col>
@@ -58,7 +58,7 @@
             <v-list-item-content>
               <v-text-field
                 v-model="facebook"
-                :rules="[(v) => !!v || 'This field is required']"
+                :rules="[v => !!v || 'This field is required']"
                 label="Facebook Username"
                 required
               ></v-text-field>
@@ -176,9 +176,15 @@ export default {
       { name: "Precalculus" },
       { name: "Algebra 2/Trig" },
       { name: "Algebra 2" },
+<<<<<<< Updated upstream
       { name: "Trigonometry" },
       { name: "Geometry" },
     ],
+=======
+      { name: "Trig" },
+      { name: "Geometry" }
+    ]
+>>>>>>> Stashed changes
   }),
 
   methods: {
@@ -198,11 +204,12 @@ export default {
             facebook: this.facebook,
             instagram: this.instagram,
             phonenumber: this.phonenumber,
+            photoURL: firebase.auth().currentUser.photoURL
           });
 
         var batch = db.batch();
         console.log(this.selectedClasses);
-        this.selectedClasses.forEach((cls) => {
+        this.selectedClasses.forEach(cls => {
           var docRef = db
             .collection("Tutees")
             .doc(userEmail)
@@ -220,13 +227,13 @@ export default {
         return "Required.";
       }
       return !!value || "Required.";
-    },
+    }
   },
   computed: {
     isValid() {
       return this.name != "" && this.selectedClasses.length != 0;
-    },
-  },
+    }
+  }
 };
 </script>
 
