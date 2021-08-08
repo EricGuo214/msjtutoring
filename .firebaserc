@@ -2,5 +2,14 @@
   "projects": {
     "msj-tutor": "msj-tutor",
     "default": "msj-tutor"
+  },
+  "targets": {
+    "msj-tutor": {
+      "hosting": {
+        "missiontutoring": [
+          "missiontutoring"
+        ]
+      }
+    }
   }
 }

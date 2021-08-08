@@ -1,7 +1,7 @@
 <template>
   <div>
     <h1 class="text-center display-2 primary--text text-accent-3">
-      Welcome to MSJ Tutoring!
+      Welcome to Mission Tutoring!
     </h1>
     <h3 class="text-center display-2 primary-text text-accent-3">
       Please Sign In

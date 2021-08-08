@@ -1,8 +1,6 @@
 <template>
   <div>
-    <h1 class="text-center">
-      Apply To Be A Tutor!
-    </h1>
+    <h1 class="text-center">Apply To Be A Tutor!</h1>
     <v-form ref="form" v-model="valid" lazy-validation>
       <v-container style="width: 50%">
         <v-row align="center" justify="center">
@@ -135,9 +133,7 @@
             <v-list-item-avatar>
               <v-avatar size="50px" tile>
                 <img
-                  :src="
-                    `https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png`
-                  "
+                  :src="`https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png`"
                   :alt="'facebook logo'"
                 />
               </v-avatar>
@@ -155,9 +151,7 @@
             <v-list-item-avatar>
               <v-avatar size="50px" tile>
                 <img
-                  :src="
-                    `https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg`
-                  "
+                  :src="`https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg`"
                   :alt="'instagram logo'"
                 />
               </v-avatar>
@@ -190,45 +184,47 @@ export default {
   data: () => ({
     valid: true,
 
-    firstName: "Rithwik",
-    lastName: "Viaudn",
-    grade: "9",
-    grades: ["9", "10", "11", "12"],
-    phonenumber: 5103546054,
-    selectedClasses: [],
-    gender: "Male",
-    genders: ["Male", "Female", "Other"],
-    maxTut: 9,
-    desc: "I like puie",
-    facebook: "Rbaidun",
-    instagram: "riths",
-
-    // firstName: "",
-    // lastName: "",
-    // grade: null,
+    // firstName: "Rithwik",
+    // lastName: "Viaudn",
+    // grade: "9",
     // grades: ["9", "10", "11", "12"],
-    // phonenumber: null,
+    // phonenumber: 5103546054,
     // selectedClasses: [],
-    // gender: "",
+    // gender: "Male",
     // genders: ["Male", "Female", "Other"],
-    // maxTut: null,
-    // desc: "",
-    // facebook: "",
-    // instagram: "",
+    // maxTut: 9,
+    // desc: "I like puie",
+    // facebook: "Rbaidun",
+    // instagram: "riths",
+
+    firstName: "",
+    lastName: "",
+    grade: null,
+    grades: ["9", "10", "11", "12"],
+    phonenumber: null,
+    selectedClasses: [],
+    gender: "",
+    genders: ["Male", "Female", "Other"],
+    maxTut: null,
+    desc: "",
+    facebook: "",
+    instagram: "",
 
     classes: [
       { header: "Sciences" },
       { divider: true },
       { name: "AP Biology" },
       { name: "AP Chemistry" },
-
       { name: "AP Physics 1" },
       { name: "AP Physics C" },
       { name: "CP Physics" },
+      { name: "AP Environmental Science" },
       { name: "Physics in the Universe" },
       { name: "Biology" },
       { name: "Chemistry" },
       { name: "Living Earth" },
+      { name: "Anatomy Physiology" },
+      { name: "Chemical Technology" },
       { divider: true },
 
       { header: "Maths" },
@@ -243,6 +239,11 @@ export default {
       { name: "Algebra 2" },
       { name: "Trigonometry" },
       { name: "Geometry" },
+      { name: "Trig" },
+      { name: "Discrete Math" },
+      { name: "Intro to C++" },
+      { name: "Multivariable" },
+      { name: "Linear Algebra" },
     ],
 
     photoURL: null,

@@ -6,7 +6,7 @@
         <v-text-field
           v-model="name"
           dense
-          :rules="[v => !!v || 'This field is required']"
+          :rules="[(v) => !!v || 'This field is required']"
           label="Full name"
           outlined
           required
@@ -17,7 +17,7 @@
             v-model.number="phonenumber"
             type="number"
             label="Phone Number"
-            :rules="[v => !!v || 'This field is required']"
+            :rules="[(v) => !!v || 'This field is required']"
           >
           </v-text-field>
         </v-col>
@@ -48,9 +48,7 @@
             <v-list-item-avatar>
               <v-avatar size="50px" tile>
                 <img
-                  :src="
-                    `https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png`
-                  "
+                  :src="`https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png`"
                   :alt="'facebook logo'"
                 />
               </v-avatar>
@@ -58,7 +56,7 @@
             <v-list-item-content>
               <v-text-field
                 v-model="facebook"
-                :rules="[v => !!v || 'This field is required']"
+                :rules="[(v) => !!v || 'This field is required']"
                 label="Facebook Username"
                 required
               ></v-text-field>
@@ -68,9 +66,7 @@
             <v-list-item-avatar>
               <v-avatar size="50px" tile>
                 <img
-                  :src="
-                    `https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg`
-                  "
+                  :src="`https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg`"
                   :alt="'instagram logo'"
                 />
               </v-avatar>
@@ -121,7 +117,7 @@
           </v-card>
         </v-dialog> -->
         <v-btn color="primary" @click="submit"> submit</v-btn>
-        <v-btn color="primary" @click="test"> test</v-btn>
+        <!-- <v-btn color="primary" @click="test"> test</v-btn> -->
       </v-form>
     </div>
   </body>
@@ -156,14 +152,16 @@ export default {
       { divider: true },
       { name: "AP Biology" },
       { name: "AP Chemistry" },
-
       { name: "AP Physics 1" },
       { name: "AP Physics C" },
       { name: "CP Physics" },
+      { name: "AP Environmental Science" },
       { name: "Physics in the Universe" },
       { name: "Biology" },
       { name: "Chemistry" },
       { name: "Living Earth" },
+      { name: "Anatomy Physiology" },
+      { name: "Chemical Technology" },
       { divider: true },
 
       { header: "Maths" },
@@ -179,8 +177,11 @@ export default {
       { name: "Trigonometry" },
       { name: "Geometry" },
       { name: "Trig" },
-      { name: "Geometry" }
-    ]
+      { name: "Discrete Math" },
+      { name: "Intro to C++" },
+      { name: "Multivariable" },
+      { name: "Linear Algebra" },
+    ],
   }),
 
   methods: {
@@ -191,21 +192,19 @@ export default {
       if (this.$refs.form.validate()) {
         const userEmail = firebase.auth().currentUser.email;
         var db = firebase.firestore();
-        db.collection("Tutees")
-          .doc(userEmail)
-          .set({
-            name: this.name,
-            notes: this.notes,
-            email: userEmail,
-            facebook: this.facebook,
-            instagram: this.instagram,
-            phonenumber: this.phonenumber,
-            photoURL: firebase.auth().currentUser.photoURL
-          });
+        db.collection("Tutees").doc(userEmail).set({
+          name: this.name,
+          notes: this.notes,
+          email: userEmail,
+          facebook: this.facebook,
+          instagram: this.instagram,
+          phonenumber: this.phonenumber,
+          photoURL: firebase.auth().currentUser.photoURL,
+        });
 
         var batch = db.batch();
         console.log(this.selectedClasses);
-        this.selectedClasses.forEach(cls => {
+        this.selectedClasses.forEach((cls) => {
           var docRef = db
             .collection("Tutees")
             .doc(userEmail)
@@ -223,13 +222,13 @@ export default {
         return "Required.";
       }
       return !!value || "Required.";
-    }
+    },
   },
   computed: {
     isValid() {
       return this.name != "" && this.selectedClasses.length != 0;
-    }
-  }
+    },
+  },
 };
 </script>
 
