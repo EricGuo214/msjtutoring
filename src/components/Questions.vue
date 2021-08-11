@@ -14,13 +14,13 @@
         style="width: 50%"
         class="mx-auto"
       ></v-text-field>
-      <br/>
+      <br />
       <div class="centered">
         <v-btn color="primary" to="/askquestion">
           Ask a question
         </v-btn>
       </div>
-      <br/>
+      <br />
       <v-card
         class="mx-auto"
         max-width="600"
@@ -107,7 +107,6 @@
         </v-card-actions>
       </v-card>
       <br />
-
     </div>
   </body>
 </template>
@@ -126,14 +125,12 @@ export default {
       .firestore()
       .collection("questions")
       .onSnapshot((querySnapshot) => {
-        var fArray = [];
         querySnapshot.forEach((doc) => {
           let f = doc.data();
           f.id = doc.id;
           f.isEditing = false;
-          fArray.push(f);
+          this.questions.push(f);
         });
-        this.questions = fArray;
       });
   },
   computed: {
@@ -189,8 +186,8 @@ export default {
 /* body {
   text-align: center;
 } */
-h1{
-  color: #0947C4;
+h1 {
+  color: #0947c4;
 }
 .centered {
   text-align: center;

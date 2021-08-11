@@ -13,7 +13,7 @@
               {{ t.tutorInfo.name }}
             </v-card-title>
             <v-card-text>
-              Interested class:
+              Teaching you:
               <div class="primary--text mb -2">{{ t.name }}</div>
             </v-card-text>
             <v-card-text>
@@ -35,7 +35,7 @@
               {{ t.tuteeInfo.name }}
             </v-card-title>
             <v-card-text>
-              Interested class:
+              Needs help in:
               <div class="primary--text mb -2">{{ t.name }}</div>
             </v-card-text>
             <v-card-text>
@@ -137,7 +137,7 @@ export default {
 };
 </script>
 <style>
-h1{
-  color: #0947C4;
+h1 {
+  color: #0947c4;
 }
 </style>

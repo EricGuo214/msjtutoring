@@ -6,7 +6,7 @@
         <v-text-field
           v-model="info.name"
           dense
-          :rules="[v => !!v || 'This field is required']"
+          :rules="[(v) => !!v || 'This field is required']"
           label="Full name"
           outlined
           required
@@ -17,7 +17,7 @@
             v-model.number="info.phonenumber"
             type="number"
             label="Phone Number"
-            :rules="[v => !!v || 'This field is required']"
+            :rules="[(v) => !!v || 'This field is required']"
           >
           </v-text-field>
         </v-col>
@@ -35,11 +35,6 @@
           required
         >
         </v-select>
-        <v-alert dense border="left" type="warning">
-          Classes <strong>cannot </strong> be changed if you paired are with a
-          tutor. Please check your inbox or contact us at
-          msjstemsuccess@gmail.com to remove or add classes
-        </v-alert>
         <br />
         <v-text-field
           v-model="info.notes"
@@ -63,7 +58,7 @@
             <v-list-item-content>
               <v-text-field
                 v-model="info.facebook"
-                :rules="[v => !!v || 'This field is required']"
+                :rules="[(v) => !!v || 'This field is required']"
                 label="Facebook Username"
                 required
               ></v-text-field>
@@ -90,7 +85,7 @@
         </v-list>
 
         <v-btn color="primary" @click="save"> save</v-btn>
-        <v-btn color="primary" @click="test"> test</v-btn>
+        <!-- <v-btn color="primary" @click="test"> test</v-btn> -->
         <!-- <v-btn color="warning" @click="clearClass"> delete class</v-btn> -->
       </v-form>
     </div>
@@ -135,8 +130,8 @@ export default {
       { name: "Trigonometry" },
       { name: "Geometry" },
       { name: "Trig" },
-      { name: "Geometry" }
-    ]
+      { name: "Geometry" },
+    ],
   }),
 
   created() {
@@ -145,7 +140,7 @@ export default {
     db.collection("Tutees")
       .doc(userEmail)
       .get()
-      .then(doc => {
+      .then((doc) => {
         this.info = doc.data();
       });
 
@@ -153,11 +148,11 @@ export default {
       .doc(userEmail)
       .collection("Classes")
       .get()
-      .then(querySnapshot => {
-        querySnapshot.forEach(doc => {
+      .then((querySnapshot) => {
+        querySnapshot.forEach((doc) => {
           this.selectedClasses.push(doc.data());
         });
-        this.selectedClasses.forEach(cls => {
+        this.selectedClasses.forEach((cls) => {
           if (cls.p) {
             this.classes[this.getInd(cls.name)].disabled = true;
           }
@@ -188,8 +183,8 @@ export default {
           .collection("Classes")
           .where("p", "==", false)
           .get()
-          .then(res => {
-            res.forEach(element => {
+          .then((res) => {
+            res.forEach((element) => {
               element.ref.delete();
             });
           })
@@ -201,7 +196,7 @@ export default {
                 .collection("Classes")
                 .doc(cls.name);
 
-              docRef.get().then(doc => {
+              docRef.get().then((doc) => {
                 if (doc.exists) {
                   console.log("exists");
                 } else {
@@ -213,42 +208,6 @@ export default {
               });
             });
           });
-
-        // this.selectedClasses.forEach((cls, index, arr) => {
-        //   var docRef = db
-        //     .collection("Tutees")
-        //     .doc(userEmail)
-        //     .collection("Classes")
-        //     .doc(cls.name);
-
-        //   docRef.get().then((doc) => {
-        //     if (doc.exists) {
-        //       this.toDelete[cls.name] = false;
-        //     } else {
-        //       cls.p = false;
-        //       cls.tutor = {};
-        //       batch.set(docRef, cls);
-        //     }
-        //     if (index == arr.length - 1) {
-        //       batch.commit();
-        //       console.log(this.toDelete);
-        //       for (const cls in this.toDelete) {
-        //         console.log(this.toDelete[cls]);
-
-        //         if (this.toDelete[cls]) {
-        //           console.log(`${cls} marked to del`);
-
-        //           db.collection("Tutees")
-        //             .doc(userEmail)
-        //             .collection("Classes")
-        //             .doc(cls)
-        //             .delete();
-        //           console.log("deleted cls");
-        //         }
-        //       }
-        //     }
-        //   });
-        // });
       }
     },
     required(value) {
@@ -256,13 +215,13 @@ export default {
         return "Required.";
       }
       return !!value || "Required.";
-    }
+    },
   },
   computed: {
     isValid() {
       return this.name != "" && this.selectedClasses.length != 0;
-    }
-  }
+    },
+  },
 };
 </script>
 

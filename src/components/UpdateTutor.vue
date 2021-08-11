@@ -188,9 +188,9 @@
         </v-row>
       </v-container>
     </v-form>
-    <v-btn color="primary" @click="test">
+    <!-- <v-btn color="primary" @click="test">
       test
-    </v-btn>
+    </v-btn> -->
   </div>
 </template>
 
