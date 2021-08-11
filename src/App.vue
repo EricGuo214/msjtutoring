@@ -2,7 +2,7 @@
   <v-app>
     <v-app-bar app color="#2bbafc" dark>
       <v-app-bar-nav-icon @click="drawer = true"></v-app-bar-nav-icon>
-      <v-toolbar-title>Mission Tutoring</v-toolbar-title>
+      <v-toolbar-title>STEM Success</v-toolbar-title>
 
       <v-spacer></v-spacer>
       <v-menu offset-y v-if="user">

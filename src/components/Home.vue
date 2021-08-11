@@ -25,7 +25,7 @@
                 ]"
                 class="font-weight-black"
               >
-                Mission Tutoring
+                STEM Success
               </span>
             </v-col>
           </v-row>
@@ -45,7 +45,7 @@
         class="mx-auto title font-weight-light mb-8"
         max-width="720"
       >
-        Mission Tutoring is a website where students get paired with
+        STEM Success is an organization where students get paired with
         personalized tutors. Our goal is to create an environment where students
         struggling in certain areas can get the best assistance available from
         their peers. We have bridged the gap between students looking for help
