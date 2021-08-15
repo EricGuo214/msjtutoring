@@ -29,6 +29,38 @@
               </span>
             </v-col>
           </v-row>
+          <v-row>
+            <v-card class="mx-auto" max-width="344" outlined>
+              <v-list-item three-line>
+                <v-list-item-content>
+                  <v-list-item-title class="text-h5 mb-1">
+                    Interested in teaching?
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-card-actions>
+                <v-btn outlined rounded text to="/ApplyToBeTutor">
+                  Apply to be a tutor
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+            <v-card class="mx-auto" outlined>
+              <v-list-item three-line>
+                <v-list-item-content>
+                  <v-list-item-title class="text-h5 mb-1">
+                    Need help?
+                  </v-list-item-title>
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-card-actions>
+                <v-btn outlined rounded text to="/ApplyForATutor">
+                  Find a tutor
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-row>
         </v-container>
       </v-theme-provider>
     </v-img>

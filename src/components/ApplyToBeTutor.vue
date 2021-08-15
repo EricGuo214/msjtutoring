@@ -133,7 +133,9 @@
             <v-list-item-avatar>
               <v-avatar size="50px" tile>
                 <img
-                  :src="`https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png`"
+                  :src="
+                    `https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png`
+                  "
                   :alt="'facebook logo'"
                 />
               </v-avatar>
@@ -151,7 +153,9 @@
             <v-list-item-avatar>
               <v-avatar size="50px" tile>
                 <img
-                  :src="`https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg`"
+                  :src="
+                    `https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg`
+                  "
                   :alt="'instagram logo'"
                 />
               </v-avatar>
@@ -240,6 +244,7 @@ export default {
       { name: "Trigonometry" },
       { name: "Geometry" },
       { name: "Trig" },
+      { name: "Algebra 1" },
       { name: "Discrete Math" },
       { name: "Intro to C++" },
       { name: "Multivariable" },

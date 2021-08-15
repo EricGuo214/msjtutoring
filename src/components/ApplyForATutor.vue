@@ -48,7 +48,9 @@
             <v-list-item-avatar>
               <v-avatar size="50px" tile>
                 <img
-                  :src="`https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png`"
+                  :src="
+                    `https://cdn.iconscout.com/icon/free/png-256/facebook-logo-2019-1597680-1350125.png`
+                  "
                   :alt="'facebook logo'"
                 />
               </v-avatar>
@@ -66,7 +68,9 @@
             <v-list-item-avatar>
               <v-avatar size="50px" tile>
                 <img
-                  :src="`https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg`"
+                  :src="
+                    `https://i.pinimg.com/736x/c8/95/2d/c8952d6e421a83d298a219edee783167.jpg`
+                  "
                   :alt="'instagram logo'"
                 />
               </v-avatar>
@@ -116,7 +120,9 @@
             </v-card-actions>
           </v-card>
         </v-dialog> -->
-        <v-btn color="primary" @click="submit"> submit</v-btn>
+        <v-btn :disabled="!isValid" color="primary" @click="submit">
+          submit</v-btn
+        >
         <!-- <v-btn color="primary" @click="test"> test</v-btn> -->
       </v-form>
     </div>
@@ -177,6 +183,7 @@ export default {
       { name: "Trigonometry" },
       { name: "Geometry" },
       { name: "Trig" },
+      { name: "Algebra 1" },
       { name: "Discrete Math" },
       { name: "Intro to C++" },
       { name: "Multivariable" },
@@ -192,15 +199,17 @@ export default {
       if (this.$refs.form.validate()) {
         const userEmail = firebase.auth().currentUser.email;
         var db = firebase.firestore();
-        db.collection("Tutees").doc(userEmail).set({
-          name: this.name,
-          notes: this.notes,
-          email: userEmail,
-          facebook: this.facebook,
-          instagram: this.instagram,
-          phonenumber: this.phonenumber,
-          photoURL: firebase.auth().currentUser.photoURL,
-        });
+        db.collection("Tutees")
+          .doc(userEmail)
+          .set({
+            name: this.name,
+            notes: this.notes,
+            email: userEmail,
+            facebook: this.facebook,
+            instagram: this.instagram,
+            phonenumber: this.phonenumber,
+            photoURL: firebase.auth().currentUser.photoURL,
+          });
 
         var batch = db.batch();
         console.log(this.selectedClasses);
@@ -215,6 +224,7 @@ export default {
           batch.set(docRef, cls);
         });
         batch.commit();
+        this.$router.push("/");
       }
     },
     required(value) {
