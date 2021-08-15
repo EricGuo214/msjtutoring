@@ -4,13 +4,13 @@
       :min-height="'calc(100vh - ' + $vuetify.application.top + 'px)'"
       src="https://images.unsplash.com/photo-1507842217343-583bb7270b66?ixid=MnwxMjA3fDB8MHxzZWFyY2h8MXx8bGlicmFyeSUyMGJhY2tncm91bmR8ZW58MHx8MHx8&ixlib=rb-1.2.1&w=1000&q=80"
     >
-      <v-theme-provider dark>
+      <v-theme-provider root>
         <v-container fill-height>
           <v-row align="center" class="white--text mx-auto" justify="center">
             <v-col class="white--text text-center" cols="12" tag="h1">
               <span
                 :class="[
-                  $vuetify.breakpoint.smAndDown ? 'display-1' : 'display-2',
+                  $vuetify.breakpoint.smAndDown ? 'display-1' : 'display-2'
                 ]"
                 class="font-weight-light"
               >
@@ -21,7 +21,7 @@
 
               <span
                 :class="[
-                  $vuetify.breakpoint.smAndDown ? 'display-3' : 'display-4',
+                  $vuetify.breakpoint.smAndDown ? 'display-3' : 'display-4'
                 ]"
                 class="font-weight-black"
               >
@@ -29,38 +29,54 @@
               </span>
             </v-col>
           </v-row>
+
           <v-row>
-            <v-card class="mx-auto" max-width="344" outlined>
-              <v-list-item three-line>
-                <v-list-item-content>
-                  <v-list-item-title class="text-h5 mb-1">
-                    Interested in teaching?
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
+            <table class="centereds">
+              <tr>
+                <td class="pad">
+                  <v-card max-width="344" class="mx-auto" outlined>
+                    <v-list-item three-line>
+                      <v-list-item-content>
+                        <v-list-item-title class="text-h5 mb-1">
+                          Interested in teaching?
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
 
-              <v-card-actions>
-                <v-btn outlined rounded text to="/ApplyToBeTutor">
-                  Apply to be a tutor
-                </v-btn>
-              </v-card-actions>
-            </v-card>
-            <v-card class="mx-auto" outlined>
-              <v-list-item three-line>
-                <v-list-item-content>
-                  <v-list-item-title class="text-h5 mb-1">
-                    Need help?
-                  </v-list-item-title>
-                </v-list-item-content>
-              </v-list-item>
+                    <v-card-actions>
+                      <v-btn outlined rounded text to="/ApplyToBeTutor">
+                        Apply to be a tutor
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </td>
 
-              <v-card-actions>
-                <v-btn outlined rounded text to="/ApplyForATutor">
-                  Find a tutor
-                </v-btn>
-              </v-card-actions>
-            </v-card>
+                <td>
+                  <v-card class="mx-auto" max-width="344" outlined>
+                    <v-list-item three-line>
+                      <v-list-item-content>
+                        <v-list-item-title class="text-h5 mb-1">
+                          Need help?
+                        </v-list-item-title>
+                      </v-list-item-content>
+                    </v-list-item>
+
+                    <v-card-actions>
+                      <v-btn outlined rounded text to="/ApplyForATutor">
+                        Find a tutor
+                      </v-btn>
+                    </v-card-actions>
+                  </v-card>
+                </td>
+              </tr>
+            </table>
           </v-row>
+        </v-container>
+
+        <v-container vertical-align:middle class="text-center">
+          <v-responsive class="mx-auto mb-8" width="56">
+            <v-divider class="mb-1"></v-divider>
+          </v-responsive>
         </v-container>
       </v-theme-provider>
     </v-img>
@@ -126,9 +142,20 @@ export default {
         ["40+", "STEM Classes"],
         ["50+", "Experienced Tutors"],
         ["100+", "Tutees"],
-        ["6+", "Years of Experience"],
-      ],
+        ["6+", "Years of Experience"]
+      ]
     };
-  },
+  }
 };
 </script>
+
+<style>
+.centereds {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.pad {
+  padding-right: 20px;
+}
+</style>

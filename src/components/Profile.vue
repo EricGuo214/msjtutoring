@@ -140,4 +140,8 @@ export default {
 .color {
   text-color: #000000;
 }
+.pad {
+  left-margin: 300px;
+  right-margin: 300px;
+}
 </style>
