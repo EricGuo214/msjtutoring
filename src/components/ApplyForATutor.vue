@@ -178,7 +178,7 @@ export default {
       { name: "AP Calculus BC" },
       { name: "CP Calculus" },
       { name: "Precalculus" },
-      { name: "Algebra 2/Trig" },
+      { name: "Algebra 2 | Trig" },
       { name: "Algebra 2" },
       { name: "Trigonometry" },
       { name: "Geometry" },
