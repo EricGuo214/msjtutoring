@@ -62,11 +62,10 @@
                           <v-btn
                             align-center
                             outlined
-                            rounded
                             text
                             to="/ApplyToBeTutor"
                             style="color: white"
-                            class="fancy-border"
+                            class="fancy-border isButton"
                           >
                             Apply to be a tutor
                           </v-btn>
@@ -105,11 +104,10 @@
                           <v-btn
                             align-center
                             outlined
-                            rounded
                             text
                             to="/ApplyForATutor"
                             style="color: white"
-                            class="fancy-border"
+                            class="fancy-border isButton"
                           >
                             Find a tutor
                           </v-btn>
@@ -213,5 +211,13 @@ export default {
   border: 25px solid #b88846;
   border-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='75' height='75'%3E%3Cg fill='none' stroke='%23B88846' stroke-width='2'%3E%3Cpath d='M1 1h73v73H1z'/%3E%3Cpath d='M8 8h59v59H8z'/%3E%3Cpath d='M8 8h16v16H8zM51 8h16v16H51zM51 51h16v16H51zM8 51h16v16H8z'/%3E%3C/g%3E%3Cg fill='%23B88846'%3E%3Ccircle cx='16' cy='16' r='2'/%3E%3Ccircle cx='59' cy='16' r='2'/%3E%3Ccircle cx='59' cy='59' r='2'/%3E%3Ccircle cx='16' cy='59' r='2'/%3E%3C/g%3E%3C/svg%3E")
     25;
+}
+
+.isButton{
+  color:white;
+}
+
+.isButton:hover {
+  background-color: rgba(265, 265, 265, 0.4);
 }
 </style>
