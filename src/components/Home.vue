@@ -10,7 +10,7 @@
             <v-col class="white--text text-center" cols="12" tag="h1">
               <span
                 :class="[
-                  $vuetify.breakpoint.smAndDown ? 'display-1' : 'display-2'
+                  $vuetify.breakpoint.smAndDown ? 'display-1' : 'display-2',
                 ]"
                 class="font-weight-light"
               >
@@ -21,7 +21,7 @@
 
               <span
                 :class="[
-                  $vuetify.breakpoint.smAndDown ? 'display-3' : 'display-4'
+                  $vuetify.breakpoint.smAndDown ? 'display-3' : 'display-4',
                 ]"
                 class="font-weight-black"
               >
@@ -34,39 +34,89 @@
             <table class="centereds">
               <tr>
                 <td class="pad">
-                  <v-card max-width="344" class="mx-auto" outlined>
-                    <v-list-item three-line>
-                      <v-list-item-content>
-                        <v-list-item-title class="text-h5 mb-1">
-                          Interested in teaching?
-                        </v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
+                  <div class="fancy-border">
+                    <v-card
+                      align="center"
+                      width="344"
+                      class="mx-auto"
+                      outlined
+                      style="background-color: transparent"
+                    >
+                      <v-list-item three-line>
+                        <v-list-item-content>
+                          <v-list-item-title
+                            class="text-h5 mb-1"
+                            style="opacity: 1; font-weight: bold; color: white"
+                          >
+                            Interested in teaching?
+                          </v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
 
-                    <v-card-actions>
-                      <v-btn outlined rounded text to="/ApplyToBeTutor">
-                        Apply to be a tutor
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
+                      <v-row
+                        justify="center"
+                        align="center"
+                        style="padding-bottom: 20px"
+                      >
+                        <v-card-actions>
+                          <v-btn
+                            align-center
+                            outlined
+                            rounded
+                            text
+                            to="/ApplyToBeTutor"
+                            style="color: white"
+                            class="fancy-border"
+                          >
+                            Apply to be a tutor
+                          </v-btn>
+                        </v-card-actions>
+                      </v-row>
+                    </v-card>
+                  </div>
                 </td>
 
                 <td>
-                  <v-card class="mx-auto" max-width="344" outlined>
-                    <v-list-item three-line>
-                      <v-list-item-content>
-                        <v-list-item-title class="text-h5 mb-1">
-                          Need help?
-                        </v-list-item-title>
-                      </v-list-item-content>
-                    </v-list-item>
+                  <div class="fancy-border">
+                    <v-card
+                      align="center"
+                      class="mx-auto"
+                      width="344"
+                      outlined
+                      style="background-color: transparent"
+                    >
+                      <v-list-item three-line>
+                        <v-list-item-content>
+                          <v-list-item-title
+                            class="text-h5 mb-1"
+                            style="opacity: 1; font-weight: bold; color: white"
+                          >
+                            Need help?
+                          </v-list-item-title>
+                        </v-list-item-content>
+                      </v-list-item>
 
-                    <v-card-actions>
-                      <v-btn outlined rounded text to="/ApplyForATutor">
-                        Find a tutor
-                      </v-btn>
-                    </v-card-actions>
-                  </v-card>
+                      <v-row
+                        justify="center"
+                        align="center"
+                        style="padding-bottom: 20px"
+                      >
+                        <v-card-actions>
+                          <v-btn
+                            align-center
+                            outlined
+                            rounded
+                            text
+                            to="/ApplyForATutor"
+                            style="color: white"
+                            class="fancy-border"
+                          >
+                            Find a tutor
+                          </v-btn>
+                        </v-card-actions>
+                      </v-row>
+                    </v-card>
+                  </div>
                 </td>
               </tr>
             </table>
@@ -142,10 +192,10 @@ export default {
         ["40+", "STEM Classes"],
         ["50+", "Experienced Tutors"],
         ["100+", "Tutees"],
-        ["6+", "Years of Experience"]
-      ]
+        ["6+", "Years of Experience"],
+      ],
     };
-  }
+  },
 };
 </script>
 
@@ -157,5 +207,11 @@ export default {
 
 .pad {
   padding-right: 20px;
+}
+
+.fancy-border {
+  border: 25px solid #b88846;
+  border-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='75' height='75'%3E%3Cg fill='none' stroke='%23B88846' stroke-width='2'%3E%3Cpath d='M1 1h73v73H1z'/%3E%3Cpath d='M8 8h59v59H8z'/%3E%3Cpath d='M8 8h16v16H8zM51 8h16v16H51zM51 51h16v16H51zM8 51h16v16H8z'/%3E%3C/g%3E%3Cg fill='%23B88846'%3E%3Ccircle cx='16' cy='16' r='2'/%3E%3Ccircle cx='59' cy='16' r='2'/%3E%3Ccircle cx='59' cy='59' r='2'/%3E%3Ccircle cx='16' cy='59' r='2'/%3E%3C/g%3E%3C/svg%3E")
+    25;
 }
 </style>
