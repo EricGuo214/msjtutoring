@@ -53,7 +53,7 @@
 
       <v-row>
         <v-col
-          v-for="({ image, title, text }, i) in website"
+          v-for="({ image, title }, i) in website"
           :key="i"
           cols="12"
           md="3"
@@ -71,8 +71,6 @@
               class="justify-center font-weight-black text-uppercase"
               v-text="title"
             ></v-card-title>
-
-            <v-card-text class="subtitle-1" v-text="text"> </v-card-text>
           </v-card>
         </v-col>
       </v-row>
@@ -95,7 +93,7 @@ export default {
           image: require("./Pictures/RithPic.jpg"),
           title: "Rithwik Vaidun",
           text:
-            "Hey! I am currently 16 years old and a junior at Mission San Jose High. I joined Mission tutoring because I love to spread my knowledge with other people. I didn't want there to be a barrier for individuals like me to not be able to help and teach people. In my spare time I love to run and play sports, especially table tennis.",
+            "Hey! I am currently 16 years old and a junior at Mission San Jose High. I joined STEM Success because I love to spread my knowledge with other people. I didn't want there to be a barrier for individuals like me to not be able to help and teach people. In my spare time I love to run and play sports, especially table tennis.",
         },
         {
           image: require("./Pictures/mihit.jpg"),
@@ -122,6 +120,14 @@ export default {
           title: "Eric Guo",
           // text:
           // "I joined Mission tutoring to improve Mission San Jose High School's student experiences in challenging courses. My goal is to develop a website that benefits all participants with meaningful experiences and a sense of community. I hope that everybody who uses this website achieves their desired results! I enjoy dancing, reading, and exercise.",
+        },
+        {
+          image: require("./Pictures/RithPic.jpg"),
+          title: "Rithwik Vaidun",
+        },
+        {
+          image: require("./Pictures/david.jpg"),
+          title: "David Guo",
         },
       ],
     };
