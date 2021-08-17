@@ -34,7 +34,10 @@
             <table class="centereds">
               <tr>
                 <td class="pad">
-                  <div class="fancy-border">
+                  <div
+                    class="fancy-border"
+                    style="background-color: rgba(0, 0, 0, 0.5)"
+                  >
                     <v-card
                       align="center"
                       width="344"
@@ -76,7 +79,10 @@
                 </td>
 
                 <td>
-                  <div class="fancy-border">
+                  <div
+                    class="fancy-border"
+                    style="background-color: rgba(0, 0, 0, 0.5)"
+                  >
                     <v-card
                       align="center"
                       class="mx-auto"
@@ -213,8 +219,8 @@ export default {
     25;
 }
 
-.isButton{
-  color:white;
+.isButton {
+  color: white;
 }
 
 .isButton:hover {
