@@ -181,8 +181,8 @@ export default {
       { name: "Algebra 2 | Trig" },
       { name: "Algebra 2" },
       { name: "Trigonometry" },
+
       { name: "Geometry" },
-      { name: "Trig" },
       { name: "Algebra 1" },
       { name: "Discrete Math" },
       { name: "Intro to C++" },
