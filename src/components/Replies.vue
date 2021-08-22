@@ -11,8 +11,8 @@
           </v-list-item-title>
           <v-list-item-subtitle>{{ question.question }}</v-list-item-subtitle>
         </v-list-item-content>
-      </v-list-item> </v-card
-    >>
+      </v-list-item>
+    </v-card>
 
     <v-container fill-height fluid style="width: 50%">
       <v-textarea
@@ -111,12 +111,12 @@ export default {
       question: {},
       reply: "",
       replies: {},
-      User: {},
+      User: {}
     };
   },
 
   created() {
-    firebase.auth().onAuthStateChanged((user) => {
+    firebase.auth().onAuthStateChanged(user => {
       if (user) {
         this.User = { id: user.uid, name: user.displayName };
       }
@@ -125,7 +125,7 @@ export default {
     var docRef = db.collection("questions").doc(this.qID);
     docRef
       .get()
-      .then((doc) => {
+      .then(doc => {
         if (doc.exists) {
           this.question = doc.data();
         } else {
@@ -133,14 +133,14 @@ export default {
           console.log("No such document!");
         }
       })
-      .catch((error) => {
+      .catch(error => {
         console.log("Error getting document:", error);
       });
 
     const ref = docRef.collection("replies");
-    ref.onSnapshot((querySnapshot) => {
+    ref.onSnapshot(querySnapshot => {
       var fArray = [];
-      querySnapshot.forEach((doc) => {
+      querySnapshot.forEach(doc => {
         let f = doc.data();
         f.id = doc.id;
         f.isEditing = false;
@@ -183,14 +183,14 @@ export default {
         .collection("replies")
         .doc(id)
         .update({
-          reply: newR,
+          reply: newR
         });
     },
 
     debug() {
       console.log(this.questions);
-    },
-  },
+    }
+  }
 };
 </script>
 
