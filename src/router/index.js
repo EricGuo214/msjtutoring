@@ -53,11 +53,17 @@ const routes = [
     path: "/OurTutors",
     name: "OurTutors",
     component: () => import("../components/OurTutors.vue"),
+    meta: {
+      auth: true,
+    },
   },
   {
     path: "/questions",
     name: "questions",
     component: () => import("../components/Questions.vue"),
+    meta: {
+      auth: true,
+    },
   },
   {
     path: "/askquestion",

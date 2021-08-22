@@ -154,9 +154,9 @@
         and tutors looking to assist.
       </v-responsive>
 
-      <v-avatar class="elevation-12 mb-12" size="128">
+      <!-- <v-avatar class="elevation-12 mb-12" size="128">
         <v-img src="./Pictures/MissionTutoringLogo.png"></v-img>
-      </v-avatar>
+      </v-avatar> -->
 
       <div></div>
     </v-container>
