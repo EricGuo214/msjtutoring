@@ -15,7 +15,7 @@
                 <v-list-item-title class="text-h5 mb-1">
                   {{ t.fName }} {{ t.lName }}
                 </v-list-item-title>
-                <v-list-item-subtitle>{{ t.desc }}</v-list-item-subtitle>
+                <v-list-item-subtitle style="overflow: auto">{{ t.desc }}</v-list-item-subtitle>
               </v-list-item-content>
 
               <v-list-item-avatar tile size="100" color="grey">
