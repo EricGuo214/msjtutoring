@@ -4,7 +4,12 @@
     <v-container>
       <v-row>
         <v-col v-for="t in tutors" :key="t.id" cols="12" sm="4">
-          <v-card class="mx-auto" max-width="400" outlined>
+          <v-card
+            class="mx-auto"
+            max-width="400"
+            style="word-break: break-word"
+            outlined
+          >
             <v-list-item three-line>
               <v-list-item-content>
                 <v-list-item-title class="text-h5 mb-1">
@@ -71,12 +76,7 @@
                   </v-card-actions>
                 </v-card>
               </v-dialog>
-              <v-btn
-                v-if="wasAuthor(t)"
-                text
-                icon
-                to="/profile"
-              >
+              <v-btn v-if="wasAuthor(t)" text icon to="/profile">
                 <v-icon>mdi-pencil</v-icon>
               </v-btn>
             </v-card-actions>
@@ -209,7 +209,7 @@ export default {
 body {
   text-align: center;
 }
-h1{
-  color: #0947C4;
+h1 {
+  color: #0947c4;
 }
 </style>

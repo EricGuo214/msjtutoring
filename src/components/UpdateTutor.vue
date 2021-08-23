@@ -177,20 +177,15 @@
         </v-list>
 
         <v-row align="center" justify="center">
-          <v-btn
-            color="primary"
-            to="/OurTutors"
-            @click="save"
-            :disabled="!valid"
-          >
+          <v-btn color="primary" @click="save" :disabled="!valid">
             save
           </v-btn>
         </v-row>
       </v-container>
     </v-form>
-    <!-- <v-btn color="primary" @click="test">
+    <v-btn color="primary" @click="test">
       test
-    </v-btn> -->
+    </v-btn>
   </div>
 </template>
 
@@ -259,7 +254,7 @@ export default {
 
   methods: {
     test() {
-      console.log(this.selectedClasses);
+      console.log(this.info);
     },
     save() {
       if (this.$refs.form.validate()) {
@@ -270,6 +265,7 @@ export default {
           .doc(userEmail)
           .update(this.info);
       }
+      this.$router.push("/OurTutors");
     },
 
     required(value) {
