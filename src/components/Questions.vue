@@ -125,12 +125,15 @@ export default {
       .firestore()
       .collection("questions")
       .onSnapshot((querySnapshot) => {
+        var fArray = [];
+
         querySnapshot.forEach((doc) => {
           let f = doc.data();
           f.id = doc.id;
           f.isEditing = false;
-          this.questions.push(f);
+          fArray.push(f);
         });
+        this.questions = fArray;
       });
   },
   computed: {
