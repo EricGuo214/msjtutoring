@@ -67,7 +67,7 @@
             </v-list-item-icon>
             <v-list-item-title>Inbox</v-list-item-title>
           </v-list-item>
-          <v-list-item to="/Admin" v-if="isAdmin">
+          <v-list-item to="/Admin" v-if="isAdmine()">
             <v-list-item-icon>
               <v-icon>mdi-head-cog</v-icon>
             </v-list-item-icon>
@@ -101,9 +101,21 @@ export default {
       group: null,
       user: null,
       isAdmin: false,
+      admins: [],
     };
   },
   created() {
+    firebase
+      .firestore()
+      .collection("Admins")
+      .get()
+      .then((adm) => {
+        adm.forEach((doc) => {
+          this.admins.push(doc.id);
+        });
+        console.log(this.admins);
+      });
+
     firebase.auth().onAuthStateChanged((user) => {
       this.user = user;
       if (firebase.auth().currentUser != null) {
@@ -114,11 +126,6 @@ export default {
           }
         });
       }
-      // let currUser = firebase.auth().currentUser;
-      // currUser.getIdTokenResult().then((idTokenResult) => {
-      //   if (idTokenResult.claims.isAdmin) {
-      //     this.isAdmin = true;
-      //   }
     });
   },
   methods: {
@@ -127,23 +134,17 @@ export default {
       firebase.auth().signOut();
       this.isAdmin = false;
     },
-    // isAdmin() {
-    // return false;
-    // let user = firebase.auth().currentUser;
-    // if (user == null) {
-    //   return false;
-    // }
-    // let result = false;
-    // user
-    //   .getIdTokenResult()
-    //   .then((idTokenResult) => {
-    //     if (idTokenResult.claims.isAdmin) {
-    //       result = true;
-    //     }
-    //   })
-    //   .catch(() => {});
-    // return result;
-    // },
+
+    isAdmine() {
+      firebase.auth().onAuthStateChanged((user) => {
+        if (user) {
+          console.log(firebase.auth().currentUser.email);
+          console.log(this.admins.includes(firebase.auth().currentUser.email));
+
+          return this.admins.includes(firebase.auth().currentUser.email);
+        }
+      });
+    },
   },
 };
 </script>
